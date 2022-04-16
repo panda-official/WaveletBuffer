@@ -1,0 +1,46 @@
+name: Compile project and run C++ tests [Linux]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/test-linux.yml'
+      - 'wavelet_buffer/**'
+      - 'sources/**'
+      - 'tests/**'
+      - 'CMakeLists.txt'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/test-linux.yml'
+      - 'wavelet_buffer/**'
+      - 'sources/**'
+      - 'tests/**'
+      - 'CMakeLists.txt'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build_type: [ Debug, Release ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build tests, benchmarks and examples
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON ..
+          cmake --build .
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
+      - name: Install wavelet_buffer
+        run: |
+          cd build
+          sudo cmake --install .
+      - name: Check cmake target installation
+        run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
