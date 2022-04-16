@@ -1,23 +1,24 @@
 // Copyright 2020-2021 PANDA GmbH
-#include "drift/dsp/wavelet_buffer.h"
+#include "wavelet_buffer/wavelet_buffer.h"
 
-#include <catch2/catch.hpp>
-#include <metric/modules/transform/wavelet.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/catch_approx.hpp>
+#include <catch2/matchers/catch_matchers_exception.hpp>
+//#include <metric/modules/transform/wavelet.hpp>
 
-#include "drift/dsp/wavelet_utils.h"
-#include "drift/utils/utils.h"
+//#include "drift/utils/utils.h"
 
-using drift::dsp::DenoiseAlgorithm;
 using drift::dsp::Distance;
+using drift::dsp::DenoiseAlgorithm;
 using drift::dsp::NullDenoiseAlgorithm;
+using drift::dsp::SimpleDenoiseAlgorithm;
 using drift::dsp::Signal1D;
 using drift::dsp::SignalN2D;
-using drift::dsp::SimpleDenoiseAlgorithm;
 using drift::dsp::Subband;
 using drift::dsp::WaveletBuffer;
 using drift::dsp::WaveletParameters;
 using drift::dsp::WaveletTypes;
-// using drift::utils::ZeroPadMatrix;
 
 static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal) {
   if (buffer.parameters().signal_shape.size() == 1) {
@@ -430,7 +431,7 @@ TEST_CASE("Constant amplitude for all scales", "[wavelets]") {
   Signal1D composed;
   wb.Compose(&composed, scale);
 
-  REQUIRE(blaze::mean(data) == Approx(blaze::mean(composed)));
+  REQUIRE(blaze::mean(data) == Catch::Approx(blaze::mean(composed)));
 }
 
 // TODO(victor1234): for future wavelet work

@@ -13,11 +13,10 @@
 #include <utility>
 #include <vector>
 
-#include "drift/dsp/denoise_algorithms.h"
-#include "drift/dsp/primitives.h"
-#include "drift/dsp/wavelet_parameters.h"
-#include "drift/dsp/wavelet_utils.h"
-#include "drift/utils/utils.h"
+#include "wavelet_buffer/denoise_algorithms.h"
+#include "wavelet_buffer/primitives.h"
+#include "wavelet_buffer/wavelet_parameters.h"
+#include "wavelet_buffer/wavelet_utils.h"
 
 namespace drift::dsp {
 
