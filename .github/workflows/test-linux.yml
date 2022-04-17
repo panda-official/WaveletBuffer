@@ -14,7 +14,6 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/test-linux.yml'
       - 'CMakeLists.txt'
       - 'benchmarks/**'
       - 'sources/**'
