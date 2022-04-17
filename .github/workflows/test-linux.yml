@@ -2,7 +2,7 @@ name: Compile project and run C++ tests [Linux]
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/test-linux.yml'
       - 'CMakeLists.txt'
@@ -12,7 +12,14 @@ on:
       - 'wavelet_buffer/**'
   pull_request:
     branches:
-      - master
+      - main
+    paths:
+      - '.github/workflows/test-linux.yml'
+      - 'CMakeLists.txt'
+      - 'benchmarks/**'
+      - 'sources/**'
+      - 'tests/**'
+      - 'wavelet_buffer/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
