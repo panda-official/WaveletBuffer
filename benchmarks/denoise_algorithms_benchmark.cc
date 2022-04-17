@@ -1,8 +1,8 @@
 // Copyright 2020-2021 PANDA GmbH
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
 
-#include <catch2/catch.hpp>
-#include <drift/dsp/denoise_algorithms.h>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
+#include <wavelet_buffer/denoise_algorithms.h>
 
 #include <fstream>
 

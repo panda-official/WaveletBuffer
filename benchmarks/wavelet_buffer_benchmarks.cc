@@ -1,14 +1,19 @@
 // Copyright 2020-2022 PANDA GmbH
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 
-#include <catch2/catch.hpp>
-#include <drift/dsp/primitives.h>
-#include <drift/dsp/denoise_algorithms.h>
-#include <drift/dsp/wavelet_buffer.h>
-#include <drift/dsp/wavelet_parameters.h>
-#include <drift/dsp/wavelet_utils.h>
-#include <drift/utils/init.h>
-#include <metric/modules/transform/wavelet.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
+
+#include <wavelet_buffer/primitives.h>
+#include <wavelet_buffer/denoise_algorithms.h>
+#include <wavelet_buffer/wavelet_buffer.h>
+#include <wavelet_buffer/wavelet_parameters.h>
+#include <wavelet_buffer/wavelet_utils.h>
+
+#include "init.h"
+
+#include <metric/transform/wavelet.hpp>
 
 #include <fstream>
 
@@ -51,7 +56,7 @@ TEST_CASE("Convolution of long 1D signal") {
   const auto signal = GetRandomSignal(length);
 
   const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(
-      wavelet::dbwavf<blaze::DynamicVector<DataType>>(3, DataType()));
+      wavelet::dbwavf<blaze::DynamicVector<DataType>>(3));
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_d));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_d));

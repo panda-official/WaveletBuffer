@@ -5,19 +5,21 @@ on:
       - master
     paths:
       - '.github/workflows/test-linux.yml'
-      - 'wavelet_buffer/**'
+      - 'CMakeLists.txt'
+      - 'benchmarks/**'
       - 'sources/**'
       - 'tests/**'
-      - 'CMakeLists.txt'
+      - 'wavelet_buffer/**'
   pull_request:
     branches:
       - master
     paths:
       - '.github/workflows/test-linux.yml'
-      - 'wavelet_buffer/**'
+      - 'CMakeLists.txt'
+      - 'benchmarks/**'
       - 'sources/**'
       - 'tests/**'
-      - 'CMakeLists.txt'
+      - 'wavelet_buffer/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest

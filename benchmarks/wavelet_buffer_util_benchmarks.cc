@@ -1,8 +1,10 @@
 // Copyright 2021 PANDA GmbH
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 
-#include <catch2/catch.hpp>
-#include <drift/dsp/wavelet_buffer.h>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
+
+#include <wavelet_buffer/wavelet_buffer.h>
 
 using drift::dsp::EnergyDistribution;
 using drift::dsp::SignalN2D;
