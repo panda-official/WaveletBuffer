@@ -51,6 +51,4 @@ jobs:
         run: |
           cd build
           sudo cmake --install .
-      - name: Check cmake target installation
-        run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
         
