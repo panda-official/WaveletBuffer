@@ -70,3 +70,9 @@ if (WB_BUILD_BENCHMARKS)
   message(STATUS "Benchmarks enabled")
   add_subdirectory(benchmarks)
 endif ()
+
+# Add examples
+if (WB_BUILD_EXAMPLES)
+	message(STATUS "Examples enabled")
+	add_subdirectory(examples)
+endif ()
