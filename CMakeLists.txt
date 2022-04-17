@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.16)
 project(wavelet_buffer)
 
 option(WB_BUILD_TESTS "Enable unit tests" OFF)
-option(EXAMPLES_ENABLED "Enable examples" OFF)
-option(BENCHMARKS_ENABLED "Enable benchmarks" OFF)
+option(WB_BUILD_EXAMPLES "Enable examples" OFF)
+option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
 # Dependencies
 include(FetchContent)
@@ -65,3 +65,8 @@ if (WB_BUILD_TESTS)
     add_subdirectory(tests)
 endif ()
 
+# Add benchmarks
+if (WB_BUILD_BENCHMARKS)
+  message(STATUS "Benchmarks enabled")
+  add_subdirectory(benchmarks)
+endif ()

@@ -2,22 +2,24 @@ name: Compile project and run C++ tests [Linux]
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/test-linux.yml'
-      - 'wavelet_buffer/**'
+      - 'CMakeLists.txt'
+      - 'benchmarks/**'
       - 'sources/**'
       - 'tests/**'
-      - 'CMakeLists.txt'
+      - 'wavelet_buffer/**'
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/test-linux.yml'
-      - 'wavelet_buffer/**'
+      - 'CMakeLists.txt'
+      - 'benchmarks/**'
       - 'sources/**'
       - 'tests/**'
-      - 'CMakeLists.txt'
+      - 'wavelet_buffer/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,6 +30,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Install dependences
+        run: |
+          sudo apt-get install libopenblas-dev
+          sudo apt-get install libjpeg-dev
+          sudo apt-get install nlohmann-json3-dev
+          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.0 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
       - name: Build tests, benchmarks and examples
         run: |
           mkdir build
@@ -42,5 +51,4 @@ jobs:
         run: |
           cd build
           sudo cmake --install .
-      - name: Check cmake target installation
-        run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+        
