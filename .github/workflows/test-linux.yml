@@ -13,12 +13,6 @@ on:
   pull_request:
     branches:
       - master
-    paths:
-      - 'CMakeLists.txt'
-      - 'benchmarks/**'
-      - 'sources/**'
-      - 'tests/**'
-      - 'wavelet_buffer/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
