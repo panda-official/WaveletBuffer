@@ -1,0 +1,30 @@
+name: Run cpplint
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/cpplint.yml'
+      - 'benchmarks/**'
+      - 'examples'
+      - 'sources/**'
+      - 'tests/**'
+      - 'wavelet_buffer/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/test-linux.yml'
+      - 'benchmarks/**'
+      - 'examples'
+      - 'sources/**'
+      - 'tests/**'
+      - 'wavelet_buffer/**'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
