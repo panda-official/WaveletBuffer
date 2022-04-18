@@ -27,6 +27,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Install cpplint
+        run: pip3 install cpplint
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint -file=Google
 
