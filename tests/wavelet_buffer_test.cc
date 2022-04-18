@@ -5,9 +5,7 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/catch_approx.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
-//#include <metric/modules/transform/wavelet.hpp>
 
-//#include "drift/utils/utils.h"
 
 using drift::dsp::Distance;
 using drift::dsp::DenoiseAlgorithm;
@@ -96,7 +94,7 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
       }
     }
 
-//TODO(victor1234): Fix test
+// TODO(victor1234): Fix test
 
 //    SECTION("should validate decomposition") {
 //      const auto shape =
@@ -111,7 +109,7 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
 //      Decompose(&buffer,
 //                SignalN2D{params.signal_number,
 //                          generate_matrix_2d(shape[0],
-//                                             shape.size() > 1 ? shape[1] : 1)});
+//                                         shape.size() > 1 ? shape[1] : 1)});
 //      auto decompositions = buffer.decompositions();
 //
 //      SECTION("ok") {
