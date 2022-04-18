@@ -50,7 +50,8 @@ class NullDenoiseAlgorithm : public DenoiseAlgorithm<T> {
 };
 
 /**
- * Set to zero values which absolute value less than threshold computed by `A * step + b`
+ * Set to zero values which absolute value less than threshold computed by `A *
+ * step + b`
  * @tparam T
  */
 template <typename T>
@@ -64,8 +65,7 @@ class ThresholdAbsDenoiseAlgorithm : public DenoiseAlgorithm<T> {
    * @param a is `A`
    * @param b is `B`
    */
-  explicit ThresholdAbsDenoiseAlgorithm(T a, T b)
-    : a_(a), b_(b) {}
+  explicit ThresholdAbsDenoiseAlgorithm(T a, T b) : a_(a), b_(b) {}
 
   /**
    * Denoise 2D data
@@ -109,9 +109,7 @@ class ThresholdAbsDenoiseAlgorithm : public DenoiseAlgorithm<T> {
   }
 
  private:
-  T GetThreshold(const size_t step) const {
-    return a_ * step + b_;
-  }
+  T GetThreshold(const size_t step) const { return a_ * step + b_; }
 
   T a_;
   T b_;

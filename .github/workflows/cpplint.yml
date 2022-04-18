@@ -14,7 +14,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/test-linux.yml'
+      - '.github/workflows/cpplint.yml'
       - 'benchmarks/**'
       - 'examples'
       - 'sources/**'
@@ -27,4 +27,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Run cpplint
+        run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint -file=Google
 
