@@ -1,6 +1,6 @@
 // Copyright 2021 PANDA GmbH
-#ifndef DRIFT_DSP_WAVELET_UTILS_H_
-#define DRIFT_DSP_WAVELET_UTILS_H_
+#ifndef WAVELET_BUFFER_WAVELET_UTILS_H_
+#define WAVELET_BUFFER_WAVELET_UTILS_H_
 
 #include <blaze/Blaze.h>
 
@@ -11,7 +11,6 @@
 #include "wavelet_buffer/padding.h"
 #include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/wavelet_parameters.h"
-//#include "drift/utils/utils.h"
 
 namespace drift::dsp {
 
@@ -197,4 +196,4 @@ blaze::DynamicVector<blaze::DynamicVector<DataType>> EnergyDistribution(
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_WAVELET_UTILS_H_
+#endif  // WAVELET_BUFFER_WAVELET_UTILS_H_

@@ -1,9 +1,9 @@
 // Copyright 2020 PANDA GmbH
-#ifndef DRIFT_DSP_WAVELET_PARAMETERS_H_
-#define DRIFT_DSP_WAVELET_PARAMETERS_H_
+#ifndef WAVELET_BUFFER_WAVELET_PARAMETERS_H_
+#define WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 
 #include <blaze/Blaze.h>
-#include <stddef.h>
+#include <cstddef>
 
 #include <algorithm>
 #include <ostream>
@@ -162,4 +162,4 @@ void deserialize(Archive& archive, WaveletParameters& p) {  // NOLINT
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_WAVELET_PARAMETERS_H_
+#endif  // WAVELET_BUFFER_WAVELET_PARAMETERS_H_

@@ -1,6 +1,6 @@
 // Copyright 2021 PANDA GmbH
-#ifndef DRIFT_DSP_PRIMITIVES_H_
-#define DRIFT_DSP_PRIMITIVES_H_
+#ifndef WAVELET_BUFFER_PRIMITIVES_H_
+#define WAVELET_BUFFER_PRIMITIVES_H_
 
 #include <blaze/Blaze.h>
 
@@ -22,4 +22,4 @@ struct Size {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_PRIMITIVES_H_
+#endif  // WAVELET_BUFFER_PRIMITIVES_H_

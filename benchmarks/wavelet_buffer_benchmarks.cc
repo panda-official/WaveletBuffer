@@ -1,9 +1,4 @@
 // Copyright 2020-2022 PANDA GmbH
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
-
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators_all.hpp>
-#include <catch2/benchmark/catch_benchmark_all.hpp>
 
 #include <wavelet_buffer/primitives.h>
 #include <wavelet_buffer/denoise_algorithms.h>
@@ -11,11 +6,15 @@
 #include <wavelet_buffer/wavelet_parameters.h>
 #include <wavelet_buffer/wavelet_utils.h>
 
+#include <fstream>
+
 #include "init.h"
 
-#include <metric/transform/wavelet.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
 
-#include <fstream>
+#include <metric/transform/wavelet.hpp>
 
 using drift::dsp::DataType;
 using drift::dsp::Signal1D;

@@ -1,7 +1,7 @@
 // Copyright 2022 PANDA GmbH
 
-#ifndef DRIFT_UTILS_INIT_H_
-#define DRIFT_UTILS_INIT_H_
+#ifndef BENCHMARKS_INIT_H_
+#define BENCHMARKS_INIT_H_
 
 #include <wavelet_buffer/primitives.h>
 
@@ -12,4 +12,4 @@ drift::dsp::SignalN2D GetRandomSignal(size_t rows, size_t columns);
 
 }  // namespace drift::utils
 
-#endif  // DRIFT_UTILS_INIT_H_
+#endif  // BENCHMARKS_INIT_H_

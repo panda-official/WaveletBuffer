@@ -1,7 +1,7 @@
 // Copyright 2021 PANDA GmbH
 
-#ifndef DRIFT_DSP_PADDING_H_
-#define DRIFT_DSP_PADDING_H_
+#ifndef WAVELET_BUFFER_PADDING_H_
+#define WAVELET_BUFFER_PADDING_H_
 
 #include <blaze/Blaze.h>
 
@@ -71,4 +71,4 @@ class ZeroDerivativePaddingAlgorithm : public PaddingAlgorithm {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_PADDING_H_
+#endif  // WAVELET_BUFFER_PADDING_H_

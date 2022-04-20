@@ -1,9 +1,6 @@
 // Copyright 2020-2021 PANDA GmbH
 
-#include "wavelet_buffer/wavelet_buffer.h"
-
 #include <blaze/Blaze.h>
-#include <cereal/archives/binary.hpp>
 #include <sf_compressor/sf_compressor.h>
 
 #include <functional>
@@ -14,6 +11,9 @@
 #include <utility>
 #include <vector>
 
+#include <cereal/archives/binary.hpp>
+
+#include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 namespace drift::dsp {

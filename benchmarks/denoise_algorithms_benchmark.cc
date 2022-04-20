@@ -1,10 +1,11 @@
 // Copyright 2020-2021 PANDA GmbH
 
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <wavelet_buffer/denoise_algorithms.h>
 
 #include <fstream>
+
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
 
 TEST_CASE("Denoise algorithms benchmark (pic 500x500)") {
   std::normal_distribution<double> normal_distribution;

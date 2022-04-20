@@ -1,6 +1,6 @@
 // Copyright 2020-2021 PANDA GmbH
-#ifndef DRIFT_DSP_DENOISE_ALGORITHMS_H_
-#define DRIFT_DSP_DENOISE_ALGORITHMS_H_
+#ifndef WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
+#define WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
 
 #include <blaze/Blaze.h>
 
@@ -207,4 +207,4 @@ class SimpleDenoiseAlgorithm : public DenoiseAlgorithm<T> {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_DENOISE_ALGORITHMS_H_
+#endif  // WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
