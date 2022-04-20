@@ -1,6 +1,6 @@
 // Copyright 2022 PANDA GmbH
 
-#include "init.h"
+#include "benchmarks/init.h"
 
 namespace drift::utils {
 
