@@ -20,8 +20,8 @@ namespace drift::dsp {
 namespace internal {
 
 std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
-    const blaze::DynamicVector<DataType>& signal,
-    const blaze::CompressedMatrix<DataType>& dmat) {
+    const blaze::DynamicVector<DataType> &signal,
+    const blaze::CompressedMatrix<DataType> &dmat) {
   assert(signal.size() >= dmat.columns());
 
   blaze::DynamicVector<DataType> low_subband(signal.size() / 2);
@@ -58,9 +58,9 @@ std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
 }
 
 blaze::DynamicVector<DataType> idwt(
-    const blaze::DynamicVector<DataType>& low_subband,
-    const blaze::DynamicVector<DataType>& high_subband,
-    const blaze::CompressedMatrix<DataType>& dmat) {
+    const blaze::DynamicVector<DataType> &low_subband,
+    const blaze::DynamicVector<DataType> &high_subband,
+    const blaze::CompressedMatrix<DataType> &dmat) {
   assert(low_subband.size() == high_subband.size());
 
   blaze::DynamicVector<DataType> decoded(low_subband.size() * 2);
@@ -118,8 +118,8 @@ class WaveletMatrixCache {
    * @param parameters
    * @return matrices
    */
-  const WaveletMatrixStack& GenerateMatrices(
-      const SignalShape& padded_shape, const WaveletParameters& parameters) {
+  const WaveletMatrixStack &GenerateMatrices(
+      const SignalShape &padded_shape, const WaveletParameters &parameters) {
     std::lock_guard lock(mutex_);
 
     auto it = cache_.find(parameters);
@@ -149,8 +149,8 @@ class WaveletMatrixCache {
    * @param parameters
    * @return transposed matrices
    */
-  const WaveletMatrixStack& GenerateTransMatrices(
-      const SignalShape& padded_shape, const WaveletParameters& parameters) {
+  const WaveletMatrixStack &GenerateTransMatrices(
+      const SignalShape &padded_shape, const WaveletParameters &parameters) {
     std::lock_guard lock(trans_mutex_);
 
     auto it = trans_cache_.find(parameters);
@@ -160,8 +160,8 @@ class WaveletMatrixCache {
 
     // create copy
     WaveletMatrixStack stack = GenerateMatrices(padded_shape, parameters);
-    for (auto& dim_stack : stack) {
-      for (auto& matrix : dim_stack) {
+    for (auto &dim_stack : stack) {
+      for (auto &matrix : dim_stack) {
         blaze::transpose(matrix);
       }
     }
@@ -201,8 +201,8 @@ static WaveletMatrixCache matrix_cache;
  * @return maximum decomposition steps
  */
 int CalculateMaxDecompositionSteps(WaveletTypes wavelet_type,
-                                   const std::vector<size_t>& signal_shape) {
-  auto shortest_dimension = [](auto& signal_shape) {
+                                   const std::vector<size_t> &signal_shape) {
+  auto shortest_dimension = [](auto &signal_shape) {
     return *std::min_element(std::begin(signal_shape), std::end(signal_shape));
   };
 
@@ -217,7 +217,7 @@ int CalculateMaxDecompositionSteps(WaveletTypes wavelet_type,
  * @return
  */
 SignalShape CalcPaddedSize(WaveletTypes wavelet_type,
-                           const SignalShape& signal_shape,
+                           const SignalShape &signal_shape,
                            const int decomposition_steps) {
   if (wavelet_type != WaveletTypes::kNone) {
     int actual_steps =
@@ -249,9 +249,9 @@ SignalShape CalcPaddedSize(WaveletTypes wavelet_type,
  */
 static void CalculateOneSideStep2D(
     WaveletDecomposition::Iterator dest,
-    const DenoiseAlgorithm<DataType>& denoiser,
-    const std::vector<blaze::CompressedMatrix<DataType>>& wavelet_matrix,
-    Signal2D* signal, const size_t step = 0) {
+    const DenoiseAlgorithm<DataType> &denoiser,
+    const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_matrix,
+    Signal2D *signal, const size_t step = 0) {
   auto [cA, cH, cV, cD] =
       wavelet::dwt2(*signal, wavelet_matrix[0], wavelet_matrix[1]);
 
@@ -271,9 +271,9 @@ static void CalculateOneSideStep2D(
  */
 static void CalculateOneSideStep1D(
     WaveletDecomposition::Iterator dest,
-    const DenoiseAlgorithm<DataType>& denoiser,
-    const std::vector<blaze::CompressedMatrix<DataType>>& wavelet_matrix,
-    Signal2D* signal, const size_t step = 0) {
+    const DenoiseAlgorithm<DataType> &denoiser,
+    const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_matrix,
+    Signal2D *signal, const size_t step = 0) {
   auto [low_subband, high_subband] =
       dwt(blaze::column(*signal, 0), wavelet_matrix[0]);
 
@@ -295,9 +295,9 @@ static void CalculateOneSideStep1D(
  */
 static void CalculateOneSideStep(
     int dimension, WaveletDecomposition::Iterator dest,
-    const DenoiseAlgorithm<DataType>& denoiser,
-    const std::vector<blaze::CompressedMatrix<DataType>>& wavelet_matrix,
-    Signal2D* signal, const size_t step = 0) {
+    const DenoiseAlgorithm<DataType> &denoiser,
+    const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_matrix,
+    Signal2D *signal, const size_t step = 0) {
   if (dimension == 1) {
     CalculateOneSideStep1D(dest, denoiser, wavelet_matrix, signal, step);
   } else {
@@ -310,9 +310,9 @@ static void CalculateOneSideStep(
  * @param data
  * @param denoiser
  */
-bool DecomposeImpl(const WaveletParameters& parameters,
-                   NWaveletDecomposition* decomposition, const SignalN2D& data,
-                   const DenoiseAlgorithm<DataType>& denoiser,
+bool DecomposeImpl(const WaveletParameters &parameters,
+                   NWaveletDecomposition *decomposition, const SignalN2D &data,
+                   const DenoiseAlgorithm<DataType> &denoiser,
                    size_t start_signal, size_t signal_count) {
   /* Check shape for 2D */
   if (parameters.dimension() == 2 &&
@@ -345,9 +345,8 @@ bool DecomposeImpl(const WaveletParameters& parameters,
   }
 
   /* Put decompose vectors for 1D */
-  const auto [lo_d, hi_d, lo_r, hi_r] =
-      wavelet::orthfilt(wavelet::dbwavf<blaze::DynamicVector<DataType>>(
-          parameters.wavelet_type));
+  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(
+      wavelet::dbwavf<blaze::DynamicVector<DataType>>(parameters.wavelet_type));
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_d));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_d));
@@ -381,8 +380,8 @@ bool DecomposeImpl(const WaveletParameters& parameters,
  * @param denoiser
  */
 void DecomposeImpl(WaveletParameters params,
-                   NWaveletDecomposition* decomposition, int steps,
-                   const DenoiseAlgorithm<DataType>& denoiser) {
+                   NWaveletDecomposition *decomposition, int steps,
+                   const DenoiseAlgorithm<DataType> &denoiser) {
   // setup the calculation matrices
   auto wavelet_matrix_stack = matrix_cache.GenerateMatrices(
       CalcPaddedSize(params.wavelet_type, params.signal_shape,
@@ -418,9 +417,9 @@ void DecomposeImpl(WaveletParameters params,
  * @return
  */
 blaze::DynamicMatrix<DataType> ComposeStep(
-    int dimension, const blaze::DynamicMatrix<DataType>& low,
+    int dimension, const blaze::DynamicMatrix<DataType> &low,
     typename WaveletDecomposition::ConstIterator src,
-    const std::vector<blaze::CompressedMatrix<DataType>>& wavelet_mat) {
+    const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_mat) {
   if (dimension == 1) {
     const auto high = static_cast<blaze::DynamicMatrix<DataType>>(*(src - 1));
     auto result =
@@ -437,8 +436,8 @@ blaze::DynamicMatrix<DataType> ComposeStep(
                         wavelet_mat[0], wavelet_mat[1]);
 }
 
-NWaveletDecomposition ComposeImpl(const WaveletParameters& params,
-                                  const NWaveletDecomposition& decomposition,
+NWaveletDecomposition ComposeImpl(const WaveletParameters &params,
+                                  const NWaveletDecomposition &decomposition,
                                   size_t steps, size_t start_channel,
                                   size_t count) {
   NWaveletDecomposition subbands(count);
@@ -455,9 +454,8 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters& params,
   }
 
   /* Put compose vectors for 1D */
-  const auto [lo_d, hi_d, lo_r, hi_r] =
-      wavelet::orthfilt(wavelet::dbwavf<blaze::DynamicVector<DataType>>(
-          params.wavelet_type));
+  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(
+      wavelet::dbwavf<blaze::DynamicVector<DataType>>(params.wavelet_type));
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_r));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_r));
@@ -489,8 +487,8 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters& params,
   return subbands;
 }
 
-bool ComposeImpl(const WaveletParameters& params, SignalN2D* data,
-                 const NWaveletDecomposition& decomposition, size_t steps,
+bool ComposeImpl(const WaveletParameters &params, SignalN2D *data,
+                 const NWaveletDecomposition &decomposition, size_t steps,
                  size_t start_signal, size_t count) {
   *data = SignalN2D(count, blaze::DynamicMatrix<DataType>());
 
@@ -515,27 +513,27 @@ bool ComposeImpl(const WaveletParameters& params, SignalN2D* data,
   return true;
 }
 
-int SubbandsPerWaveletTransform(const WaveletParameters& parameters) {
+int SubbandsPerWaveletTransform(const WaveletParameters &parameters) {
   return (parameters.dimension() == 1) ? 1 : 3;
 }
 }  // namespace internal
 
-DataType Distance(const WaveletBuffer& lhs, const WaveletBuffer& rhs) {
-  const auto& lhs_par = lhs.parameters();
-  const auto& rhs_par = rhs.parameters();
+DataType Distance(const WaveletBuffer &lhs, const WaveletBuffer &rhs) {
+  const auto &lhs_par = lhs.parameters();
+  const auto &rhs_par = rhs.parameters();
   assert(lhs_par.signal_number == rhs_par.signal_number &&
          lhs_par.signal_shape == rhs_par.signal_shape &&
          "Signals must have the same form");
 
   static_assert(std::numeric_limits<DataType>::has_signaling_NaN);
 
-  auto CalcDistance = [](const NWaveletDecomposition& a_decs,
-                         const NWaveletDecomposition& b_decs) {
+  auto CalcDistance = [](const NWaveletDecomposition &a_decs,
+                         const NWaveletDecomposition &b_decs) {
     double result = 0;
     for (int ch = 0; ch < a_decs.size(); ++ch) {
       for (int i = 0; i < a_decs[ch].size(); ++i) {
-        auto& a = a_decs[ch][i];
-        auto& b = b_decs[ch][i];
+        auto &a = a_decs[ch][i];
+        auto &b = b_decs[ch][i];
         result += std::pow(blaze::norm(b - a), 2);
       }
     }
@@ -543,8 +541,8 @@ DataType Distance(const WaveletBuffer& lhs, const WaveletBuffer& rhs) {
     return result;
   };
 
-  const auto& lhs_decs = lhs.decompositions();
-  const auto& rhs_decs = rhs.decompositions();
+  const auto &lhs_decs = lhs.decompositions();
+  const auto &rhs_decs = rhs.decompositions();
 
   double ret;
 
@@ -564,13 +562,13 @@ DataType Distance(const WaveletBuffer& lhs, const WaveletBuffer& rhs) {
   return ret / elements_num;
 }
 
-size_t DecompositionSize(const WaveletParameters& parameters) {
+size_t DecompositionSize(const WaveletParameters &parameters) {
   const int subbands_per_wt = internal::SubbandsPerWaveletTransform(parameters);
   return parameters.decomposition_steps * subbands_per_wt + 1;
 }
 
 blaze::DynamicVector<blaze::DynamicVector<DataType>> EnergyDistribution(
-    const WaveletBuffer& buffer) {
+    const WaveletBuffer &buffer) {
   using Distribution = blaze::DynamicVector<blaze::DynamicVector<DataType>>;
   if (buffer.IsEmpty()) {
     return {};
@@ -582,7 +580,7 @@ blaze::DynamicVector<blaze::DynamicVector<DataType>> EnergyDistribution(
 
   Distribution dist(buffer.decompositions().size());
   for (int n = 0; n < buffer.decompositions().size(); ++n) {
-    const auto& decomposition = buffer.decompositions()[n];
+    const auto &decomposition = buffer.decompositions()[n];
     blaze::DynamicVector<DataType> subband_dist(decomposition.size());
 
     for (int s = 0; s < decomposition.size(); ++s) {
