@@ -1,7 +1,7 @@
 // Copyright 2020-2021 PANDA GmbH
+
 #include <wavelet_buffer/wavelet_buffer.h>
 #include <wavelet_buffer/wavelet_utils.h>
-//#include <drift/utils/log.h>
 
 #include <fstream>
 

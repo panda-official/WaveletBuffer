@@ -1,9 +1,6 @@
 // Copyright 2020-2021 PANDA GmbH
 
-#include "wavelet_buffer/wavelet_buffer.h"
-
 #include <blaze/Blaze.h>
-#include <cereal/archives/binary.hpp>
 #include <sf_compressor/sf_compressor.h>
 
 #include <functional>
@@ -14,6 +11,9 @@
 #include <utility>
 #include <vector>
 
+#include <cereal/archives/binary.hpp>
+
+#include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 namespace drift::dsp {
@@ -396,7 +396,7 @@ class WaveletBuffer::Impl {
         sizeof(DataType);
     const auto divisor =
         is_one_dim ? std::pow(2, sub_number) : std::pow(4, sub_number / 3);
-    return static_cast<size_t>(max_size / divisor * 1.5);
+    return static_cast<size_t>(static_cast<double>(max_size) / divisor * 1.5);
   }
 
   WaveletParameters parameters_;
@@ -497,11 +497,11 @@ std::pair<DataType, DataType> WaveletBuffer::GetValueRange(size_t index) const {
 }
 
 WaveletBufferView WaveletBuffer::operator()(int index, int count) {
-  return WaveletBufferView(index, count, this);
+  return {index, count, this};
 }
 
 WaveletBufferView WaveletBuffer::operator()(int index, int count) const {
-  return WaveletBufferView(index, count, this);
+  return {index, count, this};
 }
 
 bool WaveletBuffer::IsEmpty() const { return impl_->IsEmpty(); }

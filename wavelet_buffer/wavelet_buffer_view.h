@@ -1,7 +1,7 @@
 // Copyright 2021 PANDA GmbH
 
-#ifndef DRIFT_DSP_WAVELET_BUFFER_VIEW_H_
-#define DRIFT_DSP_WAVELET_BUFFER_VIEW_H_
+#ifndef WAVELET_BUFFER_WAVELET_BUFFER_VIEW_H_
+#define WAVELET_BUFFER_WAVELET_BUFFER_VIEW_H_
 
 #include <memory>
 
@@ -48,7 +48,7 @@ class WaveletBufferView {
    * Cast to a new wavelet buffer
    * @return
    */
-  operator WaveletBuffer() const;
+  explicit operator WaveletBuffer() const;
 
  private:
   WaveletBufferView(int start_signal, int count, WaveletBuffer*);
@@ -60,4 +60,4 @@ class WaveletBufferView {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_WAVELET_BUFFER_VIEW_H_
+#endif  // WAVELET_BUFFER_WAVELET_BUFFER_VIEW_H_

@@ -1,8 +1,7 @@
 // Copyright 2020-2021 PANDA GmbH
-#ifndef DRIFT_DSP_WAVELET_BUFFER_H_
-#define DRIFT_DSP_WAVELET_BUFFER_H_
 
-#include <cereal/archives/binary.hpp>
+#ifndef WAVELET_BUFFER_WAVELET_BUFFER_H_
+#define WAVELET_BUFFER_WAVELET_BUFFER_H_
 
 #include <algorithm>
 #include <cmath>
@@ -12,6 +11,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <cereal/archives/binary.hpp>
 
 #include "wavelet_buffer/denoise_algorithms.h"
 #include "wavelet_buffer/primitives.h"
@@ -202,4 +203,4 @@ class WaveletBuffer {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_WAVELET_BUFFER_H_
+#endif  // WAVELET_BUFFER_WAVELET_BUFFER_H_

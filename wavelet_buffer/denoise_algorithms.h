@@ -1,6 +1,6 @@
 // Copyright 2020-2021 PANDA GmbH
-#ifndef DRIFT_DSP_DENOISE_ALGORITHMS_H_
-#define DRIFT_DSP_DENOISE_ALGORITHMS_H_
+#ifndef WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
+#define WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
 
 #include <blaze/Blaze.h>
 
@@ -50,7 +50,8 @@ class NullDenoiseAlgorithm : public DenoiseAlgorithm<T> {
 };
 
 /**
- * Set to zero values which absolute value less than threshold computed by `A * step + b`
+ * Set to zero values which absolute value less than threshold computed by `A *
+ * step + b`
  * @tparam T
  */
 template <typename T>
@@ -64,8 +65,7 @@ class ThresholdAbsDenoiseAlgorithm : public DenoiseAlgorithm<T> {
    * @param a is `A`
    * @param b is `B`
    */
-  explicit ThresholdAbsDenoiseAlgorithm(T a, T b)
-    : a_(a), b_(b) {}
+  explicit ThresholdAbsDenoiseAlgorithm(T a, T b) : a_(a), b_(b) {}
 
   /**
    * Denoise 2D data
@@ -109,9 +109,7 @@ class ThresholdAbsDenoiseAlgorithm : public DenoiseAlgorithm<T> {
   }
 
  private:
-  T GetThreshold(const size_t step) const {
-    return a_ * step + b_;
-  }
+  T GetThreshold(const size_t step) const { return a_ * step + b_; }
 
   T a_;
   T b_;
@@ -209,4 +207,4 @@ class SimpleDenoiseAlgorithm : public DenoiseAlgorithm<T> {
 
 }  // namespace drift::dsp
 
-#endif  // DRIFT_DSP_DENOISE_ALGORITHMS_H_
+#endif  // WAVELET_BUFFER_DENOISE_ALGORITHMS_H_
