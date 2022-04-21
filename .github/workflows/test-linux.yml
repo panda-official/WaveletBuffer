@@ -21,16 +21,22 @@ on:
       - 'tests/**'
       - 'wavelet_buffer/**'
 jobs:
-  deploy:
+  cpplint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install cpplint
+        run: pip3 install cpplint
+      - name: Run cpplint
+        run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint
+  build_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         build_type: [ Debug, Release ]
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Install dependences
+      - name: Install dependencies
         run: |
           sudo apt-get install libopenblas-dev
           sudo apt-get install libjpeg-dev
