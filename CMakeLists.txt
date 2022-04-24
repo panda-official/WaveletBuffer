@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(wavelet_buffer)
+project(wavelet_buffer VERSION 0.1.0)
 
 option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
