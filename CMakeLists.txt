@@ -32,6 +32,9 @@ add_library(${WB_TARGET_NAME} sources/wavelet_buffer.cc
                                 sources/wavelet_buffer_view.cc
                                 sources/padding.cc)
 
+# Add alias                              
+add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
+
 # Set compiler features
 target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_17)
 
@@ -76,3 +79,36 @@ if (WB_BUILD_EXAMPLES)
 	message(STATUS "Examples enabled")
 	add_subdirectory(examples)
 endif ()
+
+
+# Install rules
+include(GNUInstallDirs)
+
+# Create package targets file
+install(TARGETS ${WB_TARGET_NAME} EXPORT ${WB_TARGET_NAME}-target)
+install(EXPORT ${WB_TARGET_NAME}-target
+        FILE ${WB_TARGET_NAME}-targets.cmake
+        NAMESPACE ${WB_TARGET_NAME}::
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+
+include(CMakePackageConfigHelpers)
+
+# Create package config file
+configure_package_config_file(
+        "${PROJECT_SOURCE_DIR}/cmake/${WB_TARGET_NAME}-config.cmake.in"
+        "${WB_TARGET_NAME}-config.cmake"
+        INSTALL_DESTINATION
+        ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
+)
+# Create package version file
+write_basic_package_version_file(${WB_TARGET_NAME}-config-version.cmake COMPATIBILITY ExactVersion)
+
+# Install cmake files
+install(FILES "${PROJECT_BINARY_DIR}/${WB_TARGET_NAME}-config.cmake"
+        "${PROJECT_BINARY_DIR}/${WB_TARGET_NAME}-config-version.cmake"
+        DESTINATION
+        ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+
+# Install headers
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/wavelet_buffer TYPE INCLUDE
+        PATTERN "*.md" EXCLUDE)
