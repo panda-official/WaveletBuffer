@@ -11,7 +11,7 @@ An universal  C++ compression library based on wavelet transformation
 * cereal https://github.com/USCiLab/cereal
 
 ## Build and install
-* Download and unpack ![release](https://github.com/panda-official/WaveletBuffer/releases)
+* Download and unpack [release](https://github.com/panda-official/WaveletBuffer/releases)
 * `cd <wavelet_buffer_dir>`
 * `mkdir build && cd build`
 * `cmake --build .. // -DWB_{TESTS,EXAMPLES,BENCHMARKS}=ON for tests, examples and benchmarks`
