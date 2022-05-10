@@ -59,4 +59,11 @@ jobs:
           sudo cmake --install .
       - name: Check cmake target installation
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
-        
+  conan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install conan
+        run: pip3 install conan
+      - name: Build package
+        run: CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/master
