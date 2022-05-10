@@ -66,4 +66,6 @@ jobs:
       - name: Install conan
         run: pip3 install conan
       - name: Build package
-        run: CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/master
+        run: |
+          cd conan
+          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/master
