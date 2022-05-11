@@ -20,7 +20,7 @@ class WaveletBufferConan(ConanFile):
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    generators = 'cmake_find_package'
+    generators = 'CMakeDeps'
 
     def set_version(self):
         build_id = os.getenv("CI_JOB_ID")

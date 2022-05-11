@@ -6,6 +6,8 @@ option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
+#find_package(nlohmann_json REQUIRED)
+
 # Dependencies
 include(FetchContent)
 
@@ -18,9 +20,7 @@ FetchContent_Declare(
 # Metric
 FetchContent_Declare(
         Metric
-        #URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.0.tar.gz
-        GIT_REPOSITORY https://github.com/panda-official/metric
-        GIT_TAG cmake-find_package-lapack
+        URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.0.tar.gz
 )
 
 FetchContent_MakeAvailable(SFCompressor Metric)
