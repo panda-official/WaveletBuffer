@@ -59,4 +59,4 @@ class WaveletBufferConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["wavelet_toolbox"]
+        self.cpp_info.libs = ["wavelet_buffer", "sf_compressor"]
