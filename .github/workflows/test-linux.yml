@@ -68,4 +68,5 @@ jobs:
       - name: Build package
         run: |
           cd conan
+          conan profile update settings.compiler.libcxx=libstdc++11 default
           CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/master
