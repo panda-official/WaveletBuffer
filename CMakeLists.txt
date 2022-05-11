@@ -47,7 +47,7 @@ target_include_directories(${WB_TARGET_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_link_libraries(${WB_TARGET_NAME} PUBLIC sf_compressor)
+target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} panda_metric)
 
 # Catch2 installation
