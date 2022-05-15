@@ -70,4 +70,9 @@ jobs:
           cd conan
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
-          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/master
+          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/main
+      - name: Upload package
+        run: |
+          conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
+          conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
+          conan upload wavelet_buffer --all --confirm --remote=panda
