@@ -22,7 +22,6 @@ FetchContent_Declare(
         Metric
         # URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.0.tar.gz
         GIT_REPOSITORY https://github.com/panda-official/metric
-        GIT_TAG cmake-find_package-lapack
 )
 
 FetchContent_MakeAvailable(SFCompressor Metric)
