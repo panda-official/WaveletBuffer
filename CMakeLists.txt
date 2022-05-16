@@ -20,8 +20,7 @@ FetchContent_Declare(
 # Metric
 FetchContent_Declare(
         Metric
-        # URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.0.tar.gz
-        GIT_REPOSITORY https://github.com/panda-official/metric
+        URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.1.tar.gz
 )
 
 FetchContent_MakeAvailable(SFCompressor Metric)
