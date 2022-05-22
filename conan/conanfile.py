@@ -13,7 +13,7 @@ class WaveletBufferConan(ConanFile):
     description = 'An universal C++ compression library based on wavelet ' \
                   'transformation '
     url = 'https://github.com/panda-official/WaveletBuffer'
-    requires = 'nlohmann_json/3.10.5', 'cereal/1.3.1', 'openblas/0.3.17','blaze/3.8'
+    requires = 'nlohmann_json/3.10.5', 'cereal/1.3.1', 'openblas/0.3.17', 'blaze/3.8'
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
@@ -23,9 +23,16 @@ class WaveletBufferConan(ConanFile):
     generators = 'CMakeDeps'
 
     def set_version(self):
-        build_id = os.getenv("CI_JOB_ID")
-        if build_id and os.getenv("CI_COMMIT_BRANCH"):
-            self.version += f'-b.{build_id}'
+        if os.getenv("CI"):
+            ref = os.getenv("GITHUB_REF")
+            # If run on CI without git tag specification add workflow run id as
+            # build postfix
+            if ref.startswith("ref/heads/"):
+                self.version += '-b.' + os.getenv("GITHUB_RUN_ID")
+            elif ref.startswith("ref/tags"):
+                assert (ref.split('/')[-1] == f'v{self.version}',
+                        "Version from git tag doesn't match version form "
+                        "conanfile")
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -37,7 +44,8 @@ class WaveletBufferConan(ConanFile):
             self.run('cp {} -r {}'.format(
                 os.getenv('CONAN_SOURCE_DIR'), self.source_folder))
         else:
-            branch = f'v{self.version}' if self.channel == 'stable' else self.channel
+            branch = f'v{self.version}' if self.channel == 'stable' \
+                else self.channel
             git = Git()
             git.clone('https://github.com/panda-official/WaveletBuffer.git',
                       branch=branch, shallow=True)
