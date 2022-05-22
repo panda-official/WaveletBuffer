@@ -45,7 +45,7 @@ jobs:
           sudo cmake --install .
       - name: Check cmake target installation
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
-  conan-buld-and-test-package:
+  conan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -57,19 +57,8 @@ jobs:
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
           CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/main
-      - name: Save package
-        uses: actions/upload-artifact@v3
-        with:
-          name: conan-package
-          path: ~/.conan
-
-  conan-upload-package:
-    # if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore conan package form artifact
-        uses: actions/download-artifact@v3
       - name: Upload package
+        # if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
         run: |
           conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
