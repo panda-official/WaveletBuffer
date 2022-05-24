@@ -1,25 +1,11 @@
 name: Compile project and run C++ tests [Linux]
 on:
   push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/test-linux.yml'
-      - 'CMakeLists.txt'
-      - 'benchmarks/**'
-      - 'sources/**'
-      - 'tests/**'
-      - 'wavelet_buffer/**'
+    branches: [main, stable, develop]
+    tags:
+      - 'v*'
   pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/test-linux.yml'
-      - 'CMakeLists.txt'
-      - 'benchmarks/**'
-      - 'sources/**'
-      - 'tests/**'
-      - 'wavelet_buffer/**'
+    branches: [main, stable, develop]
 jobs:
   cpplint:
     runs-on: ubuntu-latest
@@ -42,7 +28,7 @@ jobs:
           sudo apt-get install libjpeg-dev
           sudo apt-get install nlohmann-json3-dev
           git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
-          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.0 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
+          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
       - name: Build tests, benchmarks and examples
         run: |
           mkdir build
@@ -59,4 +45,30 @@ jobs:
           sudo cmake --install .
       - name: Check cmake target installation
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
-        
+  conan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install conan
+        run: pip3 install conan
+      - name: Create profile
+        run: |
+          cd conan
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+      - name: Build package for stable channel
+        if: github.ref_type == 'tag'
+        run: |
+          cd conan
+          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/stable
+      - name: Build package for develop channel
+        if: github.ref_type == 'branch'
+        run: |
+          cd conan
+          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/develop
+      - name: Upload package
+        if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+        run: |
+          conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
+          conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
+          conan upload wavelet_buffer --all --confirm --remote=panda
