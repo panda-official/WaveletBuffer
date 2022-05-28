@@ -22,6 +22,8 @@ jobs:
         build_type: [ Debug, Release ]
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Install dependencies
         run: |
           sudo apt-get install libopenblas-dev
