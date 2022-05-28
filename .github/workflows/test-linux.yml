@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
           cmake --build .
       - name: Run tests
         run: |
@@ -45,6 +45,13 @@ jobs:
           sudo cmake --install .
       - name: Check cmake target installation
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+      - name: Upload code coverage data to codecov.io
+        if: matrix.build_type == 'debug'
+        run: |
+          lcov --directory . --capture --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*/tests/*' '*/benchmarks/* --output-file coverage.info
+          lcov --list coverage.info
+          bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
   conan:
     runs-on: ubuntu-latest
     steps:
