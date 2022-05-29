@@ -103,44 +103,43 @@ TEST_CASE("WaveletBuffer::WaveletBuffer()", "[generators]") {
 
   // TODO(victor1234): Fix test
 
- // SECTION("should validate decomposition") {
-    const auto shape = /*
-        GENERATE(*/std::vector<size_t>{100}/*, std::vector<size_t>{200, 300})*/;
-    const auto decomposition_steps = 0;//GENERATE(0);
-    auto params = MakeParams(shape, decomposition_steps);
-    params.signal_number = 3;
+  // SECTION("should validate decomposition") {
+  const auto shape = /*
+      GENERATE(*/
+      std::vector<size_t>{100} /*, std::vector<size_t>{200, 300})*/;
+  const auto decomposition_steps = 0;  // GENERATE(0);
+  auto params = MakeParams(shape, decomposition_steps);
+  params.signal_number = 3;
 
+  auto buffer = WaveletBuffer(params);
+  Decompose(&buffer, SignalN2D{params.signal_number,
+                               dg.GenerateMatrix2d(
+                                   shape[0], shape.size() > 1 ? shape[1] : 1)});
+  const auto decompositions = buffer.decompositions();
 
-    auto buffer = WaveletBuffer(params);
-    Decompose(&buffer,
-              SignalN2D{params.signal_number,
-                        dg.GenerateMatrix2d(shape[0],
-                                            shape.size() > 1 ? shape[1] : 1)});
-    const auto decompositions = buffer.decompositions();
+  //    SECTION("ok") {
+  //      WaveletBuffer new_buffer(params, decompositions);
+  //      CAPTURE(decompositions);
+  //      REQUIRE(Distance(buffer, new_buffer) == 0);
+  //    }
 
-//    SECTION("ok") {
-//      WaveletBuffer new_buffer(params, decompositions);
-//      CAPTURE(decompositions);
-//      REQUIRE(Distance(buffer, new_buffer) == 0);
-//    }
-
-//    SECTION("wrong decomposition size") {
-//      decompositions.resize(params.signal_number - 1);
-//
-//      REQUIRE_THROWS_WITH(
-//          WaveletBuffer(params, decompositions),
-//          "Wrong signal number in decomposition. Expected 3 but got 2");
-//    }
-//
-//    SECTION("wrong subband size") {
-//      decompositions.at(1).resize(1000);
-//
-//      REQUIRE_THROWS_WITH(WaveletBuffer(params, decompositions),
-//                          "Wrong number of subbands in signal 1. Expected" +
-//                              std::to_string(decompositions.at(0).size()) +
-//                              " but got 1000");
-//    }
- // }
+  //    SECTION("wrong decomposition size") {
+  //      decompositions.resize(params.signal_number - 1);
+  //
+  //      REQUIRE_THROWS_WITH(
+  //          WaveletBuffer(params, decompositions),
+  //          "Wrong signal number in decomposition. Expected 3 but got 2");
+  //    }
+  //
+  //    SECTION("wrong subband size") {
+  //      decompositions.at(1).resize(1000);
+  //
+  //      REQUIRE_THROWS_WITH(WaveletBuffer(params, decompositions),
+  //                          "Wrong number of subbands in signal 1. Expected" +
+  //                              std::to_string(decompositions.at(0).size()) +
+  //                              " but got 1000");
+  //    }
+  // }
 }
 
 TEST_CASE("WaveletBuffer::IsEmpty()", "[generators]") {
