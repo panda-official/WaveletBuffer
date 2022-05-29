@@ -40,9 +40,12 @@ static bool Decompose(
   throw std::runtime_error("Failed on Decompose: bad test initialization");
 }
 
-WaveletParameters make_params(const std::vector<size_t> &shape,
-                              size_t decomposition_steps,
-                              WaveletTypes type = WaveletTypes::kDB2) {
+/**
+ * Construct WaveletParameters
+ */
+WaveletParameters MakeParams(const std::vector<size_t> &shape,
+                             const size_t decomposition_steps,
+                             const WaveletTypes type = WaveletTypes::kDB2) {
   return WaveletParameters{
       .signal_shape = shape,
       .signal_number = 1,
@@ -51,168 +54,173 @@ WaveletParameters make_params(const std::vector<size_t> &shape,
   };
 }
 
-TEST_CASE("Wavelet Buffer", "[generators]") {
-  std::normal_distribution<double> normal_distribution;
-  std::mt19937 random_engine;
+class DataGenerator {
+  std::default_random_engine random_engine_;
+  std::normal_distribution<double> normal_distribution_;
+
+ public:
+  blaze::DynamicVector<double> GenerateMatrix1d(size_t i);
+  blaze::DynamicMatrix<double> GenerateMatrix2d(size_t rows, size_t cols);
+};
+
+blaze::DynamicVector<double> DataGenerator::GenerateMatrix1d(size_t i) {
+  return blaze::generate<blaze::columnVector>(
+      100, [this](size_t i) { return normal_distribution_(random_engine_); });
+}
+
+blaze::DynamicMatrix<double> DataGenerator::GenerateMatrix2d(size_t rows,
+                                                             size_t cols) {
+  return blaze::generate<blaze::rowMajor>(
+      rows, cols, [this](size_t i, size_t j) {
+        return normal_distribution_(random_engine_);
+      });
+}
+
+TEST_CASE("WaveletBuffer::WaveletBuffer()", "[generators]") {
   NullDenoiseAlgorithm<float> denoiser;
+  DataGenerator dg;
 
-  auto generate_matrix_1d = [&random_engine, &normal_distribution](size_t i) {
-    return blaze::generate<blaze::columnVector>(
-        100, [&random_engine, &normal_distribution](size_t i) {
-          return normal_distribution(random_engine);
-        });
-  };
+  //  SECTION("should validate parameters") {
+  //    SECTION("wrong number of dimensions") {
+  //      auto params = MakeParams({100, 100, 1}, 1);
+  //      REQUIRE_THROWS_WITH(WaveletBuffer(params),
+  //                          "Only 1D & 2D decomposition is supported");
+  //    }
+  //
+  //    SECTION("input size is too small") {
+  //      auto params = MakeParams({1}, 1);
+  //      REQUIRE_THROWS_WITH(WaveletBuffer(params),
+  //                          "Input signal shape is too small");
+  //    }
+  //
+  //    SECTION("decomposition steps is too big") {
+  //      auto params = MakeParams({100, 100}, 10);
+  //      REQUIRE_THROWS_WITH(WaveletBuffer(params),
+  //                          "Too many decomposition steps for this signal size
+  //                          " "with that wavelet type (must be max 5).");
+  //    }
+  //  }
 
-  auto generate_matrix_2d = [&random_engine, &normal_distribution](int rows,
-                                                                   int cols) {
-    return blaze::generate<blaze::rowMajor>(
-        rows, cols, [&random_engine, &normal_distribution](size_t i, size_t j) {
-          return normal_distribution(random_engine);
-        });
-  };
+  // TODO(victor1234): Fix test
 
-  SECTION("construction") {
-    SECTION("should validate parameters") {
-      SECTION("wrong number of dimensions") {
-        auto params = make_params({100, 100, 1}, 1);
-        REQUIRE_THROWS_WITH(WaveletBuffer(params),
-                            "Only 1D & 2D decomposition is supported");
-      }
+ // SECTION("should validate decomposition") {
+    const auto shape = /*
+        GENERATE(*/std::vector<size_t>{100}/*, std::vector<size_t>{200, 300})*/;
+    const auto decomposition_steps = 0;//GENERATE(0);
+    auto params = MakeParams(shape, decomposition_steps);
+    params.signal_number = 3;
 
-      SECTION("input size is too small") {
-        auto params = make_params({1}, 1);
-        REQUIRE_THROWS_WITH(WaveletBuffer(params),
-                            "Input signal shape is too small");
-      }
 
-      SECTION("decomposition steps is too big") {
-        auto params = make_params({100, 100}, 10);
-        REQUIRE_THROWS_WITH(WaveletBuffer(params),
-                            "Too many decomposition steps for this signal size "
-                            "with that wavelet type (must be max 5).");
-      }
-    }
+    auto buffer = WaveletBuffer(params);
+    Decompose(&buffer,
+              SignalN2D{params.signal_number,
+                        dg.GenerateMatrix2d(shape[0],
+                                            shape.size() > 1 ? shape[1] : 1)});
+    const auto decompositions = buffer.decompositions();
 
-    // TODO(victor1234): Fix test
+//    SECTION("ok") {
+//      WaveletBuffer new_buffer(params, decompositions);
+//      CAPTURE(decompositions);
+//      REQUIRE(Distance(buffer, new_buffer) == 0);
+//    }
 
-    //    SECTION("should validate decomposition") {
-    //      const auto shape =
-    //          GENERATE(std::vector<size_t>{100}, std::vector<size_t>{200,
-    //          300});
-    //      const auto decomposition_steps = GENERATE(0, 1, 2);
-    //      auto params = make_params(shape, decomposition_steps);
-    //      params.signal_number = 3;
-    //
-    //      CAPTURE(params);
-    //
-    //      auto buffer = WaveletBuffer(params);
-    //      Decompose(&buffer,
-    //                SignalN2D{params.signal_number,
-    //                          generate_matrix_2d(shape[0],
-    //                                         shape.size() > 1 ? shape[1] :
-    //                                         1)});
-    //      auto decompositions = buffer.decompositions();
-    //
-    //      SECTION("ok") {
-    //        WaveletBuffer new_buffer(params, decompositions);
-    //        CAPTURE(decompositions);
-    //        REQUIRE(Distance(buffer, new_buffer) == 0);
-    //      }
-    //
-    //      SECTION("wrong decomposition size") {
-    //        decompositions.resize(params.signal_number - 1);
-    //
-    //        REQUIRE_THROWS_WITH(
-    //            WaveletBuffer(params, decompositions),
-    //            "Wrong signal number in decomposition. Expected 3 but got 2");
-    //      }
-    //
-    //      SECTION("wrong subband size") {
-    //        decompositions.at(1).resize(1000);
-    //
-    //        REQUIRE_THROWS_WITH(WaveletBuffer(params, decompositions),
-    //                           "Wrong number of subbands in signal 1. Expected
-    //                           " +
-    //                               std::to_string(decompositions.at(0).size())
-    //                               + " but got 1000");
-    //      }
-    //    }
+//    SECTION("wrong decomposition size") {
+//      decompositions.resize(params.signal_number - 1);
+//
+//      REQUIRE_THROWS_WITH(
+//          WaveletBuffer(params, decompositions),
+//          "Wrong signal number in decomposition. Expected 3 but got 2");
+//    }
+//
+//    SECTION("wrong subband size") {
+//      decompositions.at(1).resize(1000);
+//
+//      REQUIRE_THROWS_WITH(WaveletBuffer(params, decompositions),
+//                          "Wrong number of subbands in signal 1. Expected" +
+//                              std::to_string(decompositions.at(0).size()) +
+//                              " but got 1000");
+//    }
+ // }
+}
 
-    // TODO(victor1234): Fix test
+TEST_CASE("WaveletBuffer::IsEmpty()", "[generators]") {
+  NullDenoiseAlgorithm<float> denoiser;
+  DataGenerator dg;
 
-    //    SECTION("should check that buffer is empty") {
-    //      SignalN2D signal{generate_matrix_2d(100, 100)};
-    //      auto params = make_params({100, 100}, 2);
-    //      WaveletBuffer buffer(params);
-    //      REQUIRE(buffer.IsEmpty());
-    //
-    //      REQUIRE(buffer.Decompose(signal, denoiser));
-    //      REQUIRE_FALSE(buffer.IsEmpty());
-    //
-    //      WaveletBuffer buffer2(params, buffer.decompositions());
-    //      REQUIRE_FALSE(buffer2.IsEmpty());
-    //    }
-  }
+  SignalN2D signal{dg.GenerateMatrix2d(100, 100)};
+  auto params = MakeParams({100, 100}, 2);
+  WaveletBuffer buffer(params);
 
+  REQUIRE(buffer.IsEmpty());
+
+  REQUIRE(buffer.Decompose(signal, denoiser));
+  REQUIRE_FALSE(buffer.IsEmpty());
+
+  WaveletBuffer buffer2(params, buffer.decompositions());
+  REQUIRE_FALSE(buffer2.IsEmpty());
+}
+
+TEST_CASE("Wavelet Buffer", "[generators]") {
+  NullDenoiseAlgorithm<float> denoiser;
+  DataGenerator dg;
   SECTION("fails to parse garbage") {
     REQUIRE_FALSE(WaveletBuffer::Parse("GARBAGE"));
   }
 
   // TODO(victor1234): Fix test
 
-  //  SECTION("should serialize and deserialize") {
-  //    auto buffer_num = GENERATE(0, 1);
-  //
-  //    CAPTURE(buffer_num);
-  //
-  //    std::vector<WaveletBuffer> buffers{
-  //        WaveletBuffer(make_params({10000}, 2)),
-  //        WaveletBuffer(make_params({100, 100}, 2))};
-  //
-  //    auto buffer = buffers[buffer_num];
-  //    std::vector<SignalN2D> signals{SignalN2D{generate_matrix_2d(10000, 1)},
-  //                                   SignalN2D{generate_matrix_2d(100, 100)}};
-  //
-  //    REQUIRE(Decompose(&buffer, signals[buffer_num],
-  //                      SimpleDenoiseAlgorithm<float>(0.7)));
-  //
-  //    std::string blob;
-  //
-  //    SECTION("the same data") {
-  //      auto compression_level =
-  //          GENERATE(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-  //          16);
-  //      CAPTURE(compression_level);
-  //
-  //      REQUIRE(buffer.Serialize(&blob, compression_level));
-  //
-  //      auto buffer_dst = WaveletBuffer::Parse(blob);
-  //      REQUIRE(buffer_dst);
-  //      REQUIRE(std::fabs(Distance(buffer, *buffer_dst)) < 0.0001);
-  //    }
-  //
-  //    SECTION("check version") {
-  //      REQUIRE(buffer.Serialize(&blob));
-  //      blob[0] = -2;  // brake first byte
-  //
-  //      REQUIRE_FALSE(WaveletBuffer::Parse(blob));
-  //    }
-  //
-  //    SECTION("zeros") {
-  //      auto empty_buffer = buffers[buffer_num];
-  //      std::string blob;
-  //      REQUIRE(empty_buffer.Serialize(&blob, 1));
-  //
-  //      auto restored_buffer = WaveletBuffer::Parse(blob);
-  //      REQUIRE(restored_buffer);
-  //      REQUIRE(*restored_buffer == empty_buffer);
-  //    }
-  //  }
+  SECTION("should serialize and deserialize") {
+    auto buffer_num = GENERATE(0, 1);
+
+    CAPTURE(buffer_num);
+
+    std::vector<WaveletBuffer> buffers{
+        WaveletBuffer(MakeParams({10000}, 2)),
+        WaveletBuffer(MakeParams({100, 100}, 2))};
+
+    auto buffer = buffers[buffer_num];
+    std::vector<SignalN2D> signals{SignalN2D{dg.GenerateMatrix2d(10000, 1)},
+                                   SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+
+    REQUIRE(Decompose(&buffer, signals[buffer_num],
+                      SimpleDenoiseAlgorithm<float>(0.7)));
+
+    std::string blob;
+
+    SECTION("the same data") {
+      auto compression_level =
+          GENERATE(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+      CAPTURE(compression_level);
+
+      REQUIRE(buffer.Serialize(&blob, compression_level));
+
+      auto buffer_dst = WaveletBuffer::Parse(blob);
+      REQUIRE(buffer_dst);
+      REQUIRE(std::fabs(Distance(buffer, *buffer_dst)) < 0.0001);
+    }
+
+    SECTION("check version") {
+      REQUIRE(buffer.Serialize(&blob));
+      blob[0] = -2;  // brake first byte
+
+      REQUIRE_FALSE(WaveletBuffer::Parse(blob));
+    }
+
+    SECTION("zeros") {
+      auto empty_buffer = buffers[buffer_num];
+      std::string blob;
+      REQUIRE(empty_buffer.Serialize(&blob, 1));
+
+      auto restored_buffer = WaveletBuffer::Parse(blob);
+      REQUIRE(restored_buffer);
+      REQUIRE(*restored_buffer == empty_buffer);
+    }
+  }
 
   SECTION("should compose and decompose signal") {
     SECTION("square 2D signal") {
-      WaveletBuffer buffer(make_params({100, 100}, 2));
-      SignalN2D data_dst, signal{generate_matrix_2d(100, 100)};
+      WaveletBuffer buffer(MakeParams({100, 100}, 2));
+      SignalN2D data_dst, signal{dg.GenerateMatrix2d(100, 100)};
 
       REQUIRE(buffer.Decompose(signal, denoiser));
       REQUIRE(buffer.Compose(&data_dst));
@@ -220,8 +228,8 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
     }
 
     SECTION("rect 2D signal") {
-      WaveletBuffer buffer(make_params({150, 100}, 2));
-      SignalN2D data_dst, signal{generate_matrix_2d(100, 150)};
+      WaveletBuffer buffer(MakeParams({150, 100}, 2));
+      SignalN2D data_dst, signal{dg.GenerateMatrix2d(100, 150)};
 
       REQUIRE(buffer.Decompose(signal, denoiser));
 
@@ -246,8 +254,8 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
     }
 
     SECTION("linear signal") {
-      WaveletBuffer buffer(make_params({100}, 2));
-      Signal1D data_dst, linear_signal{generate_matrix_1d(100)};
+      WaveletBuffer buffer(MakeParams({100}, 2));
+      Signal1D data_dst, linear_signal{dg.GenerateMatrix1d(100)};
 
       REQUIRE(buffer.Decompose(linear_signal, denoiser));
 
@@ -270,16 +278,15 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
 
   SECTION("should do nothing for 0 steps") {
     SECTION("small signal doesn't work") {
-      REQUIRE_THROWS(WaveletBuffer(make_params({2, 2}, 0)),
+      REQUIRE_THROWS(WaveletBuffer(MakeParams({2, 2}, 0)),
                      std::runtime_error(""));
 
-      REQUIRE_THROWS(WaveletBuffer(make_params({2}, 0)),
-                     std::runtime_error(""));
+      REQUIRE_THROWS(WaveletBuffer(MakeParams({2}, 0)), std::runtime_error(""));
     }
 
     SECTION("1D signal") {
-      WaveletBuffer buffer(make_params({100}, 0));
-      Signal1D signal{generate_matrix_1d(100)};
+      WaveletBuffer buffer(MakeParams({100}, 0));
+      Signal1D signal{dg.GenerateMatrix1d(100)};
 
       REQUIRE(buffer.Decompose(signal, denoiser));
       REQUIRE(buffer.decompositions()[0].size() == 1);
@@ -290,8 +297,8 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
     }
 
     SECTION("2D signal") {
-      WaveletBuffer buffer(make_params({100, 200}, 0));
-      SignalN2D signal{generate_matrix_2d(200, 100)};
+      WaveletBuffer buffer(MakeParams({100, 200}, 0));
+      SignalN2D signal{dg.GenerateMatrix2d(200, 100)};
 
       REQUIRE(buffer.Decompose(signal, denoiser));
       REQUIRE(buffer.decompositions()[0].size() == 1);
@@ -300,39 +307,38 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
   }
 
   // TODO(victor1234): Fix test with kNone
-  //  SECTION("should do nothing for type kNone") {
-  //    WaveletParameters param =
-  //        GENERATE(make_params({2}, 100, WaveletTypes::kNone),
-  //                 make_params({2, 2}, 100, WaveletTypes::kNone),
-  //                 make_params({100}, 1000, WaveletTypes::kNone),
-  //                 make_params({100, 100}, 2, WaveletTypes::kNone),
-  //                 make_params({0}, 1000, WaveletTypes::kNone),
-  //                 make_params({0, 0}, 2, WaveletTypes::kNone));
-  //
-  //    CAPTURE(param);
-  //    WaveletBuffer buffer(param);
-  //    SignalN2D signal = SignalN2D{
-  //        generate_matrix_2d(param.signal_shape[0],
-  //                           param.dimension() == 2 ? param.signal_shape[1] :
-  //                           1),
-  //    };
-  //    SignalN2D restored_signal;
-  //
-  //    REQUIRE(Decompose(&buffer, signal));
-  //    REQUIRE(Compose(buffer, &restored_signal));
-  //    REQUIRE(signal == restored_signal);
-  //  }
+  SECTION("should do nothing for type kNone") {
+    WaveletParameters param =
+        GENERATE(MakeParams({2}, 100, WaveletTypes::kNone),
+                 MakeParams({2, 2}, 100, WaveletTypes::kNone),
+                 MakeParams({100}, 1000, WaveletTypes::kNone),
+                 MakeParams({100, 100}, 2, WaveletTypes::kNone),
+                 MakeParams({0}, 1000, WaveletTypes::kNone),
+                 MakeParams({0, 0}, 2, WaveletTypes::kNone));
+
+    CAPTURE(param);
+    WaveletBuffer buffer(param);
+    SignalN2D signal = SignalN2D{
+        dg.GenerateMatrix2d(param.signal_shape[0],
+                            param.dimension() == 2 ? param.signal_shape[1] : 1),
+    };
+    SignalN2D restored_signal;
+
+    REQUIRE(Decompose(&buffer, signal));
+    REQUIRE(Compose(buffer, &restored_signal));
+    REQUIRE(signal == restored_signal);
+  }
 
   SECTION("should provide max min for specific subband") {
     SECTION("1D signal") {
-      WaveletBuffer buf(make_params({100}, 2));
+      WaveletBuffer buf(MakeParams({100}, 2));
       REQUIRE(std::make_pair(-1.0f, 1.0f) == buf.GetValueRange(0));
       REQUIRE(std::make_pair(-2.0f, 2.0f) == buf.GetValueRange(1));
       REQUIRE(std::make_pair(0.0f, 4.0f) == buf.GetValueRange(2));
     }
 
     SECTION("2D signal") {
-      WaveletBuffer buf(make_params({100, 100}, 2));
+      WaveletBuffer buf(MakeParams({100, 100}, 2));
       REQUIRE(std::make_pair(-1.0f, 1.0f) == buf.GetValueRange(0));
       REQUIRE(std::make_pair(-2.0f, 2.0f) == buf.GetValueRange(4));
       REQUIRE(std::make_pair(0.0f, 4.0f) == buf.GetValueRange(6));
@@ -341,25 +347,24 @@ TEST_CASE("Wavelet Buffer", "[generators]") {
 
   // TODO(victor1234): Fix test
 
-  //  SECTION("should partial compose buffer") {
-  //    auto buffer_num = GENERATE(0, 1);
-  //    CAPTURE(buffer_num);
-  //    std::vector<WaveletBuffer> buffers1 = {
-  //        WaveletBuffer(make_params({100}, 1)),
-  //        WaveletBuffer(make_params({100, 100}, 1))};
-  //    std::vector<WaveletBuffer> buffers2 = {
-  //        WaveletBuffer(make_params({100}, 2)),
-  //        WaveletBuffer(make_params({100, 100}, 2))};
-  //    std::vector<SignalN2D> signals = {SignalN2D{generate_matrix_2d(100, 1)},
-  //                                      SignalN2D{generate_matrix_2d(100,
-  //                                      100)}};
-  //    REQUIRE(Decompose(&buffers1[buffer_num], signals[buffer_num]));
-  //    REQUIRE(Decompose(&buffers2[buffer_num], signals[buffer_num]));
-  //  }
+  SECTION("should partial compose buffer") {
+    auto buffer_num = GENERATE(0, 1);
+    CAPTURE(buffer_num);
+    std::vector<WaveletBuffer> buffers1 = {
+        WaveletBuffer(MakeParams({100}, 1)),
+        WaveletBuffer(MakeParams({100, 100}, 1))};
+    std::vector<WaveletBuffer> buffers2 = {
+        WaveletBuffer(MakeParams({100}, 2)),
+        WaveletBuffer(MakeParams({100, 100}, 2))};
+    std::vector<SignalN2D> signals = {SignalN2D{dg.GenerateMatrix2d(100, 1)},
+                                      SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+    REQUIRE(Decompose(&buffers1[buffer_num], signals[buffer_num]));
+    REQUIRE(Decompose(&buffers2[buffer_num], signals[buffer_num]));
+  }
 
   SECTION("should parse hardly compressed blob") {
     using Denoiser = drift::dsp::ThresholdAbsDenoiseAlgorithm<float>;
-    auto buffer = WaveletBuffer(make_params({100}, 3));
+    auto buffer = WaveletBuffer(MakeParams({100}, 3));
     REQUIRE(buffer.Decompose(Signal1D(100), Denoiser(1000, 1000)));
 
     std::string blob;
@@ -375,7 +380,7 @@ TEST_CASE("dwt()", "[wavelet]") {
   SECTION("Signal size = 8, db2") {
     Signal1D data = {1, 2, 3, 4, 5, 6, 7, 8};
 
-    WaveletParameters wp = make_params({data.size()}, 1);
+    WaveletParameters wp = MakeParams({data.size()}, 1);
 
     WaveletBuffer wb(wp);
 
@@ -397,7 +402,7 @@ TEST_CASE("dwt()", "[wavelet]") {
   SECTION("Signal size = 16, db4") {
     Signal1D data = {-2, -4, -4, 4, 2, -1, 5, -4, 0, -1, 3, 3, -3, 0, 0, 2};
 
-    WaveletParameters wp = make_params({data.size()}, 1, WaveletTypes::kDB4);
+    WaveletParameters wp = MakeParams({data.size()}, 1, WaveletTypes::kDB4);
 
     WaveletBuffer wb(wp);
 
@@ -436,7 +441,7 @@ TEST_CASE("Constant amplitude for all scales", "[wavelets]") {
   Signal1D data(24);
   data = 6.4;
 
-  WaveletBuffer wb(make_params({data.size()}, 3));
+  WaveletBuffer wb(MakeParams({data.size()}, 3));
   wb.Decompose(data, denoiser);
 
   auto scale = GENERATE(0, 1, 2, 3);
@@ -457,7 +462,7 @@ TEST_CASE("sinus", "[wavelets]") {
     //data[i] = sin((i + 190) / 100.) + 1;
   }
 
-  WaveletBuffer wb(make_params({data.size()}, 4, WaveletTypes::kDB5));
+  WaveletBuffer wb(MakeParams({data.size()}, 4, WaveletTypes::kDB5));
   wb.Decompose(data, denoiser);
   std::cout << wb << std::endl;
 }
