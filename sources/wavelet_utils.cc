@@ -459,7 +459,8 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters &params,
   /* Put compose vectors for 1D */
   blaze::DynamicVector<DataType> scale_filter;
   if (params.wavelet_type != kNone) {
-    scale_filter = wavelet::dbwavf<blaze::DynamicVector<DataType>>(params.wavelet_type);
+    scale_filter =
+        wavelet::dbwavf<blaze::DynamicVector<DataType>>(params.wavelet_type);
   }
   const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(scale_filter);
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
