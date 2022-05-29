@@ -1,10 +1,8 @@
 // Copyright 2020 PANDA GmbH
 
 #include <wavelet_buffer/denoise_algorithms.h>
-
 #include <catch2/catch_test_macros.hpp>
 
-//#include "drift/utils/utils.h"
 
 const blaze::DynamicMatrix<float> kSource2D = {
     {0, 255, 10, 0, 0},   {0, 255, 9, 127, 0}, {0, 255, 2, 127, 0},
