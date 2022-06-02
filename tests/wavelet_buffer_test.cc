@@ -1,5 +1,4 @@
 // Copyright 2020-2021 PANDA GmbH
-#define BLAZE_USE_SHARED_MEMORY_PARALLELIZATION 0
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
