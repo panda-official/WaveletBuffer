@@ -53,8 +53,8 @@ target_link_libraries(${WB_TARGET_NAME} panda_metric)
 if (WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
     FetchContent_Declare(
             Catch2
-            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-            GIT_TAG v3.0.0-preview4)
+            URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.0.1.tar.gz
+            URL_HASH SHA256=8c4173c68ae7da1b5b505194a0c2d6f1b2aef4ec1e3e7463bde451f26bbaf4e7)
 
     FetchContent_MakeAvailable(Catch2)
 
