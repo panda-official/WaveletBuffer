@@ -36,7 +36,9 @@ add_library(${WB_TARGET_NAME} sources/wavelet_buffer.cc
 
 # Add alias                              
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
-add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)
+
+# Turn off parallelization in blaze
+target_compile_definitions(${WB_TARGET_NAME} PUBLIC BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)
 
 # Set compiler features
 target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_17)
