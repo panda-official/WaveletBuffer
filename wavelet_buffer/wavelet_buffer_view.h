@@ -48,7 +48,7 @@ class WaveletBufferView {
    * Cast to a new wavelet buffer
    * @return
    */
-  explicit operator WaveletBuffer() const;
+  operator WaveletBuffer() const;
 
  private:
   WaveletBufferView(int start_signal, int count, WaveletBuffer*);
