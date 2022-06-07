@@ -344,8 +344,12 @@ bool DecomposeImpl(const WaveletParameters &parameters,
   }
 
   /* Put decompose vectors for 1D */
-  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(
-      wavelet::dbwavf<blaze::DynamicVector<DataType>>(parameters.wavelet_type));
+  blaze::DynamicVector<DataType> scale_filter;
+  if (parameters.wavelet_type != kNone) {
+    scale_filter = wavelet::dbwavf<blaze::DynamicVector<DataType>>(
+        parameters.wavelet_type);
+  }
+  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(scale_filter);
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_d));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_d));
@@ -453,8 +457,12 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters &params,
   }
 
   /* Put compose vectors for 1D */
-  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(
-      wavelet::dbwavf<blaze::DynamicVector<DataType>>(params.wavelet_type));
+  blaze::DynamicVector<DataType> scale_filter;
+  if (params.wavelet_type != kNone) {
+    scale_filter =
+        wavelet::dbwavf<blaze::DynamicVector<DataType>>(params.wavelet_type);
+  }
+  const auto [lo_d, hi_d, lo_r, hi_r] = wavelet::orthfilt(scale_filter);
   blaze::CompressedMatrix<DataType> dmat(2, lo_d.size());
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_r));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_r));
