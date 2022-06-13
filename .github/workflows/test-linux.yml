@@ -111,11 +111,60 @@ jobs:
           sudo apt-get install nlohmann-json3-dev
           git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
           git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
+          sudo pip install pytest
       - name: Build and install
         run: |
           cd python
-          pip install --verbose .[test]
+          pip install --verbose .
       - name: Test
         run: |
           cd python
           pytest
+
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Build SDist
+        run: |
+          cd python
+          pipx run build --sdist
+
+      - name: Check metadata
+        run: |
+          cd python
+          pipx run twine check dist/*
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: python/dist/*.tar.gz
+
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: pypa/cibuildwheel@2.6.1
+
+      - name: Verify clean directory
+        run: |
+          cd python
+          git diff --exit-code
+        shell: bash
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          path: python/wheelhouse/*.whl
