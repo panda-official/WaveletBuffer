@@ -1,2 +1,2 @@
-import wb
+import wavelet_buffer
 

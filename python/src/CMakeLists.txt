@@ -1,1 +1,0 @@
-pybind11_add_module(_wb MODULE init.cc)

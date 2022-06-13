@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(drift_py DESCRIPTION "drift python binding")
+project(wavelet_buffer_py DESCRIPTION "wavelet_buffer python binding")
 
 
 #if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
@@ -23,7 +23,6 @@ project(drift_py DESCRIPTION "drift python binding")
 
 #find_package(Python3 COMPONENTS Interpreter Development)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 # --------------------------------------- base python module ----------------------------
 #add_library(base_python_module INTERFACE)
@@ -37,7 +36,8 @@ project(drift_py DESCRIPTION "drift python binding")
 #        Python3::Module
 #        ${CONAN_LIBS})
 
-if(SKBUILD)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+if (SKBUILD)
     # Scikit-Build does not add your site-packages to the search path
     # automatically, so we need to add it _or_ the pybind11 specific directory
     # here.
@@ -47,10 +47,22 @@ if(SKBUILD)
             OUTPUT_VARIABLE _tmp_dir
             OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ECHO STDOUT)
     list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
-endif()
+endif ()
 
 find_package(pybind11 CONFIG REQUIRED)
 
-add_subdirectory(src)
+add_subdirectory(../ ../)
 
-install(TARGETS _wb DESTINATION .)
+pybind11_add_module(_wavelet_buffer MODULE
+        src/init.cc
+        src/enums.cc
+        src/blaze_utils.cc
+        src/wavelet_buffer.cc
+        src/denoise.cc)
+
+set_target_properties(wavelet_buffer PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(sf_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+target_link_libraries(_wavelet_buffer PRIVATE wavelet_buffer::wavelet_buffer)
+
+install(TARGETS _wavelet_buffer DESTINATION .)
