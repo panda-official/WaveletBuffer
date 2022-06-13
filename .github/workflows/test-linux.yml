@@ -90,3 +90,25 @@ jobs:
           conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
+  pip:
+    name: Build with Pip
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ windows-latest, macos-latest, ubuntu-latest ]
+        python-version: [ "3.6", "3.10", "pypy-3.8" ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Build and install
+        run: |
+          cd python
+          pip install --verbose .[test]
+      - name: Test
+        run: |
+          cd python
+          pytest
