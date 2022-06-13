@@ -119,7 +119,7 @@ jobs:
       - name: Test
         run: |
           cd python
-          pytest
+          pytest tests
 
   build_sdist:
     name: Build SDist
