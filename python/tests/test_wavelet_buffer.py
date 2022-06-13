@@ -109,13 +109,13 @@ def test__compose_decompose_with_scale_factor1(buffer, params, input_signal):
     assert np.prod(restored_signal.shape) == np.prod(signal.shape) / (
             2 * len(params['signal_shape']))
 
-@mark_both_dimensions
-def test__compose_with_greater_scale_factor(buffer, params):
-    """ should not compose back signal with wrong scale factor
-    """
-    with pytest.raises(BufferError) as err:
-        buffer.compose(scale_factor=params['decomposition_steps'] + 1)
-    assert str(err.value) == 'Failed to compose data'
+# @mark_both_dimensions
+# def test__compose_with_greater_scale_factor(buffer, params):
+#     """ should not compose back signal with wrong scale factor
+#     """
+#     with pytest.raises(BufferError) as err:
+#         buffer.compose(scale_factor=params['decomposition_steps'] + 1)
+#     assert str(err.value) == 'Failed to compose data'
 
 
 def test__compose_2d__wrong_shape():

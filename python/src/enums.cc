@@ -1,15 +1,15 @@
 // Copyright 2020-2021 PANDA GmbH
-#include <wavelet_buffer/wavelet_parameters.h>
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
+#include <wavelet_buffer/wavelet_parameters.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
-using drift::dsp::WaveletTypes;
 using drift::dsp::WaveletParameters;
+using drift::dsp::WaveletTypes;
 
 std::string WaveletTypeRepr(WaveletTypes value);
-
 
 std::string WaveletParametersRepr(const std::string &class_name,
                                   const WaveletParameters &params) {
@@ -60,4 +60,16 @@ void WrapEnums(py::module *m) {
       .value("DB3", WaveletTypes::kDB3)
       .value("DB4", WaveletTypes::kDB4)
       .value("DB5", WaveletTypes::kDB5);
+}
+void WrapWaveletParameters(py::module *m) {
+  py::class_<WaveletParameters>(*m, "WaveletParameters")
+      .def_readonly("signal_number", &WaveletParameters::signal_number)
+      .def_readonly("decomposition_steps",
+                    &WaveletParameters::decomposition_steps)
+      .def_readonly("signal_shape", &WaveletParameters::signal_shape)
+      .def_readonly("wavelet_type", &WaveletParameters::wavelet_type)
+
+      .def("__repr__", [](const WaveletParameters &self) {
+        return WaveletParametersRepr("WaveletParameters", self);
+      });
 }

@@ -58,6 +58,7 @@ pybind11_add_module(_wavelet_buffer MODULE
         src/enums.cc
         src/blaze_utils.cc
         src/wavelet_buffer.cc
+        src/wavelet_buffer_view.cc
         src/denoise.cc)
 
 set_target_properties(wavelet_buffer PROPERTIES POSITION_INDEPENDENT_CODE ON)

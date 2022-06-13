@@ -1,10 +1,10 @@
 // Copyright 2021 PANDA GmbH
 
-#include <drift/dsp/wavelet_buffer_view.h>
+#include <wavelet_buffer/wavelet_buffer_view.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 
-#include "dsp/blaze_utils.h"
+#include "blaze_utils.h"
 
 namespace py = pybind11;
 
@@ -14,7 +14,7 @@ using drift::dsp::Signal1D;
 using drift::dsp::Signal2D;
 using drift::dsp::SignalN2D;
 
-#include "dsp/wavelet_buffer_view_proxy.h"
+#include "wavelet_buffer_view_proxy.h"
 
 /**
  *
