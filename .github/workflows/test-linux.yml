@@ -150,10 +150,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
 
-      - uses: pypa/cibuildwheel@2.6.1
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.6.1
+
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir python/wheelhouse python
 
       - name: Verify clean directory
         run: |
