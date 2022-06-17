@@ -37,6 +37,10 @@ add_library(${WB_TARGET_NAME} sources/wavelet_buffer.cc
 # Add alias                              
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
 
+# Set fPIC
+set_target_properties(${WB_TARGET_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(sf_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 # Turn off parallelization in blaze
 target_compile_definitions(${WB_TARGET_NAME} PUBLIC BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)
 
