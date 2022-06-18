@@ -100,7 +100,7 @@ jobs:
       - name: Cache .conan directory
         uses: actions/cache@v3
         with:
-          path: /home/runner/.conan/data/**/package/**
+          path: /home/runner/.conan
           key: conan-cache
   pip:
     name: Build with Pip
@@ -119,10 +119,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - run: pipx install conan
       - name: Cache .conan directory
         uses: actions/cache@v3
         with:
-          path: /home/runner/.conan/data/**/package/**
+          path: /home/runner/.conan/
           key: conan-cache
 
       - name: Setup tmate session
