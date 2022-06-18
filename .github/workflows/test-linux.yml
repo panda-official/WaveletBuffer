@@ -66,6 +66,7 @@ jobs:
           flags: unittests
           verbose: true
   conan:
+    needs: [ build_test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -94,13 +95,12 @@ jobs:
           conan upload wavelet_buffer --all --confirm --remote=panda
       - run: conan config home
       - run: du -h /home/runner/.conan
-      - name: Save .conan directory
-        uses: actions/upload-artifact@v3
+
+      - name: Cache .conan directory
+        uses: actions/cache@v3
         with:
-          name: conan-directory
           path: /home/runner/.conan/data/**/package/**
-          if-no-files-found: error
-          retention-days: 1
+          key: conan-cache
   pip:
     name: Build with Pip
     needs: [ conan ]
@@ -116,10 +116,11 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Restore .conan directory
-        uses: actions/download-artifact@v3
+      - name: Cache .conan directory
+        uses: actions/cache@v3
         with:
-          name: conan-directory
+          path: /home/runner/.conan/data/**/package/**
+          key: conan-cache
       - name: Build and install
         run: |
           cd python
@@ -151,6 +152,7 @@ jobs:
 
   build_wheels:
     name: Wheels on ${{ matrix.os }}
+    needs: [conan]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -159,6 +161,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache .conan directory
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.conan/data/**/package/**
+          key: conan-cache
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.6.1
