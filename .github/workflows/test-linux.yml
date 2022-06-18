@@ -7,8 +7,8 @@ on:
   pull_request:
     branches: [main, stable, develop]
 
-env:
-  CONAN_USER_HOME: /home/runner/.conan
+    #env:
+    #CONAN_USER_HOME: /home/runner/.conan
 
 jobs:
   cpplint:
@@ -171,6 +171,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: pipx install conan
       - run: conan config home
       - name: Cache .conan directory
         uses: actions/cache@v3
