@@ -7,8 +7,8 @@ on:
   pull_request:
     branches: [main, stable, develop]
 
-    #env:
-    #CONAN_USER_HOME: /home/runner/.conan
+env:
+  CONAN_USER_HOME: /home/runner/
 
 jobs:
   cpplint:
@@ -110,7 +110,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [ ubuntu-latest ]
-        python-version: [ "3.8", "3.9", "3.10" ]
+        python-version: [ "3.8" ]#, "3.9", "3.10" ]
 
     steps:
       - uses: actions/checkout@v3
