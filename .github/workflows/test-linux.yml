@@ -92,6 +92,12 @@ jobs:
           conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
+      - name: Save .conan directory
+        uses: actions/upload-artifact@v3
+        with:
+          name: conan-directory
+          path: ~./conan/
+          retention-days: 1
   pip:
     name: Build with Pip
     runs-on: ${{ matrix.platform }}
@@ -106,6 +112,10 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Restore .conan directory
+        uses: actions/download-artifact@v3
+        with:
+          name: conan-directory
       - name: Install dependencies
         run: |
           sudo apt-get install libopenblas-dev
