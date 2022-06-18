@@ -54,7 +54,7 @@ int main() {
       .wavelet_type = WaveletTypes::kDB1,
   });
 
-  // Wavelet decomposition of the signal and denoising 
+  // Wavelet decomposition of the signal and denoising
   buffer.Decompose(original, DenoiseAlgo(0, 0.3));
 
   // Compress the buffer

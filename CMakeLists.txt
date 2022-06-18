@@ -34,7 +34,7 @@ add_library(${WB_TARGET_NAME} sources/wavelet_buffer.cc
                                 sources/wavelet_buffer_view.cc
                                 sources/padding.cc)
 
-# Add alias                              
+# Add alias
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
 
 # Set fPIC

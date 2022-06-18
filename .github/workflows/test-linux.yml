@@ -100,6 +100,7 @@ jobs:
           retention-days: 1
   pip:
     name: Build with Pip
+    needs: [ conan ]
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
