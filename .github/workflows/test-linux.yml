@@ -7,6 +7,8 @@ on:
   pull_request:
     branches: [main, stable, develop]
 
+env:
+  CONAN_USER_HOME: /home/runner/.conan
 
 jobs:
   cpplint:
