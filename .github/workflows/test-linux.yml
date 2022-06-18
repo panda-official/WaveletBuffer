@@ -68,7 +68,7 @@ jobs:
           flags: unittests
           verbose: true
   conan:
-    needs: [ build_test ]
+    #needs: [ build_test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -114,24 +114,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - run: conan config home
+
       - name: Cache .conan directory
         uses: actions/cache@v3
         with:
           path: /home/runner/.conan/data/**/package/**
           key: conan-cache
+
       - name: Create profile
         run: |
           cd conan
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
+
       - name: Build and install
         run: |
           cd python
           pip install --verbose .[test]
+
       - name: Test
         run: |
           cd python
