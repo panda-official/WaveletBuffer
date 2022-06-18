@@ -93,7 +93,7 @@ jobs:
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
       - run: conan config home
-      - run: ls -la /home/runner/.conan
+      - run: du -h /home/runner/.conan
       - name: Save .conan directory
         uses: actions/upload-artifact@v3
         with:
@@ -120,13 +120,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: conan-directory
-      - name: Install dependencies
-        run: |
-          sudo apt-get install libopenblas-dev
-          sudo apt-get install libjpeg-dev
-          sudo apt-get install nlohmann-json3-dev
-          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
-          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
       - name: Build and install
         run: |
           cd python
@@ -169,14 +162,6 @@ jobs:
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.6.1
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install libopenblas-dev
-          sudo apt-get install libjpeg-dev
-          sudo apt-get install nlohmann-json3-dev
-          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
-          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
 
       - name: Build wheels
         run: |
