@@ -20,7 +20,7 @@ if(USE_CONAN)
 
     include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-    conan_cmake_configure(REQUIRES wavelet_buffer/0.1.0@drift/develop
+    conan_cmake_configure(REQUIRES wavelet_buffer/[>=0.1.0]@drift/develop
             GENERATORS cmake_find_package
     )
 
