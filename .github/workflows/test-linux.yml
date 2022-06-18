@@ -92,11 +92,13 @@ jobs:
           conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
+      - run: conan config home
       - name: Save .conan directory
         uses: actions/upload-artifact@v3
         with:
           name: conan-directory
           path: ~./conan/
+          if-no-files-found: error
           retention-days: 1
   pip:
     name: Build with Pip
