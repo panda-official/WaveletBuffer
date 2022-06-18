@@ -98,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: conan-directory
-          path: /home/runner/.conan
+          path: /home/runner/.conan/data/**/package/**
           if-no-files-found: error
           retention-days: 1
   pip:
