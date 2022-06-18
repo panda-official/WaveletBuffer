@@ -94,7 +94,6 @@ jobs:
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
       - run: conan config home
-      - run: du -h /home/runner/.conan
 
       - name: Cache .conan directory
         uses: actions/cache@v3
@@ -116,11 +115,17 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+      - run: conan config home
       - name: Cache .conan directory
         uses: actions/cache@v3
         with:
           path: /home/runner/.conan/data/**/package/**
           key: conan-cache
+      - name: Create profile
+        run: |
+          cd conan
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
       - name: Build and install
         run: |
           cd python
@@ -162,6 +167,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: conan config home
       - name: Cache .conan directory
         uses: actions/cache@v3
         with:
