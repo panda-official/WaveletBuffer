@@ -31,7 +31,7 @@ class WaveletBufferConan(ConanFile):
                 self.version += '-b.' + os.getenv("GITHUB_RUN_ID")
             elif ref.startswith("ref/tags"):
                 assert (ref.split('/')[-1] == f'v{self.version}',
-                        "Version from git tag doesn't match version form "
+                        "Version from git tag doesn't match version from "
                         "conanfile")
 
     def config_options(self):
