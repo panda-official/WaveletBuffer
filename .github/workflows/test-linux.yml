@@ -125,12 +125,6 @@ jobs:
           path: /home/runner/.conan/data/**/package/**
           key: conan-cache
 
-      - name: Create profile
-        run: |
-          cd conan
-          conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
-
       - name: Build and install
         run: |
           cd python
