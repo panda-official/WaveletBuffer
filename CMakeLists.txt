@@ -12,27 +12,30 @@ option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 include(FetchContent)
 
 # SFCompressor
-FetchContent_Declare(
-        SFCompressor
-        URL https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
+fetchcontent_declare(
+    SFCompressor
+    URL
+        https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
 )
 
 # Metric
-FetchContent_Declare(
-        Metric
-        URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.1.tar.gz
+fetchcontent_declare(
+    Metric
+    URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.1.tar.gz
 )
 
-FetchContent_MakeAvailable(SFCompressor Metric)
-
+fetchcontent_makeavailable(SFCompressor Metric)
 
 set(WB_TARGET_NAME ${PROJECT_NAME})
 
 # Create wb target
-add_library(${WB_TARGET_NAME} sources/wavelet_buffer.cc
-                                sources/wavelet_utils.cc
-                                sources/wavelet_buffer_view.cc
-                                sources/padding.cc)
+add_library(
+    ${WB_TARGET_NAME}
+    sources/wavelet_buffer.cc
+    sources/wavelet_utils.cc
+    sources/wavelet_buffer_view.cc
+    sources/padding.cc
+)
 
 # Add alias
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
@@ -42,82 +45,99 @@ set_target_properties(${WB_TARGET_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(sf_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Turn off parallelization in blaze
-target_compile_definitions(${WB_TARGET_NAME} PUBLIC BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)
+target_compile_definitions(
+    ${WB_TARGET_NAME}
+    PUBLIC BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0
+)
 
 # Set compiler features
 target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_17)
 
 # Include paths
-target_include_directories(${WB_TARGET_NAME} PUBLIC
+target_include_directories(
+    ${WB_TARGET_NAME}
+    PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} panda_metric)
 
 # Catch2 installation
-if (WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
-    FetchContent_Declare(
-            Catch2
-            URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.0.1.tar.gz
-            URL_HASH SHA256=8c4173c68ae7da1b5b505194a0c2d6f1b2aef4ec1e3e7463bde451f26bbaf4e7)
+if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
+    fetchcontent_declare(
+        Catch2
+        URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.0.1.tar.gz
+        URL_HASH
+            SHA256=8c4173c68ae7da1b5b505194a0c2d6f1b2aef4ec1e3e7463bde451f26bbaf4e7
+    )
 
-    FetchContent_MakeAvailable(Catch2)
+    fetchcontent_makeavailable(Catch2)
 
     list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
     enable_testing()
     include(CTest)
     include(Catch)
-endif ()
+endif()
 
 # Add tests
-if (WB_BUILD_TESTS)
+if(WB_BUILD_TESTS)
     message(STATUS "Unit tests enabled")
     add_subdirectory(tests)
-endif ()
+endif()
 
 # Add benchmarks
-if (WB_BUILD_BENCHMARKS)
-  message(STATUS "Benchmarks enabled")
-  add_subdirectory(benchmarks)
-endif ()
+if(WB_BUILD_BENCHMARKS)
+    message(STATUS "Benchmarks enabled")
+    add_subdirectory(benchmarks)
+endif()
 
 # Add examples
-if (WB_BUILD_EXAMPLES)
-	message(STATUS "Examples enabled")
-	add_subdirectory(examples)
-endif ()
-
+if(WB_BUILD_EXAMPLES)
+    message(STATUS "Examples enabled")
+    add_subdirectory(examples)
+endif()
 
 # Install rules
 include(GNUInstallDirs)
 
 # Create package targets file
 install(TARGETS ${WB_TARGET_NAME} EXPORT ${WB_TARGET_NAME}-target)
-install(EXPORT ${WB_TARGET_NAME}-target
-        FILE ${WB_TARGET_NAME}-targets.cmake
-        NAMESPACE ${WB_TARGET_NAME}::
-        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+install(
+    EXPORT ${WB_TARGET_NAME}-target
+    FILE ${WB_TARGET_NAME}-targets.cmake
+    NAMESPACE ${WB_TARGET_NAME}::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
+)
 
 include(CMakePackageConfigHelpers)
 
 # Create package config file
 configure_package_config_file(
-        "${PROJECT_SOURCE_DIR}/cmake/${WB_TARGET_NAME}-config.cmake.in"
-        "${WB_TARGET_NAME}-config.cmake"
-        INSTALL_DESTINATION
-        ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
+    "${PROJECT_SOURCE_DIR}/cmake/${WB_TARGET_NAME}-config.cmake.in"
+    "${WB_TARGET_NAME}-config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
 )
 # Create package version file
-write_basic_package_version_file(${WB_TARGET_NAME}-config-version.cmake COMPATIBILITY ExactVersion)
+write_basic_package_version_file(
+    ${WB_TARGET_NAME}-config-version.cmake
+    COMPATIBILITY ExactVersion
+)
 
 # Install cmake files
-install(FILES "${PROJECT_BINARY_DIR}/${WB_TARGET_NAME}-config.cmake"
+install(
+    FILES
+        "${PROJECT_BINARY_DIR}/${WB_TARGET_NAME}-config.cmake"
         "${PROJECT_BINARY_DIR}/${WB_TARGET_NAME}-config-version.cmake"
-        DESTINATION
-        ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
+)
 
 # Install headers
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/wavelet_buffer TYPE INCLUDE
-        PATTERN "*.md" EXCLUDE)
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/wavelet_buffer
+    TYPE INCLUDE
+    PATTERN "*.md"
+    EXCLUDE
+)
