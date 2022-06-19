@@ -12,8 +12,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 before-all = [
-    "yum update",
-    "yum install libopenblas-dev",
+    "yum makecache",
+    "yum -y install openblas-devel",
 		"yum install libjpeg-dev",
 		"yum install nlohmann-json3-dev",
 		"git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install",
