@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 before-all = [
-    "apk update",
+    "apt update",
     "apk add libopenblas-dev",
 		"apk add libjpeg-dev",
 		"apk add nlohmann-json3-dev",
