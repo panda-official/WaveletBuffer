@@ -119,15 +119,23 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - run: pipx install conan
-      - name: Cache .conan directory
-        uses: actions/cache@v3
-        with:
-          path: /home/runner/.conan/
-          key: conan-cache
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libopenblas-dev
+          sudo apt-get install libjpeg-dev
+          sudo apt-get install nlohmann-json3-dev
+          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+          #- name: Setup tmate session
+          #uses: mxschmitt/action-tmate@v3
+
+          # - name: Build and install wavelet_buffer
+          #run: |
+          #mkdir build && cd build
+          #cmake -DCMAKE_BUILD_TYPE=Release ..
+          #cmake --build .
+          #sudo cmake --install .
 
       - name: Build and install
         run: |
@@ -171,21 +179,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: pipx install conan
-      - run: conan config home
-      - name: Cache .conan directory
-        uses: actions/cache@v3
-        with:
-          path: /home/runner/.conan/data/**/package/**
-          key: conan-cache
-
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.6.1
 
       - name: Build wheels
         run: |
-          cd python
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse python
         env:
           CIBW_TEST_COMMAND: pytest {project}/python/tests
           CIBW_TEST_EXTRAS: test
