@@ -68,7 +68,7 @@ jobs:
           flags: unittests
           verbose: true
   conan:
-    #needs: [ build_test ]
+    needs: [ build_test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -104,13 +104,13 @@ jobs:
           key: conan-cache
   pip:
     name: Build with Pip
-    needs: [ conan ]
+    #needs: [ conan ]
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix:
         platform: [ ubuntu-latest ]
-        python-version: [ "3.8" ]#, "3.9", "3.10" ]
+        python-version: [ "3.8", "3.9", "3.10" ]
 
     steps:
       - uses: actions/checkout@v3
@@ -126,16 +126,6 @@ jobs:
           sudo apt-get install nlohmann-json3-dev
           git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
           git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
-
-          #- name: Setup tmate session
-          #uses: mxschmitt/action-tmate@v3
-
-          # - name: Build and install wavelet_buffer
-          #run: |
-          #mkdir build && cd build
-          #cmake -DCMAKE_BUILD_TYPE=Release ..
-          #cmake --build .
-          #sudo cmake --install .
 
       - name: Build and install
         run: |
@@ -185,10 +175,6 @@ jobs:
       - name: Build wheels
         run: |
           python -m cibuildwheel --output-dir wheelhouse python
-        env:
-          CIBW_TEST_COMMAND: pytest {project}/python/tests
-          CIBW_TEST_EXTRAS: test
-
 
       - name: Verify clean directory
         run: |
@@ -205,7 +191,7 @@ jobs:
     name: Upload if release
     needs: [ build_wheels, build_sdist ]
     runs-on: ubuntu-latest
-    #if: github.event_name == 'release' && github.event.action == 'published'
+    if: github.event_name == 'release' && github.event.action == 'published'
 
     steps:
       - uses: actions/setup-python@v2
