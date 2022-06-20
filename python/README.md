@@ -2,6 +2,9 @@
 
 A python wrapper for WaveletBuffer Framework
 
+# Install from PyPI
+`pip install wavelet-buffer`
+
 # Install from repo
 ## Dependencies (Ubuntu)
 ```bash
