@@ -1,57 +1,41 @@
-# Drift-py
+# wavelet-buffer
 
-A python wrapper for Drift Framework
+A python wrapper for WaveletBuffer Framework
 
-# Build from the source
-
-```
-git clone --recurse-submodules git@gitlab.panda.technology:drift/sdk/drift_py.git
-```
-
-## Install Prerequisites
-
-### Ubuntu
-
-```
-sudo apt-get install cmake build-essetial pkg-config
-
-```
-
-Install setuptools
-
+# Install from repo
+## Dependencies (Ubuntu)
 ```bash
-pip install setuptools conan
-```
-
-## Build package
-
-```
-python setup.py bdist_wheel
-```
-
-### Install module
-
-```
-python -m pip install dist/*
-```
+sudo apt-get install libopenblas-dev
+sudo apt-get install libjpeg-dev
+sudo apt-get install nlohmann-json3-dev
+git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
+````
+# Build and install
+`pip install git+https://github.com/panda-official/WaveletBuffer.git`
 
 ## Examples
 
 ```python
-from drift.dsp import WaveletImage, WaveletType, denoise, codecs, ColorSpace
+import numpy as np
+from wavelet_buffer import WaveletBuffer, WaveletType, denoise
 
-params = dict(
-    decomposition_steps=5, signal_shape=[10, 10], signal_number=1,
-    wavelet_type=WaveletType.DB3
-)
+signal = np.sin(np.linspace(0, np.pi, 100) * 10)
+print(f"Original signal: {signal[0:10]}")
 
-img = WaveletImage(**params)
+buffer = WaveletBuffer(signal_shape=signal.shape, signal_number=1,
+                       decomposition_steps=2, wavelet_type=WaveletType.DB3)
 
-img.import_from_file(
-    'test.jpeg', denoise.Simple(compression_level=0.9),
-    codecs.RgbJpeg())
+# Denoise and serialize data
+buffer.decompose(signal, denoise.Threshold(0, 0.05))
+arch = buffer.serialize(compression_level=16)
 
-img.save('output.bin')
+print(f"Size of archive: {len(arch)} bytes")
+
+# Restore data from archive
+buffer: WaveletBuffer = WaveletBuffer.parse(arch)
+restored_signal = buffer.compose()
+print(f"Restored signal: {restored_signal[0:10]}")
 ```
 
 for more examples please check `examples/` folder
