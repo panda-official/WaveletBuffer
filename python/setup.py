@@ -1,12 +1,23 @@
+import os
 from skbuild import setup  # This line replaces 'from setuptools import setup'
 from pathlib import Path
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
+
+def get_version_postfix():
+    if os.getenv("CI"):
+        ref = os.getenv("GITHUB_REF")
+        # If run on CI without git tag specification add workflow run id as
+        # build postfix
+        if ref.startswith("ref/heads/"):
+            return "-b." + os.getenv("GITHUB_RUN_ID")
+
+
 setup(
     name="wavelet-buffer",
-    version="0.1.0",
+    version="0.1.0" + get_version_postfix(),
     packages=["wavelet_buffer"],
     package_dir={"": "src"},
     cmake_install_dir="src/wavelet_buffer",

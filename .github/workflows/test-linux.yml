@@ -198,7 +198,7 @@ jobs:
     needs: [ build_wheels, build_sdist ]
     runs-on: ubuntu-latest
     #if: github.event_name == 'release' && github.event.action == 'published'
-    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+    #if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
 
     steps:
       - uses: actions/setup-python@v2
