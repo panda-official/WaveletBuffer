@@ -8,6 +8,7 @@ class TestNullDenoiser:  # pylint: disable=too-few-public-methods
     """
     Test Null Denoiser
     """
+
     def test__construct(self):  # pylint: disable=no-self-use
         """
         Test constructor
@@ -19,6 +20,7 @@ class TestSimpleDenoiser:  # pylint: disable=too-few-public-methods
     """
     Test Simple Denoiser
     """
+
     def test__construct(self):  # pylint: disable=no-self-use
         """
         Test constructor
@@ -28,10 +30,12 @@ class TestSimpleDenoiser:  # pylint: disable=too-few-public-methods
         denoise.Simple(compression_level=0)
         denoise.Simple(compression_level=0.5)
 
+
 class TestThresholdDenoiser:  # pylint: disable=too-few-public-methods
     """
     Test Threshold Denoiser
     """
+
     def test__construct(self):  # pylint: disable=no-self-use
         """
         Test constructor
