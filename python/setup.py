@@ -10,7 +10,6 @@ setup(
     packages=["wavelet_buffer"],
     package_dir={"": "src"},
     cmake_install_dir="src/wavelet_buffer",
-    # cmake_args=['-DUSE_CONAN:BOOL=ON'],
     extras_require={"test": ["pytest", "numpy"]},
     author="PANDA, GmbH",
     author_email="info@panda.technology",
