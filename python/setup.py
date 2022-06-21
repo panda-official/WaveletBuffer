@@ -7,12 +7,15 @@ long_description = (this_directory / "README.md").read_text()
 
 
 def get_version_postfix():
+    postfix = ""
     if os.getenv("CI"):
         ref = os.getenv("GITHUB_REF")
         # If run on CI without git tag specification add workflow run id as
         # build postfix
         if ref.startswith("ref/heads/"):
-            return "-b." + os.getenv("GITHUB_RUN_ID")
+            postfix = "-b." + os.getenv("GITHUB_RUN_ID")
+
+    return postfix
 
 
 setup(
