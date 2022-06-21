@@ -7,7 +7,6 @@ long_description = (this_directory / "README.md").read_text()
 
 
 def get_version_postfix():
-    print(os.environ)
     postfix = ""
     if os.getenv("CI"):
         ref = os.getenv("GITHUB_REF")
@@ -16,7 +15,6 @@ def get_version_postfix():
         if ref.startswith("ref/heads/"):
             postfix = "-b." + os.getenv("GITHUB_RUN_ID")
 
-    print("postfix: ", postfix)
     return postfix
 
 
