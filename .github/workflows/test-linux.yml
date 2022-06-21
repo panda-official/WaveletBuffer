@@ -191,7 +191,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
-          path: python/wheelhouse/*.whl
+          path: wheelhouse/*.whl
 
   upload_all:
     name: Upload if release
