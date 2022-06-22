@@ -6,19 +6,31 @@ An universal  C++ compression library based on wavelet transformation
 
 ## Requirements
 * CMake >= 3.16
+* C++17 compiler 
 * LAPACK
 * blaze 3.8 https://bitbucket.org/blaze-lib/blaze/wiki/Home
 * nlohmann_json https://github.com/nlohmann/json
 * cereal https://github.com/USCiLab/cereal
 
-## Build and install
-* Download and unpack [release](https://github.com/panda-official/WaveletBuffer/releases)
-* `cd <wavelet_buffer_dir>`
-* `mkdir build && cd build`
-* `cmake --build .. // -DWB_{TESTS,EXAMPLES,BENCHMARKS}=ON for tests, examples and benchmarks`
-* `cmake --install ..`
+## Build and Installing
+
+On Ubuntu:
+
+```
+sudo apt-get install libopenblas-dev libjpeg-dev nlohmann-json3-dev
+git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+      git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
+
+
+git clone https://github.com/panda-official/WaveletBuffer.git
+
+mkdir build && cd build`
+cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
+cmake --build . --target install
+```
 
 ## Integration
+
 ### Using cmake target
 ```cmake
 find_package(wavelet_buffer REQUIRED)
