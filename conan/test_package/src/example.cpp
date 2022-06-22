@@ -18,13 +18,17 @@ int main() {
       .wavelet_type = WaveletTypes::kDB1,
   });
 
-  // Wavelet decomposition of the signal and denoising 
+  // Wavelet decomposition of the signal and denoising
   buffer.Decompose(original, DenoiseAlgo(0, 0.3));
 
   // Compress the buffer
   std::string arch;
-  buffer.Serialize(&arch, 16);
-  std::cout << "Compressed size: " << arch.size() << std::endl;
+  if (buffer.Serialize(&arch, 16)) {
+    std::cout << "Compressed size: " << arch.size() << std::endl;
+  } else {
+    std::cerr << "Serialization error" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   // Decompress the buffer
   auto restored_buffer = WaveletBuffer::Parse(arch);

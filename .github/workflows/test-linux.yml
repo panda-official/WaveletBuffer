@@ -6,6 +6,10 @@ on:
       - 'v*'
   pull_request:
     branches: [main, stable, develop]
+
+env:
+  CONAN_USER_HOME: /home/runner/
+
 jobs:
   cpplint:
     runs-on: ubuntu-latest
@@ -63,30 +67,149 @@ jobs:
           files: ./coverage.info
           flags: unittests
           verbose: true
+
   conan:
+    needs: [ build_test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Install conan
         run: pip3 install conan
+
       - name: Create profile
         run: |
           cd conan
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
+
       - name: Build package for stable channel
         if: github.ref_type == 'tag'
         run: |
           cd conan
           CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/stable
+
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
         run: |
           cd conan
           CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/develop
+
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
         run: |
           conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
+
+      - name: Cache .conan directory
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.conan
+          key: conan-cache
+
+  pip:
+    name: Build with Pip
+    #needs: [ conan ]
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-latest ]
+        python-version: [ "3.8", "3.9", "3.10" ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libopenblas-dev
+          sudo apt-get install libjpeg-dev
+          sudo apt-get install nlohmann-json3-dev
+          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+          git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
+
+      - name: Build and install
+        run: |
+          cd python
+          pip install --verbose .[test]
+
+      - name: Test
+        run: |
+          cd python
+          pytest tests
+
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build SDist
+        run: |
+          cd python
+          pipx run build --sdist
+
+      - name: Check metadata
+        run: |
+          cd python
+          pipx run twine check dist/*
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: python/dist/*.tar.gz
+
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    #needs: [pip]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.6.1
+
+      - name: Build wheels
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse python
+
+      - name: Verify clean directory
+        run: |
+          cd python
+          git diff --exit-code
+        shell: bash
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          path: wheelhouse/*.whl
+
+  upload_all:
+    name: Upload if release
+    needs: [ build_wheels, build_sdist ]
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'release' && github.event.action == 'published'
+    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+
+    steps:
+      - uses: actions/setup-python@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.5.0
+        with:
+          user: ${{ secrets.PYPI_USERNAME }}
+          password: ${{ secrets.PYPI_PASSWORD }}
+          repository_url: https://pypi.panda.technology

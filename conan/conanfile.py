@@ -6,21 +6,22 @@ from conans.tools import Git
 
 
 class WaveletBufferConan(ConanFile):
-    name = 'wavelet_buffer'
-    version = '0.1.0'
-    license = 'MPL-2.0'
-    author = 'PANDA GmbH'
-    description = 'An universal C++ compression library based on wavelet ' \
-                  'transformation '
-    url = 'https://github.com/panda-official/WaveletBuffer'
-    requires = 'nlohmann_json/3.10.5', 'cereal/1.3.1', 'openblas/0.3.17', 'blaze/3.8'
+    name = "wavelet_buffer"
+    version = "0.1.0"
+    license = "MPL-2.0"
+    author = "PANDA GmbH"
+    description = (
+        "An universal C++ compression library based on wavelet " "transformation "
+    )
+    url = "https://github.com/panda-official/WaveletBuffer"
+    requires = "nlohmann_json/3.10.5", "cereal/1.3.1", "openblas/0.3.17", "blaze/3.8"
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    generators = 'CMakeDeps'
+    generators = "CMakeDeps"
 
     def set_version(self):
         if os.getenv("CI"):
@@ -28,27 +29,31 @@ class WaveletBufferConan(ConanFile):
             # If run on CI without git tag specification add workflow run id as
             # build postfix
             if ref.startswith("ref/heads/"):
-                self.version += '-b.' + os.getenv("GITHUB_RUN_ID")
+                self.version += "-b." + os.getenv("GITHUB_RUN_ID")
             elif ref.startswith("ref/tags"):
-                assert (ref.split('/')[-1] == f'v{self.version}',
-                        "Version from git tag doesn't match version form "
-                        "conanfile")
+                assert (
+                    ref.split("/")[-1] == f"v{self.version}",
+                    "Version from git tag doesn't match version from " "conanfile",
+                )
 
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
     def source(self):
-        local_source = os.getenv('CONAN_SOURCE_DIR')
+        local_source = os.getenv("CONAN_SOURCE_DIR")
         if local_source is not None:
-            self.run('cp {} -r {}'.format(
-                os.getenv('CONAN_SOURCE_DIR'), self.source_folder))
+            self.run(
+                "cp {} -r {}".format(os.getenv("CONAN_SOURCE_DIR"), self.source_folder)
+            )
         else:
-            branch = f'v{self.version}' if self.channel == 'stable' \
-                else self.channel
+            branch = f"v{self.version}" if self.channel == "stable" else self.channel
             git = Git()
-            git.clone('https://github.com/panda-official/WaveletBuffer.git',
-                      branch=branch, shallow=True)
+            git.clone(
+                "https://github.com/panda-official/WaveletBuffer.git",
+                branch=branch,
+                shallow=True,
+            )
 
     def layout(self):
         cmake_layout(self)
