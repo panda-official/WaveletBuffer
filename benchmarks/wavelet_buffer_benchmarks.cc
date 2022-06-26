@@ -14,8 +14,6 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 
-#include <metric/transform/wavelet.hpp>
-
 using drift::dsp::DataType;
 using drift::dsp::Signal1D;
 using drift::dsp::SignalN2D;
