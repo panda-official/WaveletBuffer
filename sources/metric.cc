@@ -1,53 +1,8 @@
-// Copyright 2021 PANDA GmbH
-
-#ifndef SOURCES_METRIC_H_
-#define SOURCES_METRIC_H_
-
-#include <blaze/Blaze.h>
-#include <tuple>
-
-#include "wavelet_buffer/primitives.h"
+#include "wavelet_buffer/metric.h"
 
 namespace drift::dsp::wavelet {
-/**
- * Padding type
- */
-enum class Padding { ZeroDerivative, Periodized };
 
-/**
- * Construct convolutional matrix for wavelet transform
- * @tparam T float type
- * @param size
- * @param order
- * @param padding padding type
- * @return
- */
-template <typename T>
-blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order = 4,
-                                         Padding padding = Padding::Periodized);
-
-Signal2D dwt2s(Signal2D const &x, Signal2DCompressed const &dmat_w,
-               Signal2DCompressed const &dmat_h);
-
-std::tuple<Signal2D, Signal2D, Signal2D, Signal2D> dwt2(
-    Signal2D const &x, Signal2DCompressed const &dmat_w,
-    Signal2DCompressed const &dmat_h);
-
-Signal1D dbwavf(const int wnum);
-
-// orthfilt
-std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
-    Signal1D const &W_in);
-
-template <typename Container2d, typename Container2ds>
-typename std::enable_if<blaze::IsMatrix<Container2d>::value, Container2d>::type
-idwt2(  // wrapper for composing from subbands
-    Container2d const &ll, Container2d const &lh, Container2d const &hl,
-    Container2d const &hh, Container2ds const &dmat_w,
-    Container2ds const &dmat_h);
-
-template <typename T>
-blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
+blaze::CompressedMatrix<DataType> DaubechiesMat(size_t size, int order,
                                          Padding padding) {
   assert(order % 2 == 0);
   assert(size >= order);
@@ -59,7 +14,7 @@ blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
   std::reverse(Hi_D.begin(), Hi_D.end());
 
   /* Low filter part */
-  auto mat = blaze::CompressedMatrix<T>(size, size);
+  auto mat = blaze::CompressedMatrix<DataType>(size, size);
   mat.reserve(size * Lo_D.size());
   if (padding == Padding::Periodized) {
     for (size_t i = 0; i < size / 2; ++i) {
@@ -114,13 +69,13 @@ blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
       int j0 = -leftPadding + 2 * static_cast<int>(i);
 
       /* Left padding */
-      T lp = 0;
+      DataType lp = 0;
       for (int k = 0; k < -j0; ++k) {
         lp += Lo_D[k];
       }
 
       /* Right padding */
-      T rp = 0;
+      DataType rp = 0;
       int l = j0 + Lo_D.size() - size;
       for (int k = 0; k < l; ++k) {
         rp += Lo_D[Lo_D.size() - 1 - k];
@@ -146,13 +101,13 @@ blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
       int j0 = -leftPadding + 2 * static_cast<int>(i);
 
       /* Left padding */
-      T lp = 0;
+      DataType lp = 0;
       for (int k = 0; k < -j0; ++k) {
         lp += Hi_D[k];
       }
 
       /* Right padding */
-      T rp = 0;
+      DataType rp = 0;
       int l = j0 + Hi_D.size() - size;
       for (int k = 0; k < l; ++k) {
         rp += Hi_D[Hi_D.size() - 1 - k];
@@ -360,7 +315,4 @@ Signal2D idwt2(const Signal2D &ll, const Signal2D &lh, const Signal2D &hl,
 
   return dwt2s(out, dmat_w, dmat_h);
 }
-
 }  // namespace drift::dsp::wavelet
-
-#endif  // SOURCES_METRIC_H_
