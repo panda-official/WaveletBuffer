@@ -12,8 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include <cereal/archives/binary.hpp>
-
 #include "wavelet_buffer/denoise_algorithms.h"
 #include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/wavelet_parameters.h"

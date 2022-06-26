@@ -6,8 +6,6 @@ option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
-#find_package(nlohmann_json REQUIRED)
-
 # Dependencies
 include(FetchContent)
 
@@ -20,9 +18,8 @@ fetchcontent_declare(
 
 fetchcontent_makeavailable(SFCompressor)
 
-set(WB_TARGET_NAME ${PROJECT_NAME})
-
 # Create wb target
+set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
     ${WB_TARGET_NAME}
     sources/wavelet_buffer.cc
