@@ -5,11 +5,11 @@
 
 #include <functional>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"

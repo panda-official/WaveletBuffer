@@ -2,6 +2,7 @@
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 #include <memory>
+#include <iostream>
 
 #include "wavelet_buffer/wavelet_utils.h"
 
