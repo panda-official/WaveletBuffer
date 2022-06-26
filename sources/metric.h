@@ -4,8 +4,7 @@
 #define SOURCES_METRIC_H_
 
 #include <blaze/Blaze.h>
-
-#include <type_traits>
+#include <tuple>
 
 #include "wavelet_buffer/primitives.h"
 
@@ -133,7 +132,7 @@ blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
           mat.append(i, j, lp + Lo_D[k]);
         } else if (j == size - 1) {
           mat.append(i, j, rp + Lo_D[k]);
-        } else if (j > 0 and j < size - 1) {
+        } else if (j > 0 && j < size - 1) {
           mat.append(i, j, Lo_D[k]);
         } else {
         }
@@ -165,7 +164,7 @@ blaze::CompressedMatrix<T> DaubechiesMat(size_t size, int order,
           mat.append(size / 2 + i, j, lp + Hi_D[k]);
         } else if (j == size - 1) {
           mat.append(size / 2 + i, j, rp + Hi_D[k]);
-        } else if (j > 0 and j < size - 1) {
+        } else if (j > 0 && j < size - 1) {
           mat.append(size / 2 + i, j, Hi_D[k]);
         } else {
         }
@@ -259,6 +258,7 @@ Signal1D dbwavf(const int wnum) {
       return {};
   }
 }
+
 std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
     const Signal1D &W_in) {
   auto qmf = [](Signal1D const &x) {
@@ -314,7 +314,6 @@ std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
 Signal2D dwt2s(const Signal2D &x, const Signal2DCompressed &dmat_w,
                const Signal2DCompressed
                    &dmat_h) {  // whole image transform, no dividing by subbands
-
   assert(dmat_w.columns() == dmat_w.rows());
   assert(dmat_h.columns() == dmat_h.rows());
   assert(dmat_w.rows() == x.columns());
@@ -342,8 +341,8 @@ Signal2D dwt2s(const Signal2D &x, const Signal2DCompressed &dmat_w,
 }
 
 Signal2D idwt2(const Signal2D &ll, const Signal2D &lh, const Signal2D &hl,
-      const Signal2D &hh, const Signal2DCompressed &dmat_w,
-      const Signal2DCompressed &dmat_h) {
+               const Signal2D &hh, const Signal2DCompressed &dmat_w,
+               const Signal2DCompressed &dmat_h) {
   assert(ll.rows() == lh.rows());
   assert(ll.rows() == hl.rows());
   assert(ll.rows() == hh.rows());
@@ -364,4 +363,4 @@ Signal2D idwt2(const Signal2D &ll, const Signal2D &lh, const Signal2D &hl,
 
 }  // namespace drift::dsp::wavelet
 
-#endif  // SOURCES_METRIC_H
+#endif  // SOURCES_METRIC_H_

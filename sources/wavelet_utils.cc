@@ -1,7 +1,5 @@
 // Copyright 2021 PANDA GmbH
 
-//#include "wavelet_buffer/wavelet_utils.h"
-
 #include <functional>
 #include <limits>
 #include <map>
@@ -9,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "metric.h"
+#include "sources/metric.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
 namespace drift::dsp {
