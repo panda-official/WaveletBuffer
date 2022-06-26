@@ -1,7 +1,7 @@
 // Copyright 2021 PANDA GmbH
 
-#ifndef SOURCES_METRIC_H_
-#define SOURCES_METRIC_H_
+#ifndef WAVELET_BUFFER_METRIC_H_
+#define WAVELET_BUFFER_METRIC_H_
 
 #include <blaze/Blaze.h>
 #include <tuple>
@@ -44,4 +44,4 @@ std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
 
 }  // namespace drift::dsp::wavelet
 
-#endif  // SOURCES_METRIC_H_
+#endif  // WAVELET_BUFFER_METRIC_H_
