@@ -11,8 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include <cereal/archives/binary.hpp>
-
 #include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
