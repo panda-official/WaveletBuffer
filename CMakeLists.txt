@@ -18,13 +18,7 @@ fetchcontent_declare(
         https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
 )
 
-# Metric
-fetchcontent_declare(
-    Metric
-    URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.1.tar.gz
-)
-
-fetchcontent_makeavailable(SFCompressor Metric)
+fetchcontent_makeavailable(SFCompressor)
 
 set(WB_TARGET_NAME ${PROJECT_NAME})
 
@@ -62,7 +56,6 @@ target_include_directories(
 )
 
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
-target_link_libraries(${WB_TARGET_NAME} panda_metric)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
