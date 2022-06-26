@@ -8,7 +8,7 @@
 #include <vector>
 #include <iostream>
 
-#include "sources/metric.h"
+#include "wavelet_buffer/metric.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
 namespace drift::dsp {
@@ -131,7 +131,7 @@ class WaveletMatrixCache {
         const auto matrix_size =
             CalculateDecompositionSizeForStep(padded_shape[dim_index], step);
         stack[step][dim_index] =
-            wavelet::DaubechiesMat<DataType>(matrix_size, wavelet_degree);
+            wavelet::DaubechiesMat(matrix_size, wavelet_degree);
       }
     }
 

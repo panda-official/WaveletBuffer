@@ -26,6 +26,7 @@ add_library(
     sources/wavelet_utils.cc
     sources/wavelet_buffer_view.cc
     sources/padding.cc
+    sources/metric.cc
 )
 
 # Add alias
