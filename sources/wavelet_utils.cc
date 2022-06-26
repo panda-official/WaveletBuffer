@@ -6,6 +6,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "sources/metric.h"
 #include "wavelet_buffer/wavelet_buffer.h"
