@@ -11,12 +11,17 @@ An universal  C++ compression library based on wavelet transformation
 * nlohmann_json https://github.com/nlohmann/json
 * cereal https://github.com/USCiLab/cereal
 
+To install blaze on MacOS:
+* brew install libomp
+* brew install --build-from-source blaze (needed the latest blaze >= 3.8.1)
+
 ## Build and install
 * Download and unpack [release](https://github.com/panda-official/WaveletBuffer/releases)
 * `cd <wavelet_buffer_dir>`
 * `mkdir build && cd build`
-* `cmake --build .. // -DWB_{TESTS,EXAMPLES,BENCHMARKS}=ON for tests, examples and benchmarks`
-* `cmake --install ..`
+* `cmake .. // -DWB_BUILD_{TESTS,EXAMPLES,BENCHMARKS}=ON for tests, examples and benchmarks`
+* `cmake --build .`
+* `cmake --install .`
 
 ## Integration
 ### Using cmake target

@@ -3,6 +3,7 @@
 ### Added
 * DRIFT-445: Conan integration, [PR-9](https://github.com/panda-official/WaveletBuffer/pull/9)
 * DRIFT-446: Added python bindings, [PR-12](https://github.com/panda-official/WaveletBuffer/pull/12)
+* DRIFT-447: MacOS instructions, [PR-14](https://github.com/panda-official/WaveletBuffer/pull/14)
 * DRIFT-448: Code coverage support, [PR-10](https://github.com/panda-official/WaveletBuffer/pull/10)
 * DRIFT-480: More unit tests, [PR-11](https://github.com/panda-official/WaveletBuffer/pull/11)
 
