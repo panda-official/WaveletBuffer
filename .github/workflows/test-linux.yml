@@ -1,11 +1,11 @@
 name: Compile project and run C++ tests [Linux]
 on:
   push:
-    branches: [main, stable, develop]
+    branches: [master, develop]
     tags:
       - 'v*'
   pull_request:
-    branches: [main, stable, develop]
+    branches: [master, develop]
 
 env:
   CONAN_USER_HOME: /home/runner/
