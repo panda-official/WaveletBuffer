@@ -5,13 +5,13 @@
 #include <wavelet_buffer/wavelet_buffer.h>
 #include <wavelet_buffer/wavelet_parameters.h>
 #include <wavelet_buffer/wavelet_utils.h>
+#include <wavelet_buffer/denoise_algorithms.h>
+
+#include <fstream>
 
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
-#include <wavelet_buffer/denoise_algorithms.h>
-
-#include <fstream>
 
 #include "benchmarks/init.h"
 
