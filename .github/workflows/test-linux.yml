@@ -160,7 +160,7 @@ jobs:
       - name: Build SDist
         run: |
           cd python
-          pipx run build --sdist
+          python3 setup.py sdist
 
       - name: Check metadata
         run: |

@@ -1,33 +1,55 @@
 import os
-from skbuild import setup  # This line replaces 'from setuptools import setup'
+from string import Template
+
+try:
+    from skbuild import setup  # This line replaces 'from setuptools import setup'
+except ModuleNotFoundError:
+    # use classical setuptools to build sdist
+    from setuptools import setup
+
 from pathlib import Path
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
+MAJOR_VERSION = 0
+MINOR_VERSION = 1
+PATCH_VERSION = 0
 
-def get_version_postfix():
-    postfix = ""
-    if os.getenv("CI"):
-        ref = os.getenv("GITHUB_REF")
-        # If run on CI without git tag specification add workflow run id as
-        # build postfix
-        if ref.startswith("ref/heads/"):
-            postfix = "-b." + os.getenv("GITHUB_RUN_ID")
+PACKAGE_NAME = "wavelet-buffer"
 
-    return postfix
+VERSION_SUFFIX = os.getenv("VERSION_SUFFIX")
+
+
+def update_package_version(path: Path, version: str, protoc_version: str):
+    """Overwrite/create __init__.py file and fill __version__"""
+    template = (path / "__init__.py.in").read_text(encoding="utf-8")
+    init_content = Template(template).substitute(
+        version=version, protoc_version=protoc_version
+    )
+    with open(path / "__init__.py", "w") as f:
+        f.write(init_content)
+
+
+def build_version():
+    """Build dynamic version and update version in package"""
+    version = f"{MAJOR_VERSION}.{MINOR_VERSION}.{PATCH_VERSION}"
+    if VERSION_SUFFIX:
+        version += f"dev.{VERSION_SUFFIX}"
+
+    return version
 
 
 setup(
-    name="wavelet-buffer",
-    version="0.1.0" + get_version_postfix(),
+    name=PACKAGE_NAME,
+    version=build_version(),
     packages=["wavelet_buffer"],
     package_dir={"": "src"},
     cmake_install_dir="src/wavelet_buffer",
     extras_require={"test": ["pytest", "numpy"]},
     author="PANDA, GmbH",
     author_email="info@panda.technology",
-    description="WaveletBuffer python3 module",
+    description="A universal C++ compression library based on wavelet transformation",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/panda-official/WaveletBuffer",
