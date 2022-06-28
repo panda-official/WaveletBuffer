@@ -1,11 +1,11 @@
 name: Compile project and run C++ tests [Linux]
 on:
   push:
-    branches: [main, stable, develop]
+    branches: [master, develop]
     tags:
       - 'v*'
   pull_request:
-    branches: [main, stable, develop]
+    branches: [master, develop]
 
 env:
   CONAN_USER_HOME: /home/runner/
@@ -76,6 +76,10 @@ jobs:
 
       - name: Install conan
         run: pip3 install conan
+
+      - name: Prefix version for development version
+        if: ${{ (github.ref == 'refs/heads/develop') }}
+        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Create profile
         run: |
@@ -149,10 +153,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Prefix version for development version
+        if: ${{ (github.ref == 'refs/heads/develop') }}
+        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
+
       - name: Build SDist
         run: |
           cd python
-          pipx run build --sdist
+          python3 setup.py sdist
 
       - name: Check metadata
         run: |
@@ -177,6 +185,10 @@ jobs:
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.6.1
+
+      - name: Prefix version for development version
+        if: ${{ (github.ref == 'refs/heads/develop') }}
+        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Build wheels
         run: |
