@@ -24,17 +24,9 @@ class WaveletBufferConan(ConanFile):
     generators = "CMakeDeps"
 
     def set_version(self):
-        if os.getenv("CI"):
-            ref = os.getenv("GITHUB_REF")
-            # If run on CI without git tag specification add workflow run id as
-            # build postfix
-            if ref.startswith("ref/heads/"):
-                self.version += "-b." + os.getenv("GITHUB_RUN_ID")
-            elif ref.startswith("ref/tags"):
-                assert (
-                    ref.split("/")[-1] == f"v{self.version}",
-                    "Version from git tag doesn't match version from " "conanfile",
-                )
+        suffix = os.getenv("VERSION_SUFFIX")
+        if suffix:
+            self.version += f"-b.{suffix}"
 
     def config_options(self):
         if self.settings.os == "Windows":
