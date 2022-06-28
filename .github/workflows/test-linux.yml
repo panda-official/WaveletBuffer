@@ -153,14 +153,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Prefix version for development version
+        if: ${{ (github.ref == 'refs/heads/develop') }}
+        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
+
       - name: Build SDist
         run: |
           cd python
           pipx run build --sdist
-
-      - name: Prefix version for development version
-        if: ${{ (github.ref == 'refs/heads/develop') }}
-        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Check metadata
         run: |

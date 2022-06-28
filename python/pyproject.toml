@@ -24,3 +24,4 @@ test-command = "pytest {project}/python/tests"
 
 [tool.cibuildwheel.linux]
 archs = "x86_64"
+environment-pass = ["VERSION_SUFFIX"]
