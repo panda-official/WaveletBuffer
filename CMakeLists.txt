@@ -9,6 +9,7 @@ option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 # Conan
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(
@@ -27,7 +28,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
                                 blaze/3.8
-        GENERATORS cmake_find_package cmake_paths
+        GENERATORS cmake
 )
 
 conan_cmake_autodetect(settings)
@@ -37,6 +38,17 @@ conan_cmake_install(PATH_OR_REFERENCE .
         REMOTE conancenter
         SETTINGS ${settings}
 )
+
+message(STATUS CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+message(STATUS CMAKE_PREFIX_PATH ${CMAKE_MODULE_PATH})
+message(STATUS CMAKE_BINARY_DIR ${CMAKE_MODULE_PATH})
+message(STATUS CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_MODULE_PATH})
+message(STATUS CMAKE_SOURCE_DIR ${CMAKE_SOURCE_PATH})
+execute_process(COMMAND "ls" "-la" ${CMAKE_MODULE_PATH})
+execute_process(COMMAND "find" "/usr" "-name" "'conanbuildinfo.cmake'")
+execute_process(COMMAND "pwd")
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 # Dependencies
 include(FetchContent)
@@ -51,12 +63,11 @@ fetchcontent_declare(
 fetchcontent_makeavailable(SFCompressor)
 
 # LAPACK
-message(STATUS CMAKE_MODULE_PATH${CMAKE_MODULE_PATH})
-find_package(OpenBLAS REQUIRED)
+#find_package(OpenBLAS REQUIRED)
 
 # Blaze
-find_package(blaze 3.8 REQUIRED)
-message(STATUS CMAKE_MODULE_PATH${CMAKE_MODULE_PATH})
+#find_package(blaze 3.8 REQUIRED)
+
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
@@ -94,7 +105,8 @@ target_include_directories(
 
 # Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
-target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze) #::blaze)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
