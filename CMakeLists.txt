@@ -6,6 +6,35 @@ option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
+# Conan
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(
+        STATUS
+        "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+    )
+    file(
+        DOWNLOAD
+            "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake"
+        TLS_VERIFY ON
+    )
+endif()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_configure(REQUIRES openblas/0.3.20
+                                blaze/3.8
+        GENERATORS cmake_find_package
+)
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+        BUILD missing
+        REMOTE conancenter
+        SETTINGS ${settings}
+)
+
 # Dependencies
 include(FetchContent)
 
@@ -17,6 +46,12 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(SFCompressor)
+
+# LAPACK
+find_package(LAPACK)
+
+# Blaze
+find_package(blaze 3.8 REQUIRED)
 
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
@@ -53,7 +88,9 @@ target_include_directories(
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
+target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
