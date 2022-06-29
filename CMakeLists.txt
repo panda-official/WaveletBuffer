@@ -27,7 +27,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
                                 blaze/3.8
-        GENERATORS cmake_find_package
+        GENERATORS cmake_find_package cmake_paths
 )
 
 conan_cmake_autodetect(settings)
@@ -51,11 +51,12 @@ fetchcontent_declare(
 fetchcontent_makeavailable(SFCompressor)
 
 # LAPACK
-find_package(LAPACK)
+message(STATUS CMAKE_MODULE_PATH${CMAKE_MODULE_PATH})
+find_package(OpenBLAS REQUIRED)
 
 # Blaze
 find_package(blaze 3.8 REQUIRED)
-
+message(STATUS CMAKE_MODULE_PATH${CMAKE_MODULE_PATH})
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
