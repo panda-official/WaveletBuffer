@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <wavelet_buffer/wavelet_buffer.h>
 
 using drift::dsp::Signal1D;
