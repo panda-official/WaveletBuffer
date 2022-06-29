@@ -7,6 +7,9 @@ option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
 # Conan
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(
         STATUS
