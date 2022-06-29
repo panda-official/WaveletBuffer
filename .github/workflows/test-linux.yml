@@ -31,8 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install libopenblas-dev
-          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
+          pip3 install conan
           sudo apt-get install lcov
 
       - name: Build tests, benchmarks and examples
@@ -106,12 +105,6 @@ jobs:
           conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
           conan upload wavelet_buffer --all --confirm --remote=panda
 
-      - name: Cache .conan directory
-        uses: actions/cache@v3
-        with:
-          path: /home/runner/.conan
-          key: conan-cache
-
   pip:
     name: Build with Pip
     #needs: [ conan ]
@@ -128,11 +121,6 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install libopenblas-dev
-          git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
 
       - name: Build and install
         run: |
