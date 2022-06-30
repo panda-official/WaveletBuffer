@@ -1,6 +1,6 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "wavelet_buffer/metric.h"
+#include "wavelet_buffer/wavelet.h"
 
 namespace drift::dsp::wavelet {
 
