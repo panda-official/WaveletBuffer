@@ -6,16 +6,7 @@ A python wrapper for WaveletBuffer Framework
 `pip install wavelet-buffer`
 
 # Install from repo
-## Dependencies (Ubuntu)
-```bash
-sudo apt-get install libopenblas-dev
-sudo apt-get install libjpeg-dev
-sudo apt-get install nlohmann-json3-dev
-git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
-git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
-````
-# Build and install
-`pip install git+https://github.com/panda-official/WaveletBuffer.git`
+`pip install git+https://github.com/panda-official/WaveletBuffer.git#subdirectory=python`
 
 ## Examples
 
