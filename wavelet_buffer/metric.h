@@ -1,4 +1,4 @@
-// Copyright 2021 PANDA GmbH
+// Copyright 2022 PANDA GmbH
 
 #ifndef WAVELET_BUFFER_METRIC_H_
 #define WAVELET_BUFFER_METRIC_H_

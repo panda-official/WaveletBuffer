@@ -1,4 +1,4 @@
-// Copyright 2021 PANDA GmbH
+// Copyright 2021-2022 PANDA GmbH
 
 #include <functional>
 #include <limits>
