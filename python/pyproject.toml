@@ -11,7 +11,8 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-skip = ["*musllinux*", "pp*", "*37*", "*311"]
+build = ["*38*", "*39*", "*310*"]
+skip = ["*musllinux*", "pp*"]
 #before-all = [
 #    "yum makecache",
 #    "yum -y install openblas-devel",
