@@ -8,7 +8,7 @@
 #include <vector>
 #include <iostream>
 
-#include "wavelet_buffer/metric.h"
+#include "wavelet_buffer/wavelet.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
 namespace drift::dsp {
