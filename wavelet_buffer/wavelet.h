@@ -4,11 +4,15 @@
 #define WAVELET_BUFFER_WAVELET_H_
 
 #include <blaze/Blaze.h>
+
 #include <tuple>
 
 #include "wavelet_buffer/primitives.h"
 
 namespace drift::wavelet {
+
+using Signal2DCompressed = blaze::CompressedMatrix<DataType>;
+
 /**
  * Padding type
  */
@@ -21,8 +25,8 @@ enum class Padding { ZeroDerivative, Periodized };
  * @param padding padding type
  * @return
  */
-blaze::CompressedMatrix<DataType> DaubechiesMat(size_t size, int order = 4,
-                                         Padding padding = Padding::Periodized);
+blaze::CompressedMatrix<DataType> DaubechiesMat(
+    size_t size, int order = 4, Padding padding = Padding::Periodized);
 
 Signal2D dwt2s(Signal2D const &x, Signal2DCompressed const &dmat_w,
                Signal2DCompressed const &dmat_h);
@@ -35,12 +39,22 @@ Signal2D idwt2(const Signal2D &ll, const Signal2D &lh, const Signal2D &hl,
                const Signal2D &hh, const Signal2DCompressed &dmat_w,
                const Signal2DCompressed &dmat_h);
 
+/**
+ * Construct the scaling filter associated with the Daubechies wavelet
+ * @param wnum Daubechies wavelet vanishing moments, positive integer in the
+ * closed interval [1, 10]
+ * @return Scaling filter values
+ */
 Signal1D dbwavf(const int wnum);
 
-// orthfilt
+/**
+ * Computes the four lowpass and highpass, decomposition and reconstruction
+ * filters associated with the scaling filter W corresponding to a wavelet
+ * @param W_in Scaling filter corresponding to a wavelet
+ * @return Decomposition: lowpass, highpass; Reconstruction: lowpass, highpass
+ */
 std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
     Signal1D const &W_in);
-
 
 }  // namespace drift::wavelet
 

@@ -12,9 +12,7 @@ namespace drift {
 
 using DataType = float;
 using Signal1D = blaze::DynamicVector<DataType>;
-using Signal1DCompressed = blaze::CompressedVector<DataType>;
 using Signal2D = blaze::DynamicMatrix<DataType>;
-using Signal2DCompressed = blaze::CompressedMatrix<DataType>;
 using SignalN2D = blaze::DynamicVector<Signal2D>;
 
 struct Size {
