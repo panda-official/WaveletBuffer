@@ -5,11 +5,11 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using drift::dsp::PaddingLocation;
-using drift::dsp::ZeroDerivativePaddingAlgorithm;
-using drift::dsp::ZeroPaddingAlgorithm;
+using drift::PaddingLocation;
+using drift::ZeroDerivativePaddingAlgorithm;
+using drift::ZeroPaddingAlgorithm;
 
-TEST_CASE("ZeroPadMatrix::Extend()", "[dsp][wavelet]") {
+TEST_CASE("ZeroPadMatrix::Extend()", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{{1, 2, 3}, {4, 5, 6}};
   SECTION("location = kRight") {
     ZeroPaddingAlgorithm padding(4, 5, PaddingLocation::kRight);
@@ -39,7 +39,7 @@ TEST_CASE("ZeroPadMatrix::Extend()", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroPaddingAlgorithm::Extend()_1D", "[dsp][wavelet]") {
+TEST_CASE("ZeroPaddingAlgorithm::Extend()_1D", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{{1}, {2}};
   SECTION("location == kRight") {
     ZeroPaddingAlgorithm padding(4, 1, PaddingLocation::kRight);
@@ -55,7 +55,7 @@ TEST_CASE("ZeroPaddingAlgorithm::Extend()_1D", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroPaddingAlgorithm::Crop()", "[dsp][wavelet]") {
+TEST_CASE("ZeroPaddingAlgorithm::Crop()", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{
       {1, 2, 3},
       {4, 5, 6},
@@ -81,7 +81,7 @@ TEST_CASE("ZeroPaddingAlgorithm::Crop()", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroPaddingAlgorithm::Crop()_1D", "[dsp][wavelet]") {
+TEST_CASE("ZeroPaddingAlgorithm::Crop()_1D", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{{1}, {2}, {3}, {4}, {5}};
 
   SECTION("location = kRight") {
@@ -103,7 +103,7 @@ TEST_CASE("ZeroPaddingAlgorithm::Crop()_1D", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroPadMatrix empty case", "[dsp][wavelet]") {
+TEST_CASE("ZeroPadMatrix empty case", "[wavelet]") {
   const blaze::DynamicMatrix<float> kEmptyMatrix{0, 0};
 
   auto location = GENERATE(PaddingLocation::kRight, PaddingLocation::kBoth);
@@ -116,7 +116,7 @@ TEST_CASE("ZeroPadMatrix empty case", "[dsp][wavelet]") {
   REQUIRE(padding.Crop(result) == kEmptyMatrix);
 }
 
-TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()", "[dsp][wavelet]") {
+TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{
       {1, 2, 3},
       {4, 5, 6},
@@ -151,7 +151,7 @@ TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()_1D", "[dsp][wavelet]") {
+TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()_1D", "[wavelet]") {
   const blaze::DynamicMatrix<float> kMatrix{{1}, {4}};
 
   SECTION("location = kRight") {
@@ -173,7 +173,7 @@ TEST_CASE("ZeroDerivativePaddingAlgorithm::Extend()_1D", "[dsp][wavelet]") {
   }
 }
 
-TEST_CASE("ZeroDerivativePaddingAlgorithm empty case", "[dsp][wavelet]") {
+TEST_CASE("ZeroDerivativePaddingAlgorithm empty case", "[wavelet]") {
   const blaze::DynamicMatrix<float> kEmptyMatrix{0, 0};
 
   auto location = GENERATE(PaddingLocation::kRight, PaddingLocation::kBoth);

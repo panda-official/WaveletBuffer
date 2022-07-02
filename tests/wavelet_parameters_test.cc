@@ -4,8 +4,8 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
 
 TEST_CASE("WaveletParameters") {
   const auto params_1d = WaveletParameters{
@@ -76,7 +76,7 @@ TEST_CASE("WaveletParameters") {
   SECTION("Should compare with respect to wavelet type") {
     auto small = params_3d;
     auto big = params_3d;
-    big.wavelet_type = drift::dsp::kDB4;
+    big.wavelet_type = drift::kDB4;
 
     REQUIRE(small < big);
     REQUIRE_FALSE(small > big);

@@ -7,7 +7,7 @@
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
-namespace drift::dsp {
+namespace drift {
 
 /**
  * @class WaveletBufferView
@@ -58,6 +58,6 @@ class WaveletBufferView {
   std::unique_ptr<Impl> impl_;
 };
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_WAVELET_BUFFER_VIEW_H_

@@ -6,7 +6,7 @@
 
 #include "wavelet_buffer/wavelet_utils.h"
 
-namespace drift::dsp {
+namespace drift {
 
 class WaveletBufferView::Impl {
  public:
@@ -97,4 +97,4 @@ WaveletBufferView::operator WaveletBuffer() const {
   return impl_->CastToBuffer();
 }
 
-}  // namespace drift::dsp
+}  // namespace drift

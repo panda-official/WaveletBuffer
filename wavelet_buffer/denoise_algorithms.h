@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <tuple>
 
-namespace drift::dsp {
+namespace drift {
 /**
  * Interface for different algorithms to reduce the noise in subbands
  * @tparam T
@@ -205,6 +205,6 @@ class SimpleDenoiseAlgorithm : public DenoiseAlgorithm<T> {
   T compression_level_;
 };
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_DENOISE_ALGORITHMS_H_

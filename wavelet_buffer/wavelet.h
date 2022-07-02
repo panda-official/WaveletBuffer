@@ -1,14 +1,14 @@
 // Copyright 2022 PANDA GmbH
 
-#ifndef WAVELET_BUFFER_METRIC_H_
-#define WAVELET_BUFFER_METRIC_H_
+#ifndef WAVELET_BUFFER_WAVELET_H_
+#define WAVELET_BUFFER_WAVELET_H_
 
 #include <blaze/Blaze.h>
 #include <tuple>
 
 #include "wavelet_buffer/primitives.h"
 
-namespace drift::dsp::wavelet {
+namespace drift::wavelet {
 /**
  * Padding type
  */
@@ -42,6 +42,6 @@ std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
     Signal1D const &W_in);
 
 
-}  // namespace drift::dsp::wavelet
+}  // namespace drift::wavelet
 
-#endif  // WAVELET_BUFFER_METRIC_H_
+#endif  // WAVELET_BUFFER_WAVELET_H_

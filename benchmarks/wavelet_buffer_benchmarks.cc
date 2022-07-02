@@ -15,27 +15,27 @@
 
 #include "benchmarks/init.h"
 
-using drift::dsp::DataType;
-using drift::dsp::Signal1D;
-using drift::dsp::SignalN2D;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::wavelet::DaubechiesMat;
-using drift::dsp::wavelet::dbwavf;
-using drift::dsp::wavelet::Orthfilt;
+using drift::DataType;
+using drift::Signal1D;
+using drift::SignalN2D;
+using drift::WaveletBuffer;
+using drift::wavelet::DaubechiesMat;
+using drift::wavelet::dbwavf;
+using drift::wavelet::Orthfilt;
 using drift::utils::GetRandomSignal;
 
 TEST_CASE("Wavelet algorithms benchmark 1D") {
-  using drift::dsp::NullDenoiseAlgorithm;
+  using drift::NullDenoiseAlgorithm;
 
   auto k = GENERATE(0.1, 1, 60);
 
   const auto length = static_cast<size_t>(k * 48000);
 
-  drift::dsp::WaveletParameters parameters = {
+  drift::WaveletParameters parameters = {
       .signal_shape = {length},
       .signal_number = 1,
       .decomposition_steps = 9,
-      .wavelet_type = drift::dsp::WaveletTypes::kDB3,
+      .wavelet_type = drift::WaveletTypes::kDB3,
       .is_raw_convolve_1d = true};
 
   auto data_src = GetRandomSignal(length);
@@ -61,7 +61,7 @@ TEST_CASE("Convolution of long 1D signal") {
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_d));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_d));
   BENCHMARK("Raw convolve") {
-    auto result = drift::dsp::internal::dwt(signal, dmat);
+    auto result = drift::internal::dwt(signal, dmat);
     return result;
   };
 
@@ -74,20 +74,20 @@ TEST_CASE("Convolution of long 1D signal") {
 }
 
 TEST_CASE("Wavelet algorithms benchmark 2D") {
-  using drift::dsp::NullDenoiseAlgorithm;
-  using drift::dsp::SimpleDenoiseAlgorithm;
+  using drift::NullDenoiseAlgorithm;
+  using drift::SimpleDenoiseAlgorithm;
 
-  drift::dsp::WaveletParameters parameters = {
+  drift::WaveletParameters parameters = {
       .signal_shape = {100, 100},
       .signal_number = 1,
       .decomposition_steps = 2,
-      .wavelet_type = drift::dsp::WaveletTypes::kDB3};
+      .wavelet_type = drift::WaveletTypes::kDB3};
 
   auto data_src_100 = GetRandomSignal(100, 100);
 
   SECTION("Wavelet type") {
     SECTION("kDB3") {
-      parameters.wavelet_type = drift::dsp::kDB3;
+      parameters.wavelet_type = drift::kDB3;
       WaveletBuffer buffer(parameters);
 
       BENCHMARK("Decompose 100x100") {
@@ -101,7 +101,7 @@ TEST_CASE("Wavelet algorithms benchmark 2D") {
     }
 
     SECTION("kDB4") {
-      parameters.wavelet_type = drift::dsp::kDB4;
+      parameters.wavelet_type = drift::kDB4;
       WaveletBuffer buffer(parameters);
 
       BENCHMARK("Decompose 100x100") {

@@ -4,8 +4,8 @@
 
 namespace drift::utils {
 
-drift::dsp::Signal1D GetRandomSignal(size_t length) {
-  std::uniform_real_distribution<drift::dsp::Signal1D::ElementType>
+drift::Signal1D GetRandomSignal(size_t length) {
+  std::uniform_real_distribution<drift::Signal1D::ElementType>
       distribution;
   std::mt19937 random_engine;
 
@@ -16,8 +16,8 @@ drift::dsp::Signal1D GetRandomSignal(size_t length) {
   return a;
 }
 
-drift::dsp::SignalN2D GetRandomSignal(size_t rows, size_t columns) {
-  std::uniform_real_distribution<drift::dsp::Signal2D::ElementType>
+drift::SignalN2D GetRandomSignal(size_t rows, size_t columns) {
+  std::uniform_real_distribution<drift::Signal2D::ElementType>
       distribution;
   std::mt19937 random_engine;
 

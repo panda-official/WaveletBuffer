@@ -14,7 +14,7 @@
 #include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
-namespace drift::dsp {
+namespace drift {
 
 using drift::sf::SfCompressor;
 
@@ -525,4 +525,4 @@ std::ostream& operator<<(std::ostream& os, const WaveletBuffer& wb) {
   return os;
 }
 
-}  // namespace drift::dsp
+}  // namespace drift
