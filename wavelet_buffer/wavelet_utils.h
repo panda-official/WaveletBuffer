@@ -12,7 +12,7 @@
 #include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/wavelet_parameters.h"
 
-namespace drift::dsp {
+namespace drift {
 
 class WaveletBuffer;
 
@@ -194,6 +194,6 @@ DataType Distance(const WaveletBuffer& lhs, const WaveletBuffer& rhs);
 blaze::DynamicVector<blaze::DynamicVector<DataType>> EnergyDistribution(
     const WaveletBuffer& buffer);
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_WAVELET_UTILS_H_

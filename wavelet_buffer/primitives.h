@@ -8,7 +8,7 @@
 #include <cmath>
 #include <ostream>
 
-namespace drift::dsp {
+namespace drift {
 
 using DataType = float;
 using Signal1D = blaze::DynamicVector<DataType>;
@@ -22,6 +22,6 @@ struct Size {
   int height;
 };
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_PRIMITIVES_H_

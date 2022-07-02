@@ -2,7 +2,7 @@
 
 #include "wavelet_buffer/wavelet.h"
 
-namespace drift::dsp::wavelet {
+namespace drift::wavelet {
 
 blaze::CompressedMatrix<DataType> DaubechiesMat(size_t size, int order,
                                          Padding padding) {
@@ -317,4 +317,4 @@ Signal2D idwt2(const Signal2D &ll, const Signal2D &lh, const Signal2D &hl,
 
   return dwt2s(out, dmat_w, dmat_h);
 }
-}  // namespace drift::dsp::wavelet
+}  // namespace drift::wavelet

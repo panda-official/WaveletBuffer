@@ -11,7 +11,7 @@
 #include "wavelet_buffer/wavelet.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
-namespace drift::dsp {
+namespace drift {
 
 namespace internal {
 
@@ -597,4 +597,4 @@ blaze::DynamicVector<blaze::DynamicVector<DataType>> EnergyDistribution(
   return dist;
 }
 
-}  // namespace drift::dsp
+}  // namespace drift

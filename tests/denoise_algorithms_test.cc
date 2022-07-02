@@ -15,12 +15,12 @@ const blaze::DynamicVector<float> kSource1D = {0,   255, 10, 20,  30, 127, 60,
 
 TEST_CASE("Denoise Algorithms") {
   SECTION("Null Algorithm should do nothing") {
-    drift::dsp::NullDenoiseAlgorithm<float> denoiser;
+    drift::NullDenoiseAlgorithm<float> denoiser;
     REQUIRE(kSource2D == denoiser.Denoise(kSource2D));
   }
   SECTION("Algorithms for 2D signal") {
     SECTION("Simple Algorithm should remove 80% of the smallest values") {
-      drift::dsp::SimpleDenoiseAlgorithm<float> denoiser(0.8);
+      drift::SimpleDenoiseAlgorithm<float> denoiser(0.8);
 
       const blaze::DynamicMatrix<float> kResult2D = {
           {0, 255, 0, 0, 0}, {0, 255, 0, 0, 0}, {0, 255, 0, 0, 0},
@@ -35,7 +35,7 @@ TEST_CASE("Denoise Algorithms") {
         "abs") {
       const blaze::DynamicMatrix<float> kSample = {{-1, -4.5, 0}, {0, 10, 1.5}};
 
-      drift::dsp::ThresholdAbsDenoiseAlgorithm<float> denoiser(0.5, -3);
+      drift::ThresholdAbsDenoiseAlgorithm<float> denoiser(0.5, -3);
 
       SECTION("Step = 0") {
         const blaze::DynamicMatrix<float> kExpect = {{-1, -4.5, 0},
@@ -59,7 +59,7 @@ TEST_CASE("Denoise Algorithms") {
 
   SECTION("Algorithms for 1D signal") {
     SECTION("Simple Algorithm should remove 80% of the smallest values") {
-      drift::dsp::SimpleDenoiseAlgorithm<float> denoiser(0.8);
+      drift::SimpleDenoiseAlgorithm<float> denoiser(0.8);
 
       const blaze::DynamicVector<float> kResult1D = {
           0, 255, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0, 250, 0, 0, 0, 252, 0, 0};
@@ -71,7 +71,7 @@ TEST_CASE("Denoise Algorithms") {
         "ThresholdAbs algorithm must remove all values lower than threshold") {
       const blaze::DynamicVector<float> kSample = {-1, -4.5, 0, 0, 10, 1.5};
 
-      drift::dsp::ThresholdAbsDenoiseAlgorithm<float> denoiser(-1.2, 4);
+      drift::ThresholdAbsDenoiseAlgorithm<float> denoiser(-1.2, 4);
 
       SECTION("Step = 0") {
         const blaze::DynamicVector<float> kExpect = {0, -4.5, 0, 0, 10, 0};

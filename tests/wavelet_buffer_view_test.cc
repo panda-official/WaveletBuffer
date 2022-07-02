@@ -4,14 +4,14 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-using ::drift::dsp::Signal2D;
-using ::drift::dsp::SignalN2D;
-using ::drift::dsp::WaveletBuffer;
-using ::drift::dsp::WaveletBufferView;
-using ::drift::dsp::WaveletDecomposition;
-using ::drift::dsp::WaveletParameters;
-using ::drift::dsp::WaveletTypes;
-using Denoiser = ::drift::dsp::NullDenoiseAlgorithm<float>;
+using ::drift::Signal2D;
+using ::drift::SignalN2D;
+using ::drift::WaveletBuffer;
+using ::drift::WaveletBufferView;
+using ::drift::WaveletDecomposition;
+using ::drift::WaveletParameters;
+using ::drift::WaveletTypes;
+using Denoiser = ::drift::NullDenoiseAlgorithm<float>;
 
 TEST_CASE("Wavelet Buffer View 2D", "[generators]") {
   WaveletBuffer buffer(WaveletParameters{

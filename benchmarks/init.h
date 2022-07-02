@@ -7,8 +7,8 @@
 
 namespace drift::utils {
 
-drift::dsp::Signal1D GetRandomSignal(size_t length);
-drift::dsp::SignalN2D GetRandomSignal(size_t rows, size_t columns);
+drift::Signal1D GetRandomSignal(size_t length);
+drift::SignalN2D GetRandomSignal(size_t rows, size_t columns);
 
 }  // namespace drift::utils
 

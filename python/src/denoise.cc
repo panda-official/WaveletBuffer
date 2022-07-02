@@ -7,10 +7,10 @@
 namespace py = pybind11;
 
 void WrapDenoiseAlgorithms(py::module *m) {
-  using drift::dsp::NullDenoiseAlgorithm;
-  using drift::dsp::SimpleDenoiseAlgorithm;
-  using drift::dsp::ThresholdAbsDenoiseAlgorithm;
-  using drift::dsp::DenoiseAlgorithm;
+  using drift::NullDenoiseAlgorithm;
+  using drift::SimpleDenoiseAlgorithm;
+  using drift::ThresholdAbsDenoiseAlgorithm;
+  using drift::DenoiseAlgorithm;
 
   auto module = m->def_submodule("denoise");
 

@@ -7,14 +7,14 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using drift::dsp::DataType;
-using drift::dsp::Signal1D;
-using drift::dsp::wavelet::DaubechiesMat;
-using drift::dsp::wavelet::dbwavf;
-using drift::dsp::wavelet::Orthfilt;
-using drift::dsp::ZeroDerivativePaddingAlgorithm;
+using drift::DataType;
+using drift::Signal1D;
+using drift::wavelet::DaubechiesMat;
+using drift::wavelet::dbwavf;
+using drift::wavelet::Orthfilt;
+using drift::ZeroDerivativePaddingAlgorithm;
 
-TEST_CASE("DaubechiesMat", "[dsp][wavelet]") {
+TEST_CASE("DaubechiesMat", "[wavelet]") {
   auto wnum = GENERATE(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
   const auto w = dbwavf(wnum);
   auto [Lo_D, Hi_D, Lo_R, Hi_R] = Orthfilt(w);
@@ -41,26 +41,7 @@ TEST_CASE("DaubechiesMat", "[dsp][wavelet]") {
   }
 }
 
-//TEST_CASE("DaubechiesMat()_ZeroDerivative", "[dsp][wavelet]") {
-//  const Signal1D data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//
-//  const auto dmat =
-//      DaubechiesMat(data.size(), 4, ZeroDerivativePaddingAlgorithm);
-//  const auto result = dmat * data;
-//
-//  const Signal1D expected = {1.379538,  3.725003,  6.553430,      9.381957,
-//                             12.339693, -0.129410, -9.901802e-13, -9.9e-13,
-//                             -9.9e-13,  0.482963};
-//
-//  REQUIRE(result.size() == expected.size());
-//  for (size_t i = 0; i < expected.size(); ++i) {
-//    if (result[i] > 1e-10) {
-//      REQUIRE(expected[i] == Catch::Approx(result[i]));
-//    }
-//  }
-//}
-
-TEST_CASE("dbwavf", "[dsp][wavelet]") {
+TEST_CASE("dbwavf", "[wavelet]") {
   std::array<std::vector<DataType>, 11> coeffs;
   coeffs[1] = {0.5000000000000000, 0.5000000000000000};
   coeffs[2] = {0.3415063509461097, 0.5915063509461097, 0.15849364905389035,

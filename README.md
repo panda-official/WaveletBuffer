@@ -61,11 +61,11 @@ target_link_libraries(program ${LAPACK_LIBRARIES})
 ```c++
 #include <wavelet_buffer/wavelet_buffer.h>
 
-using drift::dsp::Signal1D;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
-using DenoiseAlgo = drift::dsp::ThresholdAbsDenoiseAlgorithm<float>;
+using drift::Signal1D;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
+using DenoiseAlgo = drift::ThresholdAbsDenoiseAlgorithm<float>;
 
 int main() {
   Signal1D original = blaze::generate(

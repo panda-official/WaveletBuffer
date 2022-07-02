@@ -4,9 +4,9 @@
 #include <utility>
 
 namespace py = pybind11;
-using drift::dsp::NWaveletDecomposition;
-using drift::dsp::Signal2D;
-using drift::dsp::SignalN2D;
+using drift::NWaveletDecomposition;
+using drift::Signal2D;
+using drift::SignalN2D;
 
 SignalN2D PyArrayToSignalN2D(const py::array &data) {
   auto shape = data.shape();
@@ -112,7 +112,7 @@ NWaveletDecomposition NPyDecompositionToNW(
       const auto shape = signal.shape();
       std::vector<ssize_t> el_strides = {shape[1], 1};
 
-      blaze::DynamicMatrix<drift::dsp::DataType> subband(shape[0], shape[1]);
+      blaze::DynamicMatrix<drift::DataType> subband(shape[0], shape[1]);
       auto ptr = static_cast<float *>(signal.request(true).ptr);
       for (int i = 0; i < shape[0]; ++i) {
         for (int j = 0; j < shape[1]; ++j) {

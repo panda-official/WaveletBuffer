@@ -5,12 +5,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 
-using drift::dsp::EnergyDistribution;
-using drift::dsp::SignalN2D;
-using drift::dsp::SimpleDenoiseAlgorithm;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
+using drift::EnergyDistribution;
+using drift::SignalN2D;
+using drift::SimpleDenoiseAlgorithm;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
 
 TEST_CASE("Wavelet Util Functions") {
   std::normal_distribution<double> normal_distribution;
