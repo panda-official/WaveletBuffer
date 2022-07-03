@@ -20,7 +20,7 @@ class WaveletBufferConan(ConanFile):
         "openblas/0.3.17",
         "blaze/3.8",
         "libjpeg-turbo/2.1.2",
-        "boost/1.79.0",
+        "boost/1.73.0",
     )
 
     # Binary configuration

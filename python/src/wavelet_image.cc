@@ -20,23 +20,10 @@ using drift::dsp::WaveletTypes;
 using Denoiser = drift::dsp::DenoiseAlgorithm<drift::dsp::DataType>;
 using Codec = drift::dsp::codecs::IImageCodec;
 
-extern std::string WaveletTypeRepr(WaveletTypes value);
+std::string WaveletTypeRepr(WaveletTypes value);
 
 std::string WaveletParametersRepr(const std::string &class_name,
-                                  const WaveletParameters &params) {
-  std::stringstream ss;
-  ss << class_name << "<"
-     << "signal_number=" << params.signal_number << ", signal_shape=(";
-  for (int i = 0; i < params.signal_shape.size(); i++) {
-    if (i) {
-      ss << "x";
-    }
-    ss << params.signal_shape[i];
-  }
-  ss << "), decomposition_steps=" << params.decomposition_steps
-     << ", wavelet_type=" << WaveletTypeRepr(params.wavelet_type) << ">";
-  return ss.str();
-}
+                                  const WaveletParameters &params);
 
 void WrapWaveletImage(py::module *m) {
   auto cls = py::class_<WaveletImage>(*m, "WaveletImage");
