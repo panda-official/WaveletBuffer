@@ -1,15 +1,14 @@
 // Copyright 2020-2021 PANDA GmbH
-#include "wavelet_buffer/codecs/jpeg_codecs.h"
 
-#include <blaze/Blaze.h>
-#include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
+#include "wavelet_buffer/codecs/jpeg_codecs.h"
 
 #include <algorithm>
 #include <iostream>
 #include <string>
-#include <utility>
+
+#include <boost/gil/extension/io/jpeg.hpp>
+#include <boost/gil/image.hpp>
+#include <boost/gil/typedefs.hpp>
 
 #include "wavelet_buffer/codecs/color_space.h"
 #include "wavelet_buffer/codecs/image_codec.h"

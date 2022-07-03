@@ -4,14 +4,15 @@
 #define WAVELET_BUFFER_CODECS_JPEG_CODECS_H_
 
 #include <blaze/Blaze.h>
-#include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include <boost/gil/extension/io/jpeg.hpp>
+#include <boost/gil/image.hpp>
+#include <boost/gil/typedefs.hpp>
 
 #include "wavelet_buffer/codecs/color_space.h"
 #include "wavelet_buffer/codecs/image_codec.h"
@@ -31,9 +32,7 @@ class RgbJpegCodec : public IImageCodec {
   [[nodiscard]] bool Encode(const SignalN2D& image, std::string* blob,
                             size_t start_channel = 0) const override;
 
-  [[nodiscard]] size_t channel_number() const override {
-    return 3;
-  }
+  [[nodiscard]] size_t channel_number() const override { return 3; }
 
  private:
   float quality_;
@@ -53,9 +52,7 @@ class HslJpegCodec : public IImageCodec {
   [[nodiscard]] bool Encode(const SignalN2D& image, std::string* blob,
                             size_t start_channel = 0) const override;
 
-  [[nodiscard]] size_t channel_number() const override {
-    return 3;
-  }
+  [[nodiscard]] size_t channel_number() const override { return 3; }
 
  private:
   float quality_;
@@ -75,10 +72,7 @@ class GrayJpegCodec : public IImageCodec {
   [[nodiscard]] bool Encode(const SignalN2D& image, std::string* blob,
                             size_t start_channel = 0) const override;
 
-  [[nodiscard]] size_t channel_number() const override {
-    return 1;
-  }
-
+  [[nodiscard]] size_t channel_number() const override { return 1; }
 
  private:
   float quality_;

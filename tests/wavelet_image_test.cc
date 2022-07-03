@@ -1,10 +1,11 @@
 // Copyright 2020-2022 PANDA GmbH
+
 #include "wavelet_buffer/wavelet_image.h"
+
+#include <fstream>
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
-
-#include <fstream>
 
 #include "wavelet_buffer/codecs/jpeg_codecs.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
@@ -44,7 +45,8 @@ TEST_CASE("Wavelet Image") {
 
     status = new_images.ImportFromFile("pandas_out.jpg", denoiser, codec);
     REQUIRE(WaveletImage::Status::kOk == status);
-    REQUIRE_THAT(new_images.CompareTo(image), Catch::Matchers::WithinAbs(0, 0.006));
+    REQUIRE_THAT(new_images.CompareTo(image),
+                 Catch::Matchers::WithinAbs(0, 0.006));
   }
 
   SECTION("fails") {

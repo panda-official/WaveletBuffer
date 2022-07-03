@@ -1,4 +1,5 @@
 // Copyright 2020-2021 PANDA GmbH
+
 #include "wavelet_buffer/codecs/color_space.h"
 
 #include <algorithm>

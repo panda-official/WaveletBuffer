@@ -1,6 +1,7 @@
 // Copyright 2020-2021 PANDA GmbH
-#ifndef DRIFT_DSP_CODECS_COLOR_SPACE_H_
-#define DRIFT_DSP_CODECS_COLOR_SPACE_H_
+
+#ifndef WAVELET_BUFFER_CODECS_COLOR_SPACE_H_
+#define WAVELET_BUFFER_CODECS_COLOR_SPACE_H_
 
 #include <blaze/Blaze.h>
 
@@ -50,4 +51,4 @@ void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
 
 }  // namespace drift::dsp::codecs
 
-#endif  // DRIFT_DSP_CODECS_COLOR_SPACE_H_
+#endif  // WAVELET_BUFFER_CODECS_COLOR_SPACE_H_
