@@ -27,6 +27,7 @@ pybind11_add_module(_wavelet_buffer MODULE
         src/blaze_utils.cc
         src/wavelet_buffer.cc
         src/wavelet_buffer_view.cc
+        src/wavelet_image.cc
         src/denoise.cc
 )
 
