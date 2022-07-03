@@ -6,7 +6,7 @@ option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
-#find_package(nlohmann_json REQUIRED)
+#find_package(libjpeg-turbo REQUIRED)
 
 # Dependencies
 include(FetchContent)
@@ -35,6 +35,9 @@ add_library(
     sources/wavelet_utils.cc
     sources/wavelet_buffer_view.cc
     sources/padding.cc
+    sources/wavelet_image.cc
+    sources/codecs/color_space.cc
+    sources/codecs/jpeg_codecs.cc
 )
 
 # Add alias
@@ -63,6 +66,7 @@ target_include_directories(
 
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} panda_metric)
+target_link_libraries(${WB_TARGET_NAME} -ljpeg)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
