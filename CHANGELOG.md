@@ -7,6 +7,7 @@
 * DRIFT-447: MacOS instructions, [PR-14](https://github.com/panda-official/WaveletBuffer/pull/14)
 * DRIFT-448: Code coverage support, [PR-10](https://github.com/panda-official/WaveletBuffer/pull/10)
 * DRIFT-480: More unit tests, [PR-11](https://github.com/panda-official/WaveletBuffer/pull/11)
+* DRIFT-500: Amplitude unit test, [PR-17](https://github.com/panda-official/WaveletBuffer/pull/17)
 
 ### Changed
 
