@@ -2,7 +2,7 @@
 
 #include "wavelet_buffer/padding.h"
 
-namespace drift::dsp {
+namespace drift {
 
 PaddingAlgorithm::PaddingAlgorithm(size_t rows, size_t columns,
                                    PaddingLocation location)
@@ -159,4 +159,4 @@ blaze::DynamicMatrix<DataType> ZeroDerivativePaddingAlgorithm::Extend(
   return result;
 }
 
-}  // namespace drift::dsp
+}  // namespace drift

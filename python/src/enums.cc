@@ -6,8 +6,8 @@
 
 namespace py = pybind11;
 
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
 
 std::string WaveletTypeRepr(WaveletTypes value);
 

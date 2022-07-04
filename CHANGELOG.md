@@ -11,6 +11,7 @@
 ### Changed
 
 * DRIFT-480: Bump up Catch version to 3.0.1, [PR-11](https://github.com/panda-official/WaveletBuffer/pull/11)
+* DRIFT-491: Move needed metric to wavelet buffer, remove metric with dependencies, [PR-15](https://github.com/panda-official/WaveletBuffer/pull/15/checks)
 
 ### Fixed
 

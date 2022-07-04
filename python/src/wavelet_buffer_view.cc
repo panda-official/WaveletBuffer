@@ -8,11 +8,11 @@
 
 namespace py = pybind11;
 
-using drift::dsp::WaveletBuffer;
-using Denoiser = drift::dsp::DenoiseAlgorithm<float>;
-using drift::dsp::Signal1D;
-using drift::dsp::Signal2D;
-using drift::dsp::SignalN2D;
+using drift::WaveletBuffer;
+using Denoiser = drift::DenoiseAlgorithm<float>;
+using drift::Signal1D;
+using drift::Signal2D;
+using drift::SignalN2D;
 
 #include "wavelet_buffer_view_proxy.h"
 

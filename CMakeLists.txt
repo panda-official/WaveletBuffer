@@ -6,7 +6,41 @@ option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
-#find_package(nlohmann_json REQUIRED)
+# Conan
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
+
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(
+        STATUS
+        "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+    )
+    file(
+        DOWNLOAD
+            "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake"
+        TLS_VERIFY ON
+    )
+endif()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_configure(REQUIRES openblas/0.3.20
+                                blaze/3.8
+        GENERATORS cmake
+)
+
+conan_cmake_autodetect(settings)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+        BUILD missing
+        REMOTE conancenter
+        SETTINGS ${settings}
+)
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 # Dependencies
 include(FetchContent)
@@ -18,23 +52,23 @@ fetchcontent_declare(
         https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
 )
 
-# Metric
-fetchcontent_declare(
-    Metric
-    URL https://github.com/panda-official/metric/archive/refs/tags/v0.2.1.tar.gz
-)
+fetchcontent_makeavailable(SFCompressor)
 
-fetchcontent_makeavailable(SFCompressor Metric)
+# LAPACK
+#find_package(OpenBLAS REQUIRED)
 
-set(WB_TARGET_NAME ${PROJECT_NAME})
+# Blaze
+#find_package(blaze 3.8 REQUIRED)
 
 # Create wb target
+set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
     ${WB_TARGET_NAME}
     sources/wavelet_buffer.cc
     sources/wavelet_utils.cc
     sources/wavelet_buffer_view.cc
     sources/padding.cc
+    sources/wavelet.cc
 )
 
 # Add alias
@@ -61,8 +95,10 @@ target_include_directories(
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
-target_link_libraries(${WB_TARGET_NAME} panda_metric)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)

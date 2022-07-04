@@ -18,17 +18,17 @@ TEST_CASE("Denoise algorithms benchmark (pic 500x500)") {
 
   SECTION("Simple denoise algorithm") {
     BENCHMARK("Threshold 0.25") {
-      drift::dsp::SimpleDenoiseAlgorithm<double> da(0.25);
+      drift::SimpleDenoiseAlgorithm<double> da(0.25);
       return da.Denoise(a);
     };
 
     BENCHMARK("Threshold 0.5") {
-      drift::dsp::SimpleDenoiseAlgorithm<double> da(0.5);
+      drift::SimpleDenoiseAlgorithm<double> da(0.5);
       return da.Denoise(a);
     };
 
     BENCHMARK("Threshold 0.75") {
-      drift::dsp::SimpleDenoiseAlgorithm<double> da(0.75);
+      drift::SimpleDenoiseAlgorithm<double> da(0.75);
       return da.Denoise(a);
     };
   }

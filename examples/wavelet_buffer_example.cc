@@ -5,11 +5,11 @@
 
 #include <fstream>
 
-using drift::dsp::Signal1D;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
-using DenoiseAlgo = drift::dsp::SimpleDenoiseAlgorithm<float>;
+using drift::Signal1D;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
+using DenoiseAlgo = drift::SimpleDenoiseAlgorithm<float>;
 
 std::vector<float> ReadData() {
   std::ifstream cvs_file(INPUT_SIGNAL_PATH);

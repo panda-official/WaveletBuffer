@@ -9,7 +9,7 @@
 #include <ostream>
 #include <vector>
 
-namespace drift::dsp {
+namespace drift {
 
 /**
  * Different types of wavelet function
@@ -160,6 +160,6 @@ void deserialize(Archive& archive, WaveletParameters& p) {  // NOLINT
   p.wavelet_type = WaveletTypes(wavelet_type);
 }
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_WAVELET_PARAMETERS_H_

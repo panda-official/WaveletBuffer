@@ -10,11 +10,9 @@ class WaveletBufferConan(ConanFile):
     version = "0.1.0"
     license = "MPL-2.0"
     author = "PANDA GmbH"
-    description = (
-        "An universal C++ compression library based on wavelet " "transformation "
-    )
+    description = "An universal C++ compression library based on wavelet transformation"
     url = "https://github.com/panda-official/WaveletBuffer"
-    requires = "nlohmann_json/3.10.5", "cereal/1.3.1", "openblas/0.3.17", "blaze/3.8"
+    requires = "openblas/0.3.20", "blaze/3.8"
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"

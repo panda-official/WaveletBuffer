@@ -7,16 +7,16 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
 
-using drift::dsp::DenoiseAlgorithm;
-using drift::dsp::Distance;
-using drift::dsp::NullDenoiseAlgorithm;
-using drift::dsp::Signal1D;
-using drift::dsp::SignalN2D;
-using drift::dsp::SimpleDenoiseAlgorithm;
-using drift::dsp::Subband;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
+using drift::DenoiseAlgorithm;
+using drift::Distance;
+using drift::NullDenoiseAlgorithm;
+using drift::Signal1D;
+using drift::SignalN2D;
+using drift::SimpleDenoiseAlgorithm;
+using drift::Subband;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
 
 static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal) {
   if (buffer.parameters().signal_shape.size() == 1) {
@@ -364,7 +364,7 @@ TEST_CASE("Wavelet Buffer") {
   }
 
   SECTION("should parse hardly compressed blob") {
-    using Denoiser = drift::dsp::ThresholdAbsDenoiseAlgorithm<float>;
+    using Denoiser = drift::ThresholdAbsDenoiseAlgorithm<float>;
     auto buffer = WaveletBuffer(MakeParams({100}, 3));
     REQUIRE(buffer.Decompose(Signal1D(100), Denoiser(1000, 1000)));
 

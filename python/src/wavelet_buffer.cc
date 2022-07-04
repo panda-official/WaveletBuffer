@@ -11,16 +11,16 @@
 
 namespace py = pybind11;
 
-using drift::dsp::DecompositionSize;
-using drift::dsp::Distance;
-using drift::dsp::EnergyDistribution;
-using drift::dsp::Signal1D;
-using drift::dsp::Signal2D;
-using drift::dsp::SignalN2D;
-using drift::dsp::WaveletBuffer;
-using drift::dsp::WaveletParameters;
-using drift::dsp::WaveletTypes;
-using Denoiser = drift::dsp::DenoiseAlgorithm<float>;
+using drift::DecompositionSize;
+using drift::Distance;
+using drift::EnergyDistribution;
+using drift::Signal1D;
+using drift::Signal2D;
+using drift::SignalN2D;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
+using Denoiser = drift::DenoiseAlgorithm<float>;
 
 
 std::string WaveletParametersRepr(const std::string &class_name,
@@ -128,7 +128,7 @@ py::array_t<float> ComposeN2DSignal(const WaveletBuffer &self,
 }
 
 void WrapWaveletBuffer(py::module *m) {
-  using Class = drift::dsp::WaveletBuffer;
+  using Class = drift::WaveletBuffer;
 
   m->def("distance",
          [](const Class &a, const Class &b) { return Distance(a, b); });
