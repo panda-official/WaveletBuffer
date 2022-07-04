@@ -2,26 +2,18 @@
 [![codecov](https://codecov.io/gh/panda-official/WaveletBuffer/branch/develop/graph/badge.svg?token=UWZLNR1PL6)](https://codecov.io/gh/panda-official/WaveletBuffer)
 
 # WaveletBuffer
-An universal  C++ compression library based on wavelet transformation
+A universal  C++ compression library based on wavelet transformation
 
 ## Requirements
 * CMake >= 3.16
-* C++17 compiler 
-* LAPACK
-* blaze 3.8 https://bitbucket.org/blaze-lib/blaze/wiki/Home
-* nlohmann_json https://github.com/nlohmann/json
-* cereal https://github.com/USCiLab/cereal
+* C++17 compiler
+* conan
 
 ## Build and Installing
 
 On Ubuntu:
 
 ```
-sudo apt-get install libopenblas-dev libjpeg-dev nlohmann-json3-dev
-git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && sudo make install
-      git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && sudo make install
-
-
 git clone https://github.com/panda-official/WaveletBuffer.git
 
 mkdir build && cd build`
@@ -32,10 +24,6 @@ cmake --build . --target install
 On MacOS:
 
 ```
-brew install libomp
-brew install --build-from-source blaze (needed the latest blaze >= 3.8.1)
-
-
 git clone https://github.com/panda-official/WaveletBuffer.git
 mkdir build && cd build`
 cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
