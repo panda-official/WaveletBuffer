@@ -1,12 +1,12 @@
 // Copyright 2021-2022 PANDA GmbH
 
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <map>
 #include <tuple>
 #include <utility>
 #include <vector>
-#include <iostream>
 
 #include "wavelet_buffer/wavelet.h"
 #include "wavelet_buffer/wavelet_buffer.h"
@@ -14,86 +14,6 @@
 namespace drift {
 
 namespace internal {
-
-std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
-    const blaze::DynamicVector<DataType> &signal,
-    const blaze::CompressedMatrix<DataType> &dmat) {
-  assert(signal.size() >= dmat.columns());
-
-  blaze::DynamicVector<DataType> low_subband(signal.size() / 2);
-  blaze::DynamicVector<DataType> high_subband(signal.size() / 2);
-
-  /* Raw convolution */
-  if (dmat.rows() == 2) {
-    low_subband = 0;
-    high_subband = 0;
-    for (size_t i = 0; i < signal.size() / 2; ++i) {
-      for (size_t j = 0; j < dmat.columns(); ++j) {
-        size_t index = i * 2 + j;
-        /* Periodic padding */
-        if (index >= signal.size()) {
-          index -= signal.size();
-        }
-        low_subband[i] += signal[index] * dmat(0, j);
-        high_subband[i] += signal[index] * dmat(1, j);
-      }
-    }
-
-  } else if (signal.size() == dmat.columns()) {
-    /* Convolve whole signal with two filters */
-    blaze::DynamicVector<DataType> encoded = dmat * signal;
-    const size_t split_index = signal.size() / 2;
-    low_subband = blaze::subvector(encoded, 0, split_index);
-    high_subband = blaze::subvector(encoded, split_index, split_index);
-
-  } else {
-    return {{}, {}};
-  }
-
-  return {low_subband, high_subband};
-}
-
-blaze::DynamicVector<DataType> idwt(
-    const blaze::DynamicVector<DataType> &low_subband,
-    const blaze::DynamicVector<DataType> &high_subband,
-    const blaze::CompressedMatrix<DataType> &dmat) {
-  assert(low_subband.size() == high_subband.size());
-
-  blaze::DynamicVector<DataType> decoded(low_subband.size() * 2);
-  decoded = 0;
-  /* Raw convolution */
-  if (dmat.rows() == 2) {
-    size_t padding_size = dmat.columns() - 2;
-    /* Start near end of signal for periodic padding */
-    size_t i0 = low_subband.size() - padding_size / 2;
-    for (size_t i = 0; i < low_subband.size() * 2; ++i) {
-      size_t j0 = 0;
-      /* Using odd/even filter elements to emulate convolution with added zeros
-       between signal elements */
-      if (i % 2 == 0) {
-        j0 = 1;
-      }
-      for (size_t j = 0; j < dmat.columns(); j += 2) {
-        size_t k = i0 + i / 2 + j / 2;
-        if (k >= low_subband.size()) {
-          k -= low_subband.size();
-        }
-        decoded[i] += dmat(0, j0 + j) * low_subband[k];
-        decoded[i] += dmat(1, j0 + j) * high_subband[k];
-      }
-    }
-  } else {
-    blaze::DynamicVector<DataType> encoded(low_subband.size() +
-                                           high_subband.size());
-    blaze::subvector(encoded, 0, low_subband.size()) = low_subband;
-    blaze::subvector(encoded, low_subband.size(), high_subband.size()) =
-        high_subband;
-
-    decoded = dmat * encoded;
-  }
-
-  return decoded;
-}
 
 /**
  * build-in cache
@@ -271,7 +191,7 @@ static void CalculateOneSideStep1D(
     const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_matrix,
     Signal2D *signal, const size_t step = 0) {
   auto [low_subband, high_subband] =
-      dwt(blaze::column(*signal, 0), wavelet_matrix[0]);
+      drift::wavelet::dwt(blaze::column(*signal, 0), wavelet_matrix[0]);
 
   // copy vector to subband matrix
   Signal2D data(high_subband.size(), 1);
@@ -421,8 +341,8 @@ blaze::DynamicMatrix<DataType> ComposeStep(
     const std::vector<blaze::CompressedMatrix<DataType>> &wavelet_mat) {
   if (dimension == 1) {
     const auto high = static_cast<blaze::DynamicMatrix<DataType>>(*(src - 1));
-    auto result =
-        idwt(blaze::column(low, 0), blaze::column(high, 0), wavelet_mat[0]);
+    auto result = drift::wavelet::idwt(blaze::column(low, 0),
+                                       blaze::column(high, 0), wavelet_mat[0]);
     blaze::DynamicMatrix<DataType> data(result.size(), 1);
     blaze::column(data, 0) = result;
     return data;

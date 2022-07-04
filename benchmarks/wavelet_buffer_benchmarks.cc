@@ -61,7 +61,7 @@ TEST_CASE("Convolution of long 1D signal") {
   blaze::row(dmat, 0) = blaze::trans(blaze::reverse(lo_d));
   blaze::row(dmat, 1) = blaze::trans(blaze::reverse(hi_d));
   BENCHMARK("Raw convolve") {
-    auto result = drift::internal::dwt(signal, dmat);
+    auto result = drift::wavelet::dwt(signal, dmat);
     return result;
   };
 

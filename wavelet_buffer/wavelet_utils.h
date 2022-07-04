@@ -83,27 +83,7 @@ bool ComposeImpl(const WaveletParameters& params, SignalN2D* data,
                  const NWaveletDecomposition& decomposition, size_t steps,
                  size_t start_signal, size_t count);
 
-/**
- * Wavelet decomposition using Daubechies matrix
- * @param signal
- * @param dmat convolutional matrix / 2 row with Lo_D, Hi_D filters
- * @return
- */
-std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
-    const blaze::DynamicVector<DataType>& signal,
-    const blaze::CompressedMatrix<DataType>& dmat);
 
-/**
- * Wavelet composition using Daubechies matrix
- * @param low_subband
- * @param high_subband
- * @param dmat convolutional matrix / 2 row with Lo_R, Hi_R filters
- * @return
- */
-blaze::DynamicVector<DataType> idwt(
-    const blaze::DynamicVector<DataType>& low_subband,
-    const blaze::DynamicVector<DataType>& high_subband,
-    const blaze::CompressedMatrix<DataType>& dmat);
 /**
  * Remove padding depending on signal shape and dimension
  * @tparam Container type of Matrix
