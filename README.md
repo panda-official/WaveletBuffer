@@ -24,7 +24,7 @@ git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && c
 
 git clone https://github.com/panda-official/WaveletBuffer.git
 
-mkdir build && cd build`
+mkdir build && cd build
 cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
 cmake --build . --target install
 ```
@@ -37,7 +37,7 @@ brew install --build-from-source blaze (needed the latest blaze >= 3.8.1)
 
 
 git clone https://github.com/panda-official/WaveletBuffer.git
-mkdir build && cd build`
+mkdir build && cd build
 cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
 cmake --build . --target install
 ```
