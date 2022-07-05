@@ -19,7 +19,8 @@ using drift::dsp::WaveletBuffer;
 using drift::dsp::WaveletParameters;
 using drift::dsp::WaveletTypes;
 
-static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal, int scale=0) {
+static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal,
+                    int scale = 0) {
   if (buffer.parameters().signal_shape.size() == 1) {
     return buffer.Compose(&signal[0], scale);
   }
@@ -453,28 +454,28 @@ TEST_CASE("Constant amplitude for all scales", "[wavelets]") {
   REQUIRE(blaze::mean(data) == Catch::Approx(blaze::mean(composed)));
 }
 
-TEST_CASE("Constant amplitude for ND Matrix","[NDamplitutde]") {
-    NullDenoiseAlgorithm<float> denoiser;
-    DataGenerator dg;
+TEST_CASE("Constant amplitude for ND Matrix", "[NDamplitutde]") {
+  NullDenoiseAlgorithm<float> denoiser;
+  DataGenerator dg;
 
-    auto buffer_num = GENERATE(0, 1);
-    CAPTURE(buffer_num);
+  auto buffer_num = GENERATE(0, 1);
+  CAPTURE(buffer_num);
 
-    auto scale = GENERATE(0, 1, 2, 3);
-    CAPTURE(scale);
+  auto scale = GENERATE(0, 1, 2, 3);
+  CAPTURE(scale);
 
-    std::vector buffers = {
-        WaveletBuffer(MakeParams({100}, scale)),
-        WaveletBuffer(MakeParams({100, 100}, scale))};
-    std::vector signals = {SignalN2D{dg.GenerateMatrix2d(100, 1)},
-                                      SignalN2D{dg.GenerateMatrix2d(100, 100)}};
-    REQUIRE(Decompose(&buffers[buffer_num], signals[buffer_num]));
+  std::vector buffers = {WaveletBuffer(MakeParams({100}, scale)),
+                         WaveletBuffer(MakeParams({100, 100}, scale))};
+  std::vector signals = {SignalN2D{dg.GenerateMatrix2d(100, 1)},
+                         SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+  REQUIRE(Decompose(&buffers[buffer_num], signals[buffer_num]));
 
-    auto output_signal = SignalN2D{};
-    Compose(buffers[buffer_num], &output_signal, scale);
+  auto output_signal = SignalN2D{};
+  Compose(buffers[buffer_num], &output_signal, scale);
 
-    REQUIRE_THAT(blaze::mean(blaze::abs(output_signal[0])), 
-                 Catch::Matchers::WithinAbs(blaze::mean(blaze::abs(signals[buffer_num][0])), 0.01));
+  REQUIRE_THAT(blaze::mean(blaze::abs(output_signal[0])),
+               Catch::Matchers::WithinAbs(
+                   blaze::mean(blaze::abs(signals[buffer_num][0])), 0.01));
 }
 
 // TODO(victor1234): for future wavelet work
