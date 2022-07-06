@@ -12,6 +12,7 @@ using drift::dsp::DenoiseAlgorithm;
 using drift::dsp::Distance;
 using drift::dsp::NullDenoiseAlgorithm;
 using drift::dsp::Signal1D;
+using drift::dsp::Signal2D;
 using drift::dsp::SignalN2D;
 using drift::dsp::SimpleDenoiseAlgorithm;
 using drift::dsp::Subband;
@@ -454,9 +455,8 @@ TEST_CASE("Constant amplitude for all scales", "[wavelets]") {
   REQUIRE(blaze::mean(data) == Catch::Approx(blaze::mean(composed)));
 }
 
-TEST_CASE("Constant amplitude for ND Matrix", "[NDamplitutde]") {
+TEST_CASE("Constant amplitude all scales", "[wavelets]") {
   NullDenoiseAlgorithm<float> denoiser;
-  DataGenerator dg;
 
   auto buffer_num = GENERATE(0, 1);
   CAPTURE(buffer_num);
@@ -466,16 +466,18 @@ TEST_CASE("Constant amplitude for ND Matrix", "[NDamplitutde]") {
 
   std::vector buffers = {WaveletBuffer(MakeParams({100}, scale)),
                          WaveletBuffer(MakeParams({100, 100}, scale))};
-  std::vector signals = {SignalN2D{dg.GenerateMatrix2d(100, 1)},
-                         SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+
+  std::vector<SignalN2D> signals = {{Signal2D{100, 1, 42.42}},
+                                    {Signal2D{100, 100, 42.42}}};
   REQUIRE(Decompose(&buffers[buffer_num], signals[buffer_num]));
 
   auto output_signal = SignalN2D{};
   Compose(buffers[buffer_num], &output_signal, scale);
+  auto input_signal_mean = blaze::mean(blaze::abs(signals[buffer_num][0]));
 
-  REQUIRE_THAT(blaze::mean(blaze::abs(output_signal[0])),
-               Catch::Matchers::WithinAbs(
-                   blaze::mean(blaze::abs(signals[buffer_num][0])), 0.01));
+  auto mean_abs = blaze::mean(blaze::abs(signals[buffer_num][0]));
+  REQUIRE_THAT(input_signal_mean,
+               Catch::Matchers::WithinAbs(mean_abs, mean_abs * 0.01));
 }
 
 // TODO(victor1234): for future wavelet work
