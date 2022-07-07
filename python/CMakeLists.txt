@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(wavelet_buffer_py DESCRIPTION "wavelet_buffer python binding")
 
 # Include wavelet_buffer
-add_subdirectory(../ ../)
+add_subdirectory(ext)
 
 if(SKBUILD)
     # Scikit-Build does not add your site-packages to the search path

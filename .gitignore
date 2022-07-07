@@ -1,0 +1,5 @@
+python/_skbuild
+python/dist
+python/MANIFEST.in
+python/ext/
+python/pkg/wavelet_buffer.egg-info
