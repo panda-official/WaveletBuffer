@@ -423,11 +423,13 @@ bool ComposeImpl(const WaveletParameters &params, SignalN2D *data,
                  scaled_shape.begin(),
                  [&steps](auto x) { return x / std::pow(2, steps); });
 
+  const auto factor =
+      std::pow(params.dimension() == 2 ? 2 : std::sqrt(2), steps);
   for (int ch = 0; ch < count; ++ch) {
     auto aprox = &subbands[ch][subbands[ch].size() - 1];
     internal::CropPadding(aprox, scaled_shape);
     if (steps > 0) {
-      *aprox /= (params.dimension() == 2 ? 2 : std::pow(std::sqrt(2), steps));
+      *aprox /= factor;
     }
     (*data)[ch] = *aprox;
   }

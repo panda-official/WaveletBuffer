@@ -16,7 +16,7 @@ On Ubuntu:
 ```
 git clone https://github.com/panda-official/WaveletBuffer.git
 
-mkdir build && cd build`
+mkdir build && cd build
 cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
 cmake --build . --target install
 ```
@@ -25,7 +25,7 @@ On MacOS:
 
 ```
 git clone https://github.com/panda-official/WaveletBuffer.git
-mkdir build && cd build`
+mkdir build && cd build
 cmake -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
 cmake --build . --target install
 ```
