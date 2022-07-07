@@ -1,4 +1,4 @@
-## Release 0.1.0 (in progress)
+## Release 0.1.0 (2022-07-07)
 
 ### Added
 
