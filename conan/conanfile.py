@@ -7,7 +7,7 @@ from conans.tools import Git
 
 class WaveletBufferConan(ConanFile):
     name = "wavelet_buffer"
-    version = "0.1.0"
+    version = "0.2.0"
     license = "MPL-2.0"
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
