@@ -7,7 +7,7 @@
 
 #include "wavelet_buffer/primitives.h"
 
-namespace drift::dsp {
+namespace drift {
 /** @enum PaddingLocation
  * \brief Padding signal location
  * For non zero reminder of division of padding size by 2, right and bottom
@@ -69,6 +69,6 @@ class ZeroDerivativePaddingAlgorithm : public PaddingAlgorithm {
       const blaze::DynamicMatrix<DataType>& source) const override;
 };
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_PADDING_H_

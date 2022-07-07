@@ -20,6 +20,7 @@ using drift::dsp::WaveletBuffer;
 using drift::dsp::WaveletParameters;
 using drift::dsp::WaveletTypes;
 
+
 static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal,
                     int scale = 0) {
   if (buffer.parameters().signal_shape.size() == 1) {
@@ -367,7 +368,7 @@ TEST_CASE("Wavelet Buffer") {
   }
 
   SECTION("should parse hardly compressed blob") {
-    using Denoiser = drift::dsp::ThresholdAbsDenoiseAlgorithm<float>;
+    using Denoiser = drift::ThresholdAbsDenoiseAlgorithm<float>;
     auto buffer = WaveletBuffer(MakeParams({100}, 3));
     REQUIRE(buffer.Decompose(Signal1D(100), Denoiser(1000, 1000)));
 

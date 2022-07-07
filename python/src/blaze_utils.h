@@ -16,14 +16,14 @@ using NPyDecomposition = std::vector<std::vector<pybind11::array_t<float>>>;
  * @param data input python array
  * @return N2D signal
  */
-drift::dsp::SignalN2D PyArrayToSignalN2D(const pybind11::array& data);
+drift::SignalN2D PyArrayToSignalN2D(const pybind11::array& data);
 
 /**
  * Convert N2D signal to python array
  * @param data inptut N2D signal
  * @return
  */
-pybind11::array_t<float> SignalN2DToPyArray(const drift::dsp::SignalN2D& data);
+pybind11::array_t<float> SignalN2DToPyArray(const drift::SignalN2D& data);
 
 /**
  * Convert NWaveletDecomposition to Python array
@@ -31,9 +31,9 @@ pybind11::array_t<float> SignalN2DToPyArray(const drift::dsp::SignalN2D& data);
  * @return
  */
 NPyDecomposition NWaveletDecompositionToNPy(
-    const drift::dsp::NWaveletDecomposition& decompositions);
+    const drift::NWaveletDecomposition& decompositions);
 
-drift::dsp::NWaveletDecomposition NPyDecompositionToNW(
+drift::NWaveletDecomposition NPyDecompositionToNW(
     const NPyDecomposition& decompositions);
 
 pybind11::array_t<float> VecVecToPyArray(

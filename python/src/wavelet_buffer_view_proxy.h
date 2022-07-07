@@ -6,7 +6,7 @@
 #include <pybind11/pytypes.h>
 
 struct WaveletBufferViewProxy {
-  WaveletBufferViewProxy(const drift::dsp::WaveletBuffer& buffer,
+  WaveletBufferViewProxy(const drift::WaveletBuffer& buffer,
                          int start_signal, int count)
       : buffer(pybind11::cast(buffer)),
         start_signal(start_signal),

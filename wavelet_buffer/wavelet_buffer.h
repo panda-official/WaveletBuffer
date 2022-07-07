@@ -12,14 +12,12 @@
 #include <utility>
 #include <vector>
 
-#include <cereal/archives/binary.hpp>
-
 #include "wavelet_buffer/denoise_algorithms.h"
 #include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/wavelet_parameters.h"
 #include "wavelet_buffer/wavelet_utils.h"
 
-namespace drift::dsp {
+namespace drift {
 
 constexpr uint8_t kSerializationVersion =
     2;  // Increase if we brake compatibility
@@ -201,6 +199,6 @@ class WaveletBuffer {
   std::unique_ptr<Impl> impl_;
 };
 
-}  // namespace drift::dsp
+}  // namespace drift
 
 #endif  // WAVELET_BUFFER_WAVELET_BUFFER_H_
