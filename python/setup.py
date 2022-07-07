@@ -27,36 +27,28 @@ def get_file_list(path):
     return path, [f"{folder}/{el}" for folder, _, elements in os.walk(path) for el in elements]
 
 
-class BuildPyCommand(sdist):
-    """Custom build command."""
+def copy_wavelet_buffer_source():
+    """We copy WaveletBuffer source when we build sdist because it is in the top folder"""
+    project_root = HERE.parent.resolve().parent.resolve()
+    map = [("", [project_root / "CMakeLists.txt"]),
+           ("sources", [project_root / "sources"]),
+           ("wavelet_buffer", [project_root / "wavelet_buffer"]),
+           ("cmake", [project_root / "cmake"])]
 
-    def run(self):
-        self.copy_wavelet_buffer_source()
-        sdist.run(self)
+    dest = HERE / "ext"
+    if dest.exists():
+        shutil.rmtree(dest)
 
-    @staticmethod
-    def copy_wavelet_buffer_source():
-        """We copy WaveletBuffer source when we build sdist because it is in the top folder"""
-        project_root = HERE.parent.resolve().parent.resolve()
-        map = [("", [project_root / "CMakeLists.txt"]),
-               ("sources", [project_root / "sources"]),
-               ("wavelet_buffer", [project_root / "wavelet_buffer"]),
-               ("cmake", [project_root / "cmake"])]
-
-        dest = HERE / "ext"
-        if dest.exists():
-            shutil.rmtree(dest)
-
-        Path.mkdir(dest)
-        for folder, files in map:
-            print(folder)
-            new_path = dest / folder
-            for src in files:
-                print(f"copy {src} -> {new_path}")
-                if Path.is_file(src):
-                    shutil.copy(src, new_path)
-                else:
-                    shutil.copytree(src, new_path)
+    Path.mkdir(dest)
+    for folder, files in map:
+        print(folder)
+        new_path = dest / folder
+        for src in files:
+            print(f"copy {src} -> {new_path}")
+            if Path.is_file(src):
+                shutil.copy(src, new_path)
+            else:
+                shutil.copytree(src, new_path)
 
 
 def update_package_version(path: Path, version: str, protoc_version: str):
@@ -78,11 +70,12 @@ def build_version():
     return version
 
 
+if Path.exists(HERE.parent.resolve().parent.resolve() / "README.md"):
+    # This is building stage. Very fragile but overriding  setup.py commands doesn;t work for pip install
+    copy_wavelet_buffer_source()
+
 setup(
     name=PACKAGE_NAME,
-    cmdclass={
-        "sdist": BuildPyCommand
-    },
     version=build_version(),
     packages=["wavelet_buffer"],
     package_dir={"": "pkg"},
