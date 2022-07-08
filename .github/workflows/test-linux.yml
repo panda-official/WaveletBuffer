@@ -128,7 +128,7 @@ jobs:
 
       - name: Build and install
         run: |
-          pip install --verbose .[python/test]
+          pip install --verbose .[test]
 
       - name: Test
         run: |
