@@ -1,0 +1,29 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "scikit-build",
+    "pybind11>=2.9.2",
+    "cmake",
+    "conan",
+    "ninja; platform_system!='Windows'"
+]
+
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+build = ["*38*", "*39*", "*310*"]
+skip = ["*musllinux*", "pp*"]
+#before-all = [
+#    "yum makecache",
+#    "yum -y install openblas-devel",
+#    "yum -y install libjpeg-turbo-devel",
+#    "yum -y install json-devel",
+#    "git clone https://bitbucket.org/blaze-lib/blaze.git --depth=1 --branch=v3.8 && cd blaze && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ . && make install",
+#    "git clone https://github.com/USCiLab/cereal --depth=1 --branch=v1.3.2 && cd cereal && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ -DJUST_INSTALL_CEREAL=ON . && make install"
+#]
+test-extras = "test"
+test-command = "pytest {project}/python/tests"
+
+[tool.cibuildwheel.linux]
+archs = "x86_64"
+environment-pass = ["VERSION_SUFFIX"]

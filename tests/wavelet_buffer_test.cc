@@ -485,7 +485,7 @@ TEST_CASE("Should keep size", "[wavelets]") {
   NullDenoiseAlgorithm<float> denoiser;
   DataGenerator dg;
 
-  auto buffer_num = GENERATE(0,1);
+  auto buffer_num = GENERATE(0, 1);
   CAPTURE(buffer_num);
 
   std::vector buffers = {WaveletBuffer(MakeParams({30}, 3)),
