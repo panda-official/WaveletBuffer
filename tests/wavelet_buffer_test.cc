@@ -481,6 +481,28 @@ TEST_CASE("Constant amplitude all scales", "[wavelets]") {
                Catch::Matchers::WithinAbs(mean_abs, mean_abs * 0.01));
 }
 
+TEST_CASE("Should keep size", "[wavelets]") {
+  NullDenoiseAlgorithm<float> denoiser;
+  DataGenerator dg;
+
+  auto buffer_num = GENERATE(0,1);
+  CAPTURE(buffer_num);
+
+  std::vector buffers = {WaveletBuffer(MakeParams({30}, 3)),
+                         WaveletBuffer(MakeParams({100, 100}, 3))};
+  std::vector signals = {SignalN2D{dg.GenerateMatrix2d(30, 1)},
+                         SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+  REQUIRE(Decompose(&buffers[buffer_num], signals[buffer_num]));
+
+  auto output_signal = SignalN2D{};
+  Compose(buffers[buffer_num], &output_signal);
+
+  CAPTURE(signals[buffer_num][0]);
+
+  CAPTURE(output_signal[0]);
+  REQUIRE(signals[buffer_num][0].rows() ==output_signal[0].rows());
+}
+
 // TODO(victor1234): for future wavelet work
 /*
 TEST_CASE("sinus", "[wavelets]") {
