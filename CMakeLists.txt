@@ -54,12 +54,6 @@ fetchcontent_declare(
 
 fetchcontent_makeavailable(SFCompressor)
 
-# LAPACK
-#find_package(OpenBLAS REQUIRED)
-
-# Blaze
-#find_package(blaze 3.8 REQUIRED)
-
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
