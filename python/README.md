@@ -3,10 +3,12 @@
 A python wrapper for WaveletBuffer Framework
 
 # Install from PyPI
+
 `pip install wavelet-buffer`
 
 # Install from repo
-`pip install git+https://github.com/panda-official/WaveletBuffer.git#subdirectory=python`
+
+`pip install git+https://github.com/panda-official/WaveletBuffer.git`
 
 ## Examples
 
