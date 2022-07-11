@@ -13,8 +13,8 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 MAJOR_VERSION = 0
-MINOR_VERSION = 2
-PATCH_VERSION = 0
+MINOR_VERSION = 1
+PATCH_VERSION = 1
 
 PACKAGE_NAME = "wavelet-buffer"
 
@@ -45,8 +45,8 @@ setup(
     version=build_version(),
     packages=["wavelet_buffer"],
     package_dir={"": "python/src"},
+    cmake_install_dir="python/src/wavelet_buffer",
     cmake_source_dir="python",
-    cmaek_source_dir="python/src/wavelet_buffer",
     extras_require={"test": ["pytest", "numpy"]},
     author="PANDA, GmbH",
     author_email="info@panda.technology",
@@ -57,7 +57,7 @@ setup(
     python_requires=">=3.8",
     license="MPL-2.0",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Beta",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
