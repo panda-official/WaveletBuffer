@@ -5,9 +5,14 @@
 A universal  C++ compression library based on wavelet transformation
 
 ## Requirements
+
 * CMake >= 3.16
 * C++17 compiler
 * conan
+
+## Bindings
+
+* [Python](python/README.md)
 
 ## Build and Installing
 

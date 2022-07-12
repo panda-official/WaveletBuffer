@@ -1,3 +1,9 @@
+## Release 0.1.1 (in progress)
+
+### Fixed
+
+* Fix sdist Python package, [PR-20](https://github.com/panda-official/WaveletBuffer/pull/20)
+
 ## Release 0.1.0 (2022-07-07)
 
 ### Added

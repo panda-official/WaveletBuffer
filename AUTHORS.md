@@ -1,4 +1,4 @@
-* Aleksey Timin [@flipback](https://github.com/flipback)
+* Aleksey Timin [@atimin](https://github.com/atimin)
 * Clemens Koch [@cko-dev](https://github.com/cko-dev)
 * Ekaterina Pocherevina [@epocherevina](https://github.com/EkaterinaPocherevina)
 * Eugene Kulak [@keu](https://github.com/keu)

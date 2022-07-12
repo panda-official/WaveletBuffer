@@ -1,4 +1,4 @@
-name: Compile project and run C++ tests [Linux]
+name: CI/CD actions [Linux]
 on:
   push:
     branches: [master, develop]
@@ -10,6 +10,7 @@ on:
 jobs:
   cpplint:
     runs-on: ubuntu-latest
+    name: Check GStyle with cpplint
     steps:
       - uses: actions/checkout@v2
 
@@ -21,6 +22,7 @@ jobs:
 
   build_test:
     runs-on: ubuntu-latest
+    name: Build and test C++ part
     strategy:
       matrix:
         build_type: [ Debug, Release ]
@@ -73,6 +75,7 @@ jobs:
 
   conan:
     needs: [ build_test ]
+    name: "Build Conan package and upload it"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -110,7 +113,7 @@ jobs:
           conan upload wavelet_buffer --all --confirm --remote=panda
 
   pip:
-    name: Build with Pip
+    name: "Build and test PIP"
     #needs: [ conan ]
     runs-on: ${{ matrix.platform }}
     strategy:
@@ -128,16 +131,14 @@ jobs:
 
       - name: Build and install
         run: |
-          cd python
           pip install --verbose .[test]
 
       - name: Test
         run: |
-          cd python
-          pytest tests
+          pytest python/tests
 
   build_sdist:
-    name: Build SDist
+    name: "Build and test SDist"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -148,20 +149,17 @@ jobs:
 
       - name: Build SDist
         run: |
-          cd python
           pipx run build --sdist
 
       - name: Check metadata
         run: |
-          cd python
           pipx run twine check dist/*
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: python/dist/*.tar.gz
+      - name: Install SDist package
+        run:  pip3 install dist/*
 
   build_wheels:
-    name: Wheels on ${{ matrix.os }}
+    name: "Build wheels on ${{ matrix.os }}"
     #needs: [pip]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -181,11 +179,10 @@ jobs:
 
       - name: Build wheels
         run: |
-          python -m cibuildwheel --output-dir wheelhouse python
+          python -m cibuildwheel --output-dir wheelhouse .
 
       - name: Verify clean directory
         run: |
-          cd python
           git diff --exit-code
         shell: bash
 
@@ -195,7 +192,7 @@ jobs:
           path: wheelhouse/*.whl
 
   upload_all:
-    name: Upload if release
+    name: "Upload packages if release"
     needs: [ build_wheels, build_sdist ]
     runs-on: ubuntu-latest
     #if: github.event_name == 'release' && github.event.action == 'published'

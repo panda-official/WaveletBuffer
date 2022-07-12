@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(wavelet_buffer VERSION 0.1.0)
+project(wavelet_buffer VERSION 0.2.0)
 
 option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
@@ -53,12 +53,6 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(SFCompressor)
-
-# LAPACK
-#find_package(OpenBLAS REQUIRED)
-
-# Blaze
-#find_package(blaze 3.8 REQUIRED)
 
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
