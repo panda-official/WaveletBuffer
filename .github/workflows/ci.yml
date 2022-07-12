@@ -158,6 +158,10 @@ jobs:
       - name: Install SDist package
         run:  pip3 install dist/*
 
+      - uses: actions/upload-artifact@v2
+        with:
+          path: python/dist/*.tar.gz
+
   build_wheels:
     name: "Build wheels on ${{ matrix.os }}"
     #needs: [pip]
