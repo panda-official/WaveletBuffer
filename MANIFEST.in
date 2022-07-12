@@ -1,0 +1,17 @@
+include AUTHORS.md
+include CHANGELOG.md
+include LICENSE
+include README.md
+include CMakeLists.txt
+include cmake/wavelet_buffer-config.cmake.in
+include conan/conanfile.py
+include pyproject.toml
+include python/CMakeLists.txt
+include python/README.md
+include setup.py
+
+graft python/src
+graft sources
+graft wavelet_buffer
+
+exclude MANIFEST.in
