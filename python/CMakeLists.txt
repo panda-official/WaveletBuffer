@@ -23,7 +23,7 @@ find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(_wavelet_buffer MODULE
         src/init.cc
-        src/common.cc
+        src/wavelet_parameters.cc
         src/blaze_utils.cc
         src/wavelet_buffer.cc
         src/wavelet_buffer_view.cc
