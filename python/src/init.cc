@@ -1,10 +1,10 @@
 // Copyright 2020-2022 PANDA GmbH
 
 #include "wavelet_parameters.h"
+#include "denoise.h"
 
 namespace py = pybind11;
 
-void WrapDenoiseAlgorithms(py::module *m);
 void WrapWaveletBuffer(py::module *m);
 void WrapWaveletViewBuffer(py::module *m);
 void WrapWaveletImage(py::module *m);
