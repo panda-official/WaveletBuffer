@@ -23,11 +23,12 @@ find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(_wavelet_buffer MODULE
         src/init.cc
-        src/enums.cc
+        src/common.cc
         src/blaze_utils.cc
         src/wavelet_buffer.cc
         src/wavelet_buffer_view.cc
         src/denoise.cc
+        src/wavelet_image.cc
 )
 
 target_link_libraries(_wavelet_buffer PRIVATE wavelet_buffer::wavelet_buffer)

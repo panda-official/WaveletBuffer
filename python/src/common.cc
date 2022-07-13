@@ -1,7 +1,10 @@
-// Copyright 2020-2021 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
+
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
+
 #include <wavelet_buffer/wavelet_parameters.h>
+
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
@@ -10,22 +13,6 @@ using drift::WaveletParameters;
 using drift::WaveletTypes;
 
 std::string WaveletTypeRepr(WaveletTypes value);
-
-std::string WaveletParametersRepr(const std::string &class_name,
-                                  const WaveletParameters &params) {
-  std::stringstream ss;
-  ss << class_name << "<"
-     << "signal_number=" << params.signal_number << ", signal_shape=(";
-  for (int i = 0; i < params.signal_shape.size(); i++) {
-    if (i) {
-      ss << "x";
-    }
-    ss << params.signal_shape[i];
-  }
-  ss << "), decomposition_steps=" << params.decomposition_steps
-     << ", wavelet_type=" << WaveletTypeRepr(params.wavelet_type) << ">";
-  return ss.str();
-}
 
 std::string WaveletTypeRepr(WaveletTypes value) {
   switch (value) {
@@ -50,6 +37,22 @@ std::string WaveletTypeRepr(WaveletTypes value) {
     default:
       return "Unknown";
   }
+}
+
+std::string WaveletParametersRepr(const std::string &class_name,
+                                  const WaveletParameters &params) {
+  std::stringstream ss;
+  ss << class_name << "<"
+     << "signal_number=" << params.signal_number << ", signal_shape=(";
+  for (int i = 0; i < params.signal_shape.size(); i++) {
+    if (i) {
+      ss << "x";
+    }
+    ss << params.signal_shape[i];
+  }
+  ss << "), decomposition_steps=" << params.decomposition_steps
+     << ", wavelet_type=" << WaveletTypeRepr(params.wavelet_type) << ">";
+  return ss.str();
 }
 
 void WrapEnums(py::module *m) {
