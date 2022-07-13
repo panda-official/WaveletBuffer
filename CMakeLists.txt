@@ -28,6 +28,8 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
                                 blaze/3.8
+        libjpeg-turbo/2.1.2
+        boost/1.73.0
         GENERATORS cmake
 )
 
@@ -63,6 +65,9 @@ add_library(
     sources/wavelet_buffer_view.cc
     sources/padding.cc
     sources/wavelet.cc
+    sources/wavelet_image.cc
+    sources/codecs/color_space.cc
+    sources/codecs/jpeg_codecs.cc
 )
 
 # Add alias
@@ -93,6 +98,8 @@ target_include_directories(
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg-turbo)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)

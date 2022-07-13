@@ -6,9 +6,17 @@ add_executable(
     wavelet_parameters_test.cc
     wavelet_buffer_view_test.cc
     wavelet_test.cc
+    wavelet_image_test.cc
 )
 target_link_libraries(unit_tests PRIVATE ${WB_TARGET_NAME})
 target_link_libraries(unit_tests PRIVATE Catch2::Catch2WithMain)
+
+# Copy fixtures
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/pandas.jpg
+    ${CMAKE_CURRENT_BINARY_DIR}/fixtures/pandas.jpg
+    COPYONLY
+)
 
 # Code coverage
 option(CODE_COVERAGE "Enable coverage report (only for debug build type)" OFF)
