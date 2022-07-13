@@ -1,6 +1,8 @@
 // Copyright 2020 PANDA GmbH
 #include <pybind11/pybind11.h>
 
+#include "common.h"
+
 namespace py = pybind11;
 
 void WrapEnums(py::module *m);

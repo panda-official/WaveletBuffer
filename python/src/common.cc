@@ -1,9 +1,9 @@
 // Copyright 2020-2022 PANDA GmbH
 
+#include "common.h"
+
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
-
-#include <wavelet_buffer/wavelet_parameters.h>
 
 #include <pybind11/stl.h>
 
@@ -12,7 +12,6 @@ namespace py = pybind11;
 using drift::WaveletParameters;
 using drift::WaveletTypes;
 
-std::string WaveletTypeRepr(WaveletTypes value);
 
 std::string WaveletTypeRepr(WaveletTypes value) {
   switch (value) {

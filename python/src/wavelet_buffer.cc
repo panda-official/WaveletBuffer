@@ -7,6 +7,7 @@
 #include <pybind11/stl.h>
 
 #include "blaze_utils.h"
+#include "common.h"
 #include "wavelet_buffer_view_proxy.h"
 
 namespace py = pybind11;
@@ -22,9 +23,6 @@ using drift::WaveletParameters;
 using drift::WaveletTypes;
 using Denoiser = drift::DenoiseAlgorithm<float>;
 
-
-std::string WaveletParametersRepr(const std::string &class_name,
-                                  const WaveletParameters &params);
 
 /**
  *

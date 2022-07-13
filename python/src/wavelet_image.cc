@@ -9,8 +9,11 @@
 
 #include <memory>
 
-#include "wavelet_buffer/codecs/image_codec.h"
-#include "wavelet_buffer/denoise_algorithms.h"
+#include <wavelet_buffer/codecs/image_codec.h>
+#include <wavelet_buffer/denoise_algorithms.h>
+
+#include "common.h"
+
 
 namespace py = pybind11;
 
@@ -21,10 +24,6 @@ using drift::WaveletTypes;
 using Denoiser = drift::DenoiseAlgorithm<drift::DataType>;
 using Codec = drift::codecs::IImageCodec;
 
-//std::string WaveletTypeRepr(WaveletTypes value);
-
-std::string WaveletParametersRepr(const std::string &class_name,
-                                  const WaveletParameters &params);
 
 void WrapWaveletImage(py::module *m) {
   auto cls = py::class_<WaveletImage>(*m, "WaveletImage");
