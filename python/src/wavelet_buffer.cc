@@ -2,16 +2,14 @@
 
 #include "wavelet_buffer.h"
 
+#include <pybind11/numpy.h>
 #include <wavelet_buffer/wavelet_buffer.h>
 
-#include <pybind11/numpy.h>
-
 #include "blaze_utils.h"
-#include "wavelet_parameters.h"
 #include "wavelet_buffer_view_proxy.h"
+#include "wavelet_parameters.h"
 
 using Denoiser = drift::DenoiseAlgorithm<float>;
-
 
 /**
  *

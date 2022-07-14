@@ -37,7 +37,8 @@ void WrapWaveletImage(py::module *m) {
   cls.def(
       "import_from_file",
       [](drift::WaveletImage &self, const std::string &file_path,
-         const Denoiser &denoiser, const drift::WaveletImage::Codec &codec, size_t start_channel) {
+         const Denoiser &denoiser, const drift::WaveletImage::Codec &codec,
+         size_t start_channel) {
         auto status =
             self.ImportFromFile(file_path, denoiser, codec, start_channel);
         if (status != drift::WaveletImage::Status::kOk) {
@@ -61,8 +62,9 @@ void WrapWaveletImage(py::module *m) {
 
   cls.def(
       "import_from_string",
-      [](drift::WaveletImage &self, const std::string &data, const Denoiser &denoiser,
-         const drift::WaveletImage::Codec &codec, size_t start_channel) {
+      [](drift::WaveletImage &self, const std::string &data,
+         const Denoiser &denoiser, const drift::WaveletImage::Codec &codec,
+         size_t start_channel) {
         auto status =
             self.ImportFromString(data, denoiser, codec, start_channel);
         if (status != drift::WaveletImage::Status::kOk) {
@@ -74,8 +76,8 @@ void WrapWaveletImage(py::module *m) {
 
   cls.def(
       "export_to_string",
-      [](const drift::WaveletImage &self, const drift::WaveletImage::Codec &codec,
-         size_t start_channel) {
+      [](const drift::WaveletImage &self,
+         const drift::WaveletImage::Codec &codec, size_t start_channel) {
         std::string result;
         auto status = self.ExportToString(&result, codec, start_channel);
         if (status != drift::WaveletImage::Status::kOk) {
@@ -97,16 +99,18 @@ void WrapWaveletImage(py::module *m) {
       },
       py::arg("file_path"));
 
-  cls.def("distance", [](const drift::WaveletImage &a, const drift::WaveletImage &b) {
-    return a.CompareTo(b);
-  });
+  cls.def("distance",
+          [](const drift::WaveletImage &a, const drift::WaveletImage &b) {
+            return a.CompareTo(b);
+          });
 
   cls.def_property_readonly("buffer", &drift::WaveletImage::buffer);
 
   py::enum_<drift::WaveletImage::Status>(cls, "Status")
       .value("Ok", drift::WaveletImage::Status::kOk)
       .value("WrongSize", drift::WaveletImage::Status::kWrongSize)
-      .value("DecompositionError", drift::WaveletImage::Status::kDecompositionError)
+      .value("DecompositionError",
+             drift::WaveletImage::Status::kDecompositionError)
       .value("CompositionError", drift::WaveletImage::Status::kCompositionError)
       .value("IOError", drift::WaveletImage::Status::kIOError)
       .value("WrongData", drift::WaveletImage::Status::kWrongData);

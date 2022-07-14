@@ -1,11 +1,11 @@
-// Copyright 2021 PANDA GmbH
-#ifndef SRC_DSP_BLAZE_UTILS_H_
-#define SRC_DSP_BLAZE_UTILS_H_
+// Copyright 2021-2022 PANDA GmbH
 
-#include <wavelet_buffer/primitives.h>
-#include <wavelet_buffer/wavelet_utils.h>
+#ifndef SRC_BLAZE_UTILS_H_
+#define SRC_BLAZE_UTILS_H_
 
 #include <pybind11/numpy.h>
+#include <wavelet_buffer/primitives.h>
+#include <wavelet_buffer/wavelet_utils.h>
 
 #include <vector>
 
@@ -39,4 +39,4 @@ drift::NWaveletDecomposition NPyDecompositionToNW(
 pybind11::array_t<float> VecVecToPyArray(
     const blaze::DynamicVector<blaze::DynamicVector<float>>& data);
 
-#endif  // SRC_DSP_BLAZE_UTILS_H_
+#endif  // SRC_BLAZE_UTILS_H_

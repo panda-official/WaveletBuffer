@@ -3,8 +3,8 @@
 #ifndef SRC_WAVELET_TYPE_H_
 #define SRC_WAVELET_TYPE_H_
 
-#include <wavelet_buffer/wavelet_parameters.h>
 #include <pybind11/pybind11.h>
+#include <wavelet_buffer/wavelet_parameters.h>
 
 namespace py = pybind11;
 

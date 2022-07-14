@@ -9,7 +9,7 @@
 #include "wavelet_buffer/wavelet_buffer_view.h"
 #include "wavelet_buffer/wavelet_utils.h"
 
-namespace drift {
+namespace drift::img {
 
 class WaveletImage::WaveletImageImpl {
  public:

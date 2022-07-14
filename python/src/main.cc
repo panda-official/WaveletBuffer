@@ -6,7 +6,6 @@
 #include "wavelet_image.h"
 #include "wavelet_parameters.h"
 
-
 PYBIND11_MODULE(_wavelet_buffer, m) {
   WrapWaveletType(&m);
   WrapWaveletParameters(&m);
