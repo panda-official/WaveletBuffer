@@ -1,4 +1,4 @@
-![example workflow](https://github.com/panda-official/WaveletBuffer/actions/workflows/test-linux.yml/badge.svg)
+![example workflow](https://github.com/panda-official/WaveletBuffer/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/panda-official/WaveletBuffer/branch/develop/graph/badge.svg?token=UWZLNR1PL6)](https://codecov.io/gh/panda-official/WaveletBuffer)
 
 # WaveletBuffer
