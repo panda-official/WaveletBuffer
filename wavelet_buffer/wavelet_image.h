@@ -123,6 +123,6 @@ class WaveletImage {
   class WaveletImageImpl;
   std::unique_ptr<WaveletImageImpl> impl_;
 };
-}  // namespace drift
+}  // namespace drift::img
 
 #endif  // WAVELET_BUFFER_WAVELET_IMAGE_H_

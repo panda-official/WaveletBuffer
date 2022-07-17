@@ -180,4 +180,4 @@ double WaveletImage::CompareTo(const WaveletImage &other) const {
   return Distance(const_buffer(), other.const_buffer());
 }
 
-}  // namespace drift
+}  // namespace drift::img
