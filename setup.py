@@ -43,7 +43,7 @@ def build_version():
 setup(
     name=PACKAGE_NAME,
     version=build_version(),
-    packages=["wavelet_buffer"],
+    packages=["wavelet_buffer", "wavelet_buffer.img"],
     package_dir={"": "python/src"},
     cmake_install_dir="python/src/wavelet_buffer",
     cmake_source_dir="python",

@@ -6,9 +6,11 @@ import pathlib
 import pytest
 from wavelet_buffer import (  # pylint: disable=no-name-in-module
     WaveletBuffer,
-    WaveletImage,
     WaveletType,
     denoise,
+)
+from wavelet_buffer.img import (  # pylint: disable=no-name-in-module
+    WaveletImage,
     codecs,
 )
 
