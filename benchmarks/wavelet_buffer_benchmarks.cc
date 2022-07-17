@@ -35,8 +35,7 @@ TEST_CASE("Wavelet algorithms benchmark 1D") {
       .signal_shape = {length},
       .signal_number = 1,
       .decomposition_steps = 9,
-      .wavelet_type = drift::WaveletTypes::kDB3,
-      .is_raw_convolve_1d = true};
+      .wavelet_type = drift::WaveletTypes::kDB3};
 
   auto data_src = GetRandomSignal(length);
 

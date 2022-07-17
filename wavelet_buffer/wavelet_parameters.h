@@ -36,7 +36,6 @@ struct WaveletParameters {
   size_t signal_number;        // Channels in the signal (RGB=3)
   size_t decomposition_steps;  // Steps fo the decompositions
   WaveletTypes wavelet_type;
-  bool is_raw_convolve_1d{true};  // Only for develop purposes, don't change it
 
   bool operator==(const WaveletParameters& rhs) const {
     return signal_shape == rhs.signal_shape &&

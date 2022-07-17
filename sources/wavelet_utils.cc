@@ -254,8 +254,7 @@ bool DecomposeImpl(const WaveletParameters &parameters,
   /* Get convolution matrix stack if needed */
   std::vector<std::vector<blaze::CompressedMatrix<DataType>>>
       wavelet_matrix_stack;
-  if (parameters.dimension() == 2 ||
-      (parameters.dimension() == 1 && !parameters.is_raw_convolve_1d)) {
+  if (parameters.dimension() == 2) {
     wavelet_matrix_stack =
         matrix_cache.GenerateMatrices(padded_size, parameters);
   }
@@ -274,7 +273,7 @@ bool DecomposeImpl(const WaveletParameters &parameters,
     auto channel = AddPadding(data[ch - start_signal], padded_size);
 
     for (int step = 0; step < parameters.decomposition_steps; ++step) {
-      if (parameters.dimension() == 1 && parameters.is_raw_convolve_1d) {
+      if (parameters.dimension() == 1) {
         CalculateOneSideStep(
             parameters.dimension(),
             (*decomposition)[ch].begin() + step * subbands_per_wt, denoiser,
@@ -364,8 +363,7 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters &params,
   /* Get convolution matrix stack if needed */
   std::vector<std::vector<blaze::CompressedMatrix<DataType>>>
       wavelet_matrix_stack;
-  if (params.dimension() == 2 ||
-      (params.dimension() == 1 && !params.is_raw_convolve_1d)) {
+  if (params.dimension() == 2) {
     wavelet_matrix_stack = matrix_cache.GenerateTransMatrices(
         CalcPaddedSize(params.wavelet_type, params.signal_shape,
                        params.decomposition_steps),
@@ -391,7 +389,7 @@ NWaveletDecomposition ComposeImpl(const WaveletParameters &params,
         decomposition[ch][params.decomposition_steps * subbands_per_wt]);
 
     for (int i = params.decomposition_steps; i > steps; --i) {
-      if (params.dimension() == 1 && params.is_raw_convolve_1d) {
+      if (params.dimension() == 1) {
         channel = ComposeStep(params.dimension(), channel,
                               decomposition[ch].begin() + i * subbands_per_wt,
                               {dmat});
