@@ -5,7 +5,7 @@
 
 #include <blaze/Blaze.h>
 
-namespace drift::codecs {
+namespace drift::img::codecs {
 
 enum ColorSpace { kRGB = 1, kHSL = 2, kGray = 3 };
 
@@ -49,6 +49,6 @@ void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
 void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
                      size_t start_channel = 0);
 
-}  // namespace drift::codecs
+}  // namespace drift::img::codecs
 
 #endif  // WAVELET_BUFFER_CODECS_COLOR_SPACE_H_

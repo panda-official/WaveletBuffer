@@ -9,7 +9,7 @@
 #include "wavelet_buffer/codecs/image_codec.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
-namespace drift {
+namespace drift::img {
 
 /**
  * A class to load/save images of different formats and store them

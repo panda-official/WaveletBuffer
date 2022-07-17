@@ -17,7 +17,7 @@
 #include "wavelet_buffer/codecs/color_space.h"
 #include "wavelet_buffer/codecs/image_codec.h"
 
-namespace drift::codecs {
+namespace drift::img::codecs {
 /**
  * Class to read and write JPEGs by using RGB color scheme
  */
@@ -78,6 +78,6 @@ class GrayJpegCodec : public IImageCodec {
   float quality_;
 };
 
-}  // namespace drift::codecs
+}  // namespace drift::img::codecs
 
 #endif  // WAVELET_BUFFER_CODECS_JPEG_CODECS_H_

@@ -13,7 +13,7 @@
 #include "wavelet_buffer/codecs/color_space.h"
 #include "wavelet_buffer/codecs/image_codec.h"
 
-namespace drift::codecs {
+namespace drift::img::codecs {
 
 namespace bg = boost::gil;
 
@@ -224,4 +224,4 @@ bool GrayJpegCodec::Encode(const SignalN2D& image, std::string* blob,
   return true;
 }
 
-}  // namespace drift::codecs
+}  // namespace drift::img::codecs

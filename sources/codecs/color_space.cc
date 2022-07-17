@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-namespace drift::codecs {
+namespace drift::img::codecs {
 
 void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
               float* luminance) {
@@ -152,4 +152,4 @@ void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
   }
 }
 
-}  // namespace drift::codecs
+}  // namespace drift::img::codecs

@@ -13,10 +13,10 @@
 using drift::Distance;
 using drift::NullDenoiseAlgorithm;
 using drift::SimpleDenoiseAlgorithm;
-using drift::WaveletImage;
+using drift::img::WaveletImage;
 using drift::WaveletParameters;
 using drift::WaveletTypes;
-using drift::codecs::HslJpegCodec;
+using drift::img::codecs::HslJpegCodec;
 
 const WaveletParameters kWaveletParam{
     .signal_shape = {800, 500},
