@@ -4,6 +4,7 @@
 #define SRC_BLAZE_UTILS_H_
 
 #include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 #include <wavelet_buffer/primitives.h>
 #include <wavelet_buffer/wavelet_utils.h>
 

@@ -1,5 +1,6 @@
 // Copyright 2020-2022 PANDA GmbH
 
+#include "codecs.h"
 #include "denoise.h"
 #include "wavelet_buffer.h"
 #include "wavelet_buffer_view.h"
@@ -12,5 +13,6 @@ PYBIND11_MODULE(_wavelet_buffer, m) {
   WrapDenoiseAlgorithms(&m);
   WrapWaveletBuffer(&m);
   WrapWaveletViewBuffer(&m);
+  WrapCodecAlgorithms(&m);
   WrapWaveletImage(&m);
 }

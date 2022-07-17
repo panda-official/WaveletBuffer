@@ -132,12 +132,14 @@ void WrapWaveletBuffer(py::module *m) {
                       size_t channel_number, size_t decomposition_steps,
                       drift::WaveletTypes wavelet_type,
                       const NPyDecomposition &decompositions) {
+
             drift::WaveletParameters parameters{
                 .signal_shape = signal_shape,
                 .signal_number = channel_number,
                 .decomposition_steps = decomposition_steps,
                 .wavelet_type = wavelet_type,
             };
+
             if (decompositions.empty()) {
               return std::make_unique<Class>(parameters);
             } else {
@@ -145,6 +147,7 @@ void WrapWaveletBuffer(py::module *m) {
                   parameters, NPyDecompositionToNW(decompositions));
             }
           }),
+
           py::arg("signal_shape"), py::arg("signal_number"),
           py::arg("decomposition_steps"), py::arg("wavelet_type"),
           py::arg("decompositions") = NPyDecomposition());

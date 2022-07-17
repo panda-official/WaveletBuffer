@@ -28,9 +28,14 @@ pybind11_add_module(_wavelet_buffer MODULE
         src/wavelet_buffer.cc
         src/wavelet_buffer_view.cc
         src/denoise.cc
+        src/codecs.cc
         src/wavelet_image.cc
 )
 
 target_link_libraries(_wavelet_buffer PRIVATE wavelet_buffer::wavelet_buffer)
+target_compile_definitions(
+    _wavelet_buffer
+    PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES
+)
 
 install(TARGETS _wavelet_buffer DESTINATION .)

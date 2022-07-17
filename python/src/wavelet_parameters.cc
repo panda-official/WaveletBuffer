@@ -1,5 +1,7 @@
 #include "wavelet_parameters.h"
 
+#include <pybind11/stl.h>
+
 std::string WaveletTypeRepr(drift::WaveletTypes value) {
   switch (value) {
     case drift::WaveletTypes::kNone: {

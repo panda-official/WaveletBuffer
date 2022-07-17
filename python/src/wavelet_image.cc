@@ -2,16 +2,13 @@
 
 #include "wavelet_image.h"
 
+#include <pybind11/stl.h>
+
 #include <wavelet_buffer/codecs/image_codec.h>
 #include <wavelet_buffer/denoise_algorithms.h>
 #include <wavelet_buffer/wavelet_image.h>
-#include <wavelet_buffer/wavelet_parameters.h>
-
-#include <memory>
 
 #include "wavelet_parameters.h"
-
-namespace py = pybind11;
 
 using Denoiser = drift::DenoiseAlgorithm<drift::DataType>;
 
@@ -114,14 +111,14 @@ void WrapWaveletImage(py::module *m) {
       .value("IOError", drift::img::WaveletImage::Status::kIOError)
       .value("WrongData", drift::img::WaveletImage::Status::kWrongData);
 
-  py::class_<drift::WaveletParameters>(*m, "WaveletParameters")
-      .def_readonly("signal_number", &drift::WaveletParameters::signal_number)
-      .def_readonly("decomposition_steps",
-                    &drift::WaveletParameters::decomposition_steps)
-      .def_readonly("signal_shape", &drift::WaveletParameters::signal_shape)
-      .def_readonly("wavelet_type", &drift::WaveletParameters::wavelet_type)
-
-      .def("__repr__", [](const drift::WaveletParameters &self) {
-        return WaveletParametersRepr("WaveletParameters", self);
-      });
+//  py::class_<drift::WaveletParameters>(*m, "WaveletParameters")
+//      .def_readonly("signal_number", &drift::WaveletParameters::signal_number)
+//      .def_readonly("decomposition_steps",
+//                    &drift::WaveletParameters::decomposition_steps)
+//      .def_readonly("signal_shape", &drift::WaveletParameters::signal_shape)
+//      .def_readonly("wavelet_type", &drift::WaveletParameters::wavelet_type)
+//
+//      .def("__repr__", [](const drift::WaveletParameters &self) {
+//        return WaveletParametersRepr("WaveletParameters", self);
+//      });
 }
