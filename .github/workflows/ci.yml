@@ -210,8 +210,15 @@ jobs:
           name: artifact
           path: dist
 
-      - uses: pypa/gh-action-pypi-publish@v1.5.0
+      - name: "Upload to panda PyPI"
+        uses: pypa/gh-action-pypi-publish@v1.5.0
         with:
           user: ${{ secrets.PYPI_USERNAME }}
           password: ${{ secrets.PYPI_PASSWORD }}
           repository_url: https://pypi.panda.technology
+
+      - name: "Upload to PyPI"
+        uses: pypa/gh-action-pypi-publish@v1.5.0
+        with:
+          user: ${{ secrets.PYPI_USERNAME }}
+          password: ${{ secrets.PYPI_PASSWORD }}
