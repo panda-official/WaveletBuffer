@@ -4,11 +4,11 @@
 
 #include <pybind11/stl.h>
 
-#include <wavelet_buffer/codecs/image_codec.h>
+#include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/denoise_algorithms.h>
 #include <wavelet_buffer/wavelet_image.h>
 
-#include "wavelet_parameters.h"
+#include "../wavelet_parameters.h"
 
 using Denoiser = drift::DenoiseAlgorithm<drift::DataType>;
 

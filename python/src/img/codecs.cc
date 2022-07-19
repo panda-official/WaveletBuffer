@@ -2,13 +2,13 @@
 
 #include "codecs.h"
 
-#include <wavelet_buffer/codecs/image_codec.h>
-#include <wavelet_buffer/codecs/jpeg_codecs.h>
+#include <wavelet_buffer/img/image_codec.h>
+#include <wavelet_buffer/img/jpeg_codecs.h>
 
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>
 
-#include "blaze_utils.h"
+#include "../blaze_utils.h"
 
 
 void WrapCodecAlgorithms(py::module* m) {

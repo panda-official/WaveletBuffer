@@ -1,10 +1,10 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "codecs.h"
 #include "denoise.h"
+#include "img/codecs.h"
+#include "img/wavelet_image.h"
 #include "wavelet_buffer.h"
 #include "wavelet_buffer_view.h"
-#include "wavelet_image.h"
 #include "wavelet_parameters.h"
 
 PYBIND11_MODULE(_wavelet_buffer, m) {
