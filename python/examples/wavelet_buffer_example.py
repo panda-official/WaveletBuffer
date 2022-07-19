@@ -7,6 +7,8 @@ from wavelet_buffer import (
     energy_distribution,
 )
 
+from wavelet_buffer.img import HslJpeg
+
 # Processing 1-D time series
 signal = np.array([1, 2, 3, 3, 2, 1, 0, -1, -2, -3, -3, -2, -1, 0, 1, 2, 3, 3, 2, 1])
 
@@ -41,10 +43,10 @@ buffer = WaveletBuffer(
     wavelet_type=WaveletType.DB1,
 )
 
-with open("../../test/fixtures/pandas.jpg", "rb") as f:
+with open("tests/fixtures/pandas.jpg", "rb") as f:
     blob = f.read()
 
-code = codecs.HslJpeg()
+code = HslJpeg()
 img = code.decode(blob)
 print(f"Image shape {img.shape}")
 
