@@ -65,9 +65,9 @@ add_library(
     sources/wavelet_buffer_view.cc
     sources/padding.cc
     sources/wavelet.cc
-    sources/wavelet_image.cc
-    sources/codecs/color_space.cc
-    sources/codecs/jpeg_codecs.cc
+    sources/img/wavelet_image.cc
+    sources/img/color_space.cc
+    sources/img/jpeg_codecs.cc
 )
 
 # Add alias

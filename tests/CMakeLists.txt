@@ -6,7 +6,7 @@ add_executable(
     wavelet_parameters_test.cc
     wavelet_buffer_view_test.cc
     wavelet_test.cc
-    wavelet_image_test.cc
+    img/wavelet_image_test.cc
 )
 target_link_libraries(unit_tests PRIVATE ${WB_TARGET_NAME})
 target_link_libraries(unit_tests PRIVATE Catch2::Catch2WithMain)
