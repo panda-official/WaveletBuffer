@@ -1,10 +1,10 @@
 // Copyright 2020-2021 PANDA GmbH
 
-#include "wavelet_buffer/codecs/color_space.h"
+#include "wavelet_buffer/img/color_space.h"
 
 #include <algorithm>
 
-namespace drift::img::codecs {
+namespace drift::img {
 
 void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
               float* luminance) {
@@ -152,4 +152,4 @@ void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
   }
 }
 
-}  // namespace drift::img::codecs
+}  // namespace drift::img

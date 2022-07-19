@@ -14,10 +14,10 @@
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 
-#include "wavelet_buffer/codecs/color_space.h"
-#include "wavelet_buffer/codecs/image_codec.h"
+#include "wavelet_buffer/img/color_space.h"
+#include "wavelet_buffer/img/image_codec.h"
 
-namespace drift::img::codecs {
+namespace drift::img {
 /**
  * Class to read and write JPEGs by using RGB color scheme
  */
@@ -78,6 +78,6 @@ class GrayJpegCodec : public IImageCodec {
   float quality_;
 };
 
-}  // namespace drift::img::codecs
+}  // namespace drift::img
 
 #endif  // WAVELET_BUFFER_CODECS_JPEG_CODECS_H_

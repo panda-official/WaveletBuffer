@@ -13,11 +13,11 @@
 
 void WrapCodecAlgorithms(py::module* m) {
   using drift::SignalN2D;
-  using drift::img::codecs::ColorSpace;
-  using drift::img::codecs::GrayJpegCodec;
-  using drift::img::codecs::HslJpegCodec;
-  using drift::img::codecs::IImageCodec;
-  using drift::img::codecs::RgbJpegCodec;
+  using drift::img::ColorSpace;
+  using drift::img::GrayJpegCodec;
+  using drift::img::HslJpegCodec;
+  using drift::img::IImageCodec;
+  using drift::img::RgbJpegCodec;
 
   auto module = m->def_submodule("codecs", "Codecs");
 

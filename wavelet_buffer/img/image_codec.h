@@ -9,7 +9,7 @@
 
 #include "wavelet_buffer/primitives.h"
 
-namespace drift::img::codecs {
+namespace drift::img {
 /**
  * Abstract interface for image codecs
  */
@@ -39,5 +39,5 @@ class IImageCodec {
 
   virtual size_t channel_number() const = 0;
 };
-}  // namespace drift::img::codecs
+}  // namespace drift::img
 #endif  // WAVELET_BUFFER_CODECS_IMAGE_CODEC_H_

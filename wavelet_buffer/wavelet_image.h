@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include "wavelet_buffer/codecs/image_codec.h"
+#include "wavelet_buffer/img/image_codec.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
 namespace drift::img {
@@ -19,7 +19,7 @@ class WaveletImage {
  public:
   using Buffer = WaveletBuffer;
   using Denoiser = DenoiseAlgorithm<DataType>;
-  using Codec = codecs::IImageCodec;
+  using Codec = IImageCodec;
 
   /**
    * Statuses for error handling

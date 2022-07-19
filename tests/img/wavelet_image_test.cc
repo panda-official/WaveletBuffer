@@ -7,7 +7,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
-#include "wavelet_buffer/codecs/jpeg_codecs.h"
+#include "wavelet_buffer/img/jpeg_codecs.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 using drift::Distance;
@@ -16,7 +16,7 @@ using drift::SimpleDenoiseAlgorithm;
 using drift::img::WaveletImage;
 using drift::WaveletParameters;
 using drift::WaveletTypes;
-using drift::img::codecs::HslJpegCodec;
+using drift::img::HslJpegCodec;
 
 const WaveletParameters kWaveletParam{
     .signal_shape = {800, 500},
