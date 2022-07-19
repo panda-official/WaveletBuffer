@@ -110,15 +110,4 @@ void WrapWaveletImage(py::module *m) {
              drift::img::WaveletImage::Status::kCompositionError)
       .value("IOError", drift::img::WaveletImage::Status::kIOError)
       .value("WrongData", drift::img::WaveletImage::Status::kWrongData);
-
-//  py::class_<drift::WaveletParameters>(*m, "WaveletParameters")
-//      .def_readonly("signal_number", &drift::WaveletParameters::signal_number)
-//      .def_readonly("decomposition_steps",
-//                    &drift::WaveletParameters::decomposition_steps)
-//      .def_readonly("signal_shape", &drift::WaveletParameters::signal_shape)
-//      .def_readonly("wavelet_type", &drift::WaveletParameters::wavelet_type)
-//
-//      .def("__repr__", [](const drift::WaveletParameters &self) {
-//        return WaveletParametersRepr("WaveletParameters", self);
-//      });
 }

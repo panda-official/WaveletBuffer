@@ -5,11 +5,16 @@ import io
 
 import pytest
 import numpy as np
-from wavelet_buffer.img import codecs  # pylint: disable=no-name-in-module
+from wavelet_buffer.img import (
+    HslJpeg,
+    RgbJpeg,
+    GrayJpeg,
+    BaseCodec,
+)  # pylint: disable=no-name-in-module
 from PIL import Image
 
 
-@pytest.mark.parametrize("cls", [codecs.HslJpeg, codecs.RgbJpeg, codecs.GrayJpeg])
+@pytest.mark.parametrize("cls", [HslJpeg, RgbJpeg, GrayJpeg])
 class TestJpegCodecs:  # pylint: disable=too-few-public-methods
     """
     Test JPEG
@@ -30,7 +35,7 @@ class TestJpegCodecs:  # pylint: disable=too-few-public-methods
 
     def test__encode(self, cls):  # pylint: disable=no-self-use
         """Test JPG encoding-decoding"""
-        codec: codecs.Base = cls()
+        codec: BaseCodec = cls()
 
         channel = [[0.1, 0.1, 0.1], [0.5, 0.5, 0.5], [0.2, 0.2, 0.2], [1.0, 1.0, 1.0]]
         image = np.asarray(

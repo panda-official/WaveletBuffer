@@ -19,13 +19,7 @@ void WrapCodecAlgorithms(py::module* m) {
   using drift::img::IImageCodec;
   using drift::img::RgbJpegCodec;
 
-  auto module = m->def_submodule("codecs", "Codecs");
-
-  module.doc() =
-      "Codecs to encode and decode pictures to\\from numpy images."
-      "Numpy image has planar layout: shape = [channel_number, height, width]";
-
-  auto base = py::class_<IImageCodec>(module, "Base");
+  auto base = py::class_<IImageCodec>(*m, "BaseCodec");
 
   auto decode = [](IImageCodec& self, const py::bytes& data) {
     SignalN2D image;
@@ -58,17 +52,17 @@ void WrapCodecAlgorithms(py::module* m) {
   base.def("channel_number",
            [](IImageCodec& self) { return self.channel_number(); });
 
-  py::class_<RgbJpegCodec, IImageCodec>(module, "RgbJpeg")
+  py::class_<RgbJpegCodec, IImageCodec>(*m, "RgbJpeg")
       .def(py::init(
                [](float write_quality) { return RgbJpegCodec(write_quality); }),
            py::arg("write_quality") = 1.f);
 
-  py::class_<HslJpegCodec, IImageCodec>(module, "HslJpeg")
+  py::class_<HslJpegCodec, IImageCodec>(*m, "HslJpeg")
       .def(py::init(
                [](float write_quality) { return HslJpegCodec(write_quality); }),
            py::arg("write_quality") = 1.f);
 
-  py::class_<GrayJpegCodec, IImageCodec>(module, "GrayJpeg")
+  py::class_<GrayJpegCodec, IImageCodec>(*m, "GrayJpeg")
       .def(py::init([](float write_quality) {
              return GrayJpegCodec(write_quality);
            }),

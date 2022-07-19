@@ -11,7 +11,7 @@ from wavelet_buffer import (  # pylint: disable=no-name-in-module
 )
 from wavelet_buffer.img import (  # pylint: disable=no-name-in-module
     WaveletImage,
-    codecs,
+    HslJpeg,
 )
 
 IMAGE_PATH = str(pathlib.Path(__file__).parent.absolute() / "fixtures" / "img.jpeg")
@@ -35,7 +35,7 @@ def fixture_wavelet_params():
 def fixture_wavelet_image_with_data(wavelet_params):
     """WaveletImage with loaded image"""
     img = WaveletImage(**wavelet_params)
-    img.import_from_file(IMAGE_PATH, denoiser=denoise.Null(), codec=codecs.HslJpeg())
+    img.import_from_file(IMAGE_PATH, denoiser=denoise.Null(), codec=HslJpeg())
     return img
 
 
@@ -47,7 +47,7 @@ def test__import_from_file(wavelet_params, filepath, exception_catch):
     """import from file should return expected status"""
     img = WaveletImage(**wavelet_params)
     try:
-        img.import_from_file(filepath, denoiser=denoise.Null(), codec=codecs.HslJpeg(1))
+        img.import_from_file(filepath, denoiser=denoise.Null(), codec=HslJpeg(1))
     except ValueError:
         assert exception_catch
 
@@ -55,9 +55,9 @@ def test__import_from_file(wavelet_params, filepath, exception_catch):
 @pytest.mark.parametrize(
     "filename,codec,exception_catch",
     [
-        ("output.jpg", codecs.HslJpeg(1), False),
-        ("#$%!.jpg", codecs.HslJpeg(1), False),
-        ("output.jpg", codecs.HslJpeg(0), False),
+        ("output.jpg", HslJpeg(1), False),
+        ("#$%!.jpg", HslJpeg(1), False),
+        ("output.jpg", HslJpeg(0), False),
     ],
 )
 def test__export_to_file(wavelet_params, tmp_path, filename, codec, exception_catch):
@@ -80,13 +80,11 @@ def test__import_export_from_string(wavelet_image_with_data, wavelet_params):
     """export to string and import from it later should result in equal
     wavelet buffer
     """
-    string = wavelet_image_with_data.export_to_string(codec=codecs.HslJpeg())
+    string = wavelet_image_with_data.export_to_string(codec=HslJpeg())
     assert string
 
     restored_image = WaveletImage(**wavelet_params)
-    restored_image.import_from_string(
-        string, denoiser=denoise.Null(), codec=codecs.HslJpeg()
-    )
+    restored_image.import_from_string(string, denoiser=denoise.Null(), codec=HslJpeg())
     assert restored_image.distance(wavelet_image_with_data) < 0.006
 
 
