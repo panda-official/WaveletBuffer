@@ -132,7 +132,6 @@ void WrapWaveletBuffer(py::module *m) {
                       size_t channel_number, size_t decomposition_steps,
                       drift::WaveletTypes wavelet_type,
                       const NPyDecomposition &decompositions) {
-
             drift::WaveletParameters parameters{
                 .signal_shape = signal_shape,
                 .signal_number = channel_number,

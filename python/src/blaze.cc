@@ -1,4 +1,5 @@
-// Copyright 2020 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
+
 #include <blaze/Blaze.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>

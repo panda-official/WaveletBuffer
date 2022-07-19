@@ -1,7 +1,7 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#ifndef WAVELET_BUFFER_CODECS_JPEG_CODECS_H_
-#define WAVELET_BUFFER_CODECS_JPEG_CODECS_H_
+#ifndef WAVELET_BUFFER_IMG_JPEG_CODECS_H_
+#define WAVELET_BUFFER_IMG_JPEG_CODECS_H_
 
 #include <blaze/Blaze.h>
 
@@ -80,4 +80,4 @@ class GrayJpegCodec : public IImageCodec {
 
 }  // namespace drift::img
 
-#endif  // WAVELET_BUFFER_CODECS_JPEG_CODECS_H_
+#endif  // WAVELET_BUFFER_IMG_JPEG_CODECS_H_

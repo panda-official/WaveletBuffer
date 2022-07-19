@@ -1,7 +1,7 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#ifndef WAVELET_BUFFER_CODECS_IMAGE_CODEC_H_
-#define WAVELET_BUFFER_CODECS_IMAGE_CODEC_H_
+#ifndef WAVELET_BUFFER_IMG_IMAGE_CODEC_H_
+#define WAVELET_BUFFER_IMG_IMAGE_CODEC_H_
 
 #include <blaze/Blaze.h>
 
@@ -40,4 +40,4 @@ class IImageCodec {
   virtual size_t channel_number() const = 0;
 };
 }  // namespace drift::img
-#endif  // WAVELET_BUFFER_CODECS_IMAGE_CODEC_H_
+#endif  // WAVELET_BUFFER_IMG_IMAGE_CODEC_H_
