@@ -94,7 +94,7 @@ class WaveletImage::WaveletImageImpl {
     std::ofstream file(file_path);
     if (file) {
       std::string data;
-      status = buffer_.Serialize(&data, 16) ? Status::kOk : Status::kWrongData;
+      status = buffer_.Serialize(&data) ? Status::kOk : Status::kWrongData;
       if (status == Status::kOk) {
         file << data;
       }
