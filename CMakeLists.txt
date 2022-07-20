@@ -48,8 +48,8 @@ include(FetchContent)
 # SFCompressor
 fetchcontent_declare(
     SFCompressor
-    URL
-        https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
+    GIT_REPOSITORY https://github.com/panda-official/SfCompressor.git
+    GIT_TAG drift-507
 )
 
 fetchcontent_makeavailable(SFCompressor)
@@ -82,7 +82,8 @@ target_compile_definitions(
 )
 
 # Set compiler features
-target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_17)
+target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_20)
+set_target_properties(${WB_TARGET_NAME} PROPERTIES CXX_STANDARD_REQUIRED ON)
 
 # Include paths
 target_include_directories(
