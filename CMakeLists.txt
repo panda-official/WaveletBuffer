@@ -26,12 +26,15 @@ endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
+conan_cmake_configure(REQUIRES openblas/0.3.20
+        blaze/3.8
+        GENERATORS cmake
+)
 conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_CURRENT_SOURCE_DIR}/conan/conanfile.py
+conan_cmake_install(PATH_OR_REFERENCE .
         BUILD missing
         REMOTE conancenter
         SETTINGS ${settings}
-        PROFILE ${CONAN_PROFILE}
 )
 
 include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)

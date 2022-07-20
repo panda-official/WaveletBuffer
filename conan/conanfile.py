@@ -19,7 +19,7 @@ class WaveletBufferConan(ConanFile):
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    generators = "cmake"
+    generators = "CMakeDeps"
 
     def set_version(self):
         suffix = os.getenv("VERSION_SUFFIX")
