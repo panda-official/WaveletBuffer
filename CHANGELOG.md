@@ -1,5 +1,8 @@
 ## Release 0.2.0 (in progress)
 
+### Added
+
+* DRIFT-493: WaveletImage, [PR-21](https://github.com/panda-official/WaveletBuffer/pull/21)
 
 ## Release 0.1.1 (2022-07-12)
 

@@ -1,30 +1,15 @@
-// Copyright 2020-2021 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
 
-#include <wavelet_buffer/wavelet_buffer.h>
+#include "wavelet_buffer.h"
 
 #include <pybind11/numpy.h>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+#include <wavelet_buffer/wavelet_buffer.h>
 
 #include "blaze_utils.h"
 #include "wavelet_buffer_view_proxy.h"
+#include "wavelet_parameters.h"
 
-namespace py = pybind11;
-
-using drift::DecompositionSize;
-using drift::Distance;
-using drift::EnergyDistribution;
-using drift::Signal1D;
-using drift::Signal2D;
-using drift::SignalN2D;
-using drift::WaveletBuffer;
-using drift::WaveletParameters;
-using drift::WaveletTypes;
 using Denoiser = drift::DenoiseAlgorithm<float>;
-
-
-std::string WaveletParametersRepr(const std::string &class_name,
-                                  const WaveletParameters &params);
 
 /**
  *
@@ -32,7 +17,7 @@ std::string WaveletParametersRepr(const std::string &class_name,
  * @param data
  * @param denoiser
  */
-void DecomposeN2DSignal(WaveletBuffer *self, const py::array &data,
+void DecomposeN2DSignal(drift::WaveletBuffer *self, const py::array &data,
                         const Denoiser &denoiser) {
   const auto &params = self->parameters();
 
@@ -71,7 +56,7 @@ void DecomposeN2DSignal(WaveletBuffer *self, const py::array &data,
  * @param data
  * @param denoiser
  */
-void Decompose1DSignal(WaveletBuffer *self, const py::array &data,
+void Decompose1DSignal(drift::WaveletBuffer *self, const py::array &data,
                        const Denoiser &denoiser) {
   const auto &params = self->parameters();
 
@@ -86,7 +71,7 @@ void Decompose1DSignal(WaveletBuffer *self, const py::array &data,
         " items long (actual " + std::to_string(data.shape()[0]) + ")");
   }
 
-  Signal1D signal(params.signal_shape[0]);
+  drift::Signal1D signal(params.signal_shape[0]);
   int i = 0;
   for (auto &m : data) {
     signal[i++] = m.cast<float>();
@@ -102,9 +87,9 @@ void Decompose1DSignal(WaveletBuffer *self, const py::array &data,
  * @param self
  * @return
  */
-py::array_t<float> Compose1DSignal(const WaveletBuffer &self,
+py::array_t<float> Compose1DSignal(const drift::WaveletBuffer &self,
                                    int scale_factor) {
-  Signal1D data;
+  drift::Signal1D data;
   if (!self.Compose(&data, scale_factor)) {
     throw py::buffer_error("Failed to compose data");
   }
@@ -117,9 +102,9 @@ py::array_t<float> Compose1DSignal(const WaveletBuffer &self,
  * @param self
  * @return
  */
-py::array_t<float> ComposeN2DSignal(const WaveletBuffer &self,
+py::array_t<float> ComposeN2DSignal(const drift::WaveletBuffer &self,
                                     int scale_factor) {
-  SignalN2D data;
+  drift::SignalN2D data;
   if (!self.Compose(&data, scale_factor)) {
     throw py::buffer_error("Failed to compose data");
   }
@@ -145,14 +130,15 @@ void WrapWaveletBuffer(py::module *m) {
   auto cls = py::class_<Class>(*m, "WaveletBuffer");
   cls.def(py::init([](const std::vector<size_t> &signal_shape,
                       size_t channel_number, size_t decomposition_steps,
-                      WaveletTypes wavelet_type,
+                      drift::WaveletTypes wavelet_type,
                       const NPyDecomposition &decompositions) {
-            WaveletParameters parameters{
+            drift::WaveletParameters parameters{
                 .signal_shape = signal_shape,
                 .signal_number = channel_number,
                 .decomposition_steps = decomposition_steps,
                 .wavelet_type = wavelet_type,
             };
+
             if (decompositions.empty()) {
               return std::make_unique<Class>(parameters);
             } else {
@@ -160,6 +146,7 @@ void WrapWaveletBuffer(py::module *m) {
                   parameters, NPyDecompositionToNW(decompositions));
             }
           }),
+
           py::arg("signal_shape"), py::arg("signal_number"),
           py::arg("decomposition_steps"), py::arg("wavelet_type"),
           py::arg("decompositions") = NPyDecomposition());
@@ -167,8 +154,8 @@ void WrapWaveletBuffer(py::module *m) {
   cls.def_static(
       "decomposition_size",
       [](const std::vector<size_t> &signal_shape, size_t channel_number,
-         size_t decomposition_steps, WaveletTypes wavelet_type) {
-        return DecompositionSize(WaveletParameters{
+         size_t decomposition_steps, drift::WaveletTypes wavelet_type) {
+        return DecompositionSize(drift::WaveletParameters{
             .signal_shape = signal_shape,
             .signal_number = channel_number,
             .decomposition_steps = decomposition_steps,
