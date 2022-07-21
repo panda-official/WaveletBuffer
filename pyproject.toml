@@ -1,10 +1,10 @@
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools >= 42",
     "scikit-build",
-    "pybind11>=2.9.2",
+    "pybind11 >= 2.9.2",
     "cmake",
-    "conan",
+    "conan >= 1.50.0",
     "ninja; platform_system!='Windows'"
 ]
 
