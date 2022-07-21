@@ -1,28 +1,27 @@
-// Copyright 2020 PANDA GmbH
-
-#include <wavelet_buffer/wavelet_parameters.h>
+// Copyright 2020-2022 PANDA GmbH
 
 #include <catch2/catch_test_macros.hpp>
+#include <wavelet_buffer/wavelet_parameters.h>
 
 using drift::WaveletParameters;
 using drift::WaveletTypes;
 
 TEST_CASE("WaveletParameters") {
-  const auto params_1d = WaveletParameters{
+  const WaveletParameters params_1d{
       .signal_shape = {100},
       .signal_number = 1,
       .decomposition_steps = 10,
       .wavelet_type = WaveletTypes::kDB3,
   };
 
-  const auto params_2d = WaveletParameters{
+  const WaveletParameters params_2d{
       .signal_shape = {100, 200},
       .signal_number = 1,
       .decomposition_steps = 10,
       .wavelet_type = WaveletTypes::kDB3,
   };
 
-  const auto params_3d = WaveletParameters{
+  const WaveletParameters params_3d{
       .signal_shape = {200, 100, 300},
       .signal_number = 1,
       .decomposition_steps = 10,
