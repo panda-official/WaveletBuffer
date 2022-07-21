@@ -3,6 +3,7 @@
 ### Added
 
 * DRIFT-493: WaveletImage, [PR-21](https://github.com/panda-official/WaveletBuffer/pull/21)
+* Required version for conan, [PR-27](https://github.com/panda-official/WaveletBuffer/pull/27)
 
 ## Release 0.1.1 (2022-07-12)
 
