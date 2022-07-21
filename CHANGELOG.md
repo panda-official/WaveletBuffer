@@ -4,6 +4,10 @@
 
 * DRIFT-493: WaveletImage, [PR-21](https://github.com/panda-official/WaveletBuffer/pull/21)
 
+### Removed
+
+*  DRIFT-512: WaveletParameters.is_raw_convolve_1d, [PR-24](https://github.com/panda-official/WaveletBuffer/pull/24)
+
 ## Release 0.1.1 (2022-07-12)
 
 ### Fixed
