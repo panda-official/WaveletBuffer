@@ -22,14 +22,20 @@ endif()
 find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(_wavelet_buffer MODULE
-        src/init.cc
-        src/enums.cc
+        src/main.cc
+        src/wavelet_parameters.cc
         src/blaze_utils.cc
         src/wavelet_buffer.cc
         src/wavelet_buffer_view.cc
         src/denoise.cc
+        src/img/codecs.cc
+        src/img/wavelet_image.cc
 )
 
 target_link_libraries(_wavelet_buffer PRIVATE wavelet_buffer::wavelet_buffer)
+target_compile_definitions(
+    _wavelet_buffer
+    PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES
+)
 
 install(TARGETS _wavelet_buffer DESTINATION .)
