@@ -1,9 +1,15 @@
+[keep a changelog](https://keepachangelog.com/)
+
 ## Release 0.2.0 (in progress)
 
 ### Added
 
 * DRIFT-493: WaveletImage, [PR-21](https://github.com/panda-official/WaveletBuffer/pull/21)
 * Required version for conan, [PR-27](https://github.com/panda-official/WaveletBuffer/pull/27)
+
+### Changed
+
+* DRIFT-506: Upload python packages to PyPI server, [PR-23](https://github.com/panda-official/WaveletBuffer/pull/23)
 
 ### Removed
 
