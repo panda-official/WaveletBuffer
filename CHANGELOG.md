@@ -1,6 +1,6 @@
 [keep a changelog](https://keepachangelog.com/)
 
-## Release 0.2.0 (in progress)
+## 0.2.0 - 2022-07-22
 
 ### Added
 
@@ -15,13 +15,13 @@
 
 *  DRIFT-512: WaveletParameters.is_raw_convolve_1d, [PR-24](https://github.com/panda-official/WaveletBuffer/pull/24)
 
-## Release 0.1.1 (2022-07-12)
+## 0.1.1 - 2022-07-12
 
 ### Fixed
 
 * Fix sdist Python package, [PR-20](https://github.com/panda-official/WaveletBuffer/pull/20)
 
-## Release 0.1.0 (2022-07-07)
+## 0.1.0 - 2022-07-07
 
 ### Added
 
