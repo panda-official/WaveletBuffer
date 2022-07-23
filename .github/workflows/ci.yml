@@ -77,7 +77,7 @@ jobs:
           verbose: true
 
   conan:
-    needs: [ build_test ]
+    # needs: [ build_test ]
     name: "Build Conan package and upload it"
     runs-on: ubuntu-latest
     steps:
@@ -177,16 +177,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.6.1
+      # - name: Install cibuildwheel
+      #  run: python -m pip install cibuildwheel==2.6.1
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Build wheels
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse .
+      #  run: |
+      #    python -m cibuildwheel --output-dir wheelhouse .
+      uses: pypa/cibuildwheel@v2.8.1
 
       - name: Verify clean directory
         run: |
