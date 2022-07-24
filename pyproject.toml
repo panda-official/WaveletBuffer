@@ -15,6 +15,7 @@ build = ["*38*", "*39*", "*310*"]
 skip = ["*musllinux*", "pp*"]
 test-extras = "test"
 test-command = "pytest {project}/python/tests"
+build-verbosity = '3'
 
 [tool.cibuildwheel.linux]
 archs = "x86_64"
