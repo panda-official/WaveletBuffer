@@ -28,7 +28,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
         blaze/3.8
-        libjpeg/2.1.2
+        libjpeg/9d
         boost/1.73.0
         GENERATORS cmake
 )
