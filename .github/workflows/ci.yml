@@ -112,6 +112,9 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${GITHUB_WORKSPACE}
         run: |
+          echo ${GITHUB_WORKSPACE}
+          echo ${CONAN_SOURCE_DIR}
+          echo `pwd`
           cd conan
           conan create . drift/develop
 
