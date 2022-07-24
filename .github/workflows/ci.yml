@@ -105,13 +105,15 @@ jobs:
           CONAN_SOURCE_DIR: $GITHUB_WORKSPACE
         run: |
           cd conan
-          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/stable
+          conan create . drift/stable
 
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
+        env:
+          CONAN_SOURCE_DIR: $GITHUB_WORKSPACE
         run: |
           cd conan
-          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/develop
+          conan create . drift/develop
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
