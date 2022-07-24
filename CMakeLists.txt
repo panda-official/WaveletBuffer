@@ -97,7 +97,7 @@ target_include_directories(
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg-turbo)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
 
 # Catch2 installation
