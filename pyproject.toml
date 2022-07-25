@@ -11,6 +11,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+archs = ["auto64"]
 build = ["*38*", "*39*", "*310*"]
 skip = ["*musllinux*", "pp*"]
 test-extras = "test"
