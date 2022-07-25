@@ -110,7 +110,7 @@ jobs:
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
         env:
-          CONAN_SOURCE_DIR: ${{ github.github_workspace }}
+          CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           echo $GITHUB_WORKSPACE
           echo $CONAN_SOURCE_DIR
