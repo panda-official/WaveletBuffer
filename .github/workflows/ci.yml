@@ -40,13 +40,13 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=OFF -DWB_BUILD_BENCHMARKS=OFF -DWB_BUILD_EXAMPLES=OFF -DCODE_COVERAGE=ON ..
           cmake --build . -j
 
-      - name: Run tests
-        run: |
-          cd build
-          ctest --output-on-failure
+#      - name: Run tests
+#        run: |
+#          cd build
+#          ctest --output-on-failure
 
       - name: Install wavelet_buffer
         if : matrix.os == 'ubuntu-latest'
