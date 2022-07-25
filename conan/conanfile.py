@@ -35,11 +35,13 @@ class WaveletBufferConan(ConanFile):
     def source(self):
         local_source = os.getenv("CONAN_SOURCE_DIR")
         if local_source is not None:
+            print(f"Use local sources: {local_source}")
             self.run(
                 "cp {} -r {}".format(os.getenv("CONAN_SOURCE_DIR"), self.source_folder)
             )
         else:
             branch = f"v{self.version}" if self.channel == "stable" else self.channel
+            print(f"Use remote sources, branch: {branch}")
             git = Git()
             git.clone(
                 "https://github.com/panda-official/WaveletBuffer.git",
