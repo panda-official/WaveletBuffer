@@ -43,42 +43,38 @@ TEST_CASE("WaveletParameters") {
   }
 
   SECTION("Should compare with respect to shape") {
-    WaveletParameters small = params_3d;
     WaveletParameters big = params_3d;
     big.signal_shape[1] += 1;
 
-    REQUIRE(small < big);
-    REQUIRE_FALSE(small > big);
-    REQUIRE_FALSE(small == big);
+    REQUIRE(params_3d < big);
+    REQUIRE_FALSE(params_3d > big);
+    REQUIRE_FALSE(params_3d == big);
   }
 
   SECTION("Should compare with respect to signal number") {
-    WaveletParameters small = params_3d;
     WaveletParameters big = params_3d;
     big.signal_number += 1;
 
-    REQUIRE(small < big);
-    REQUIRE_FALSE(small > big);
-    REQUIRE_FALSE(small == big);
+    REQUIRE(params_3d < big);
+    REQUIRE_FALSE(params_3d > big);
+    REQUIRE_FALSE(params_3d == big);
   }
 
   SECTION("Should compare with respect to decomposition steps") {
-    WaveletParameters small = params_3d;
     WaveletParameters big = params_3d;
     big.decomposition_steps += 1;
 
-    REQUIRE(small < big);
-    REQUIRE_FALSE(small > big);
-    REQUIRE_FALSE(small == big);
+    REQUIRE(params_3d < big);
+    REQUIRE_FALSE(params_3d > big);
+    REQUIRE_FALSE(params_3d == big);
   }
 
   SECTION("Should compare with respect to wavelet type") {
-    WaveletParameters small = params_3d;
     WaveletParameters big = params_3d;
     big.wavelet_type = drift::kDB4;
 
-    REQUIRE(small < big);
-    REQUIRE_FALSE(small > big);
-    REQUIRE_FALSE(small == big);
+    REQUIRE(params_3d < big);
+    REQUIRE_FALSE(params_3d > big);
+    REQUIRE_FALSE(params_3d == big);
   }
 }
