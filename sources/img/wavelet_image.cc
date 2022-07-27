@@ -1,6 +1,6 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "wavelet_buffer/wavelet_image.h"
+#include "wavelet_buffer/img/wavelet_image.h"
 
 #include <fstream>
 #include <utility>
