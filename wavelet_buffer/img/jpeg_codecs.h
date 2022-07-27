@@ -35,6 +35,8 @@ class RgbJpegCodec : public IImageCodec {
 
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
+
  private:
   DataType quality_;
 };
@@ -55,6 +57,9 @@ class HslJpegCodec : public IImageCodec {
 
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
+
+
  private:
   DataType quality_;
 };
@@ -74,6 +79,8 @@ class GrayJpegCodec : public IImageCodec {
                             size_t start_channel = 0) const override;
 
   [[nodiscard]] size_t channel_number() const override { return 1; }
+
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
 
  private:
   DataType quality_;

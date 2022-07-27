@@ -1,4 +1,4 @@
-// Copyright 2020-2021 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
 
 #include "wavelet_buffer/img/color_space.h"
 
@@ -141,8 +141,10 @@ void ConvertHslToRgb(
          "must have at least 3 channels");
 
   auto& img = *image;
-  DataType h, s, l;
+
   size_t width{img[start_channel].columns()}, height{img[start_channel].rows()};
+
+  DataType h, s, l;
   for (size_t y = 0; y < height; ++y) {
     for (size_t x = 0; x < width; ++x) {
       HSLToRGB(img[start_channel](y, x), img[start_channel + 1](y, x),

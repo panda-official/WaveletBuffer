@@ -38,6 +38,8 @@ class IImageCodec {
                       size_t start_channel = 0) const = 0;
 
   virtual size_t channel_number() const = 0;
+
+  [[nodiscard]] virtual bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const = 0;
 };
 }  // namespace drift::img
 #endif  // WAVELET_BUFFER_IMG_IMAGE_CODEC_H_

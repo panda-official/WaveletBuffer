@@ -158,7 +158,7 @@ TEST_CASE("3-channeled JPEG codec") {
 
 TEST_CASE("Gray JPEG codec") {
   GrayJpegCodec codec;
-  SECTION("should encode-devode start_channel=1") {
+  SECTION("should encode/decode start_channel=1") {
     std::string data;
     REQUIRE(codec.Encode(kImage, &data, 1));
 
