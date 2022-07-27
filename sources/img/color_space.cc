@@ -6,8 +6,8 @@
 
 namespace drift::img {
 
-void RGBToHSL(DataType red, DataType green, DataType blue, DataType* hue, DataType* saturation,
-              DataType* luminance) {
+void RGBToHSL(DataType red, DataType green, DataType blue, DataType* hue,
+              DataType* saturation, DataType* luminance) {
   const auto min_color = std::min({red, green, blue});
   const auto max_color = std::max({red, green, blue});
 
@@ -51,8 +51,8 @@ void RGBToHSL(DataType red, DataType green, DataType blue, DataType* hue, DataTy
   }
 }
 
-void HSLToRGB(DataType hue, DataType saturation, DataType luminance, DataType* red,
-              DataType* green, DataType* blue) {
+void HSLToRGB(DataType hue, DataType saturation, DataType luminance,
+              DataType* red, DataType* green, DataType* blue) {
   if (std::abs(saturation) < 0.0001) {
     // If saturation is 0, the color is a shade of gray
     *red = luminance;
@@ -114,8 +114,9 @@ void HSLToRGB(DataType hue, DataType saturation, DataType luminance, DataType* r
   }
 }
 
-void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
-                     size_t start_channel) {
+void ConvertRgbToHsl(
+    blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
+    size_t start_channel) {
   assert(image && (image->size() >= 3 + start_channel) &&
          "must have at least 3 channels");
 
@@ -133,8 +134,9 @@ void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image
   }
 }
 
-void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
-                     size_t start_channel) {
+void ConvertHslToRgb(
+    blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
+    size_t start_channel) {
   assert(image && (image->size() >= 3 + start_channel) &&
          "must have at least 3 channels");
 
