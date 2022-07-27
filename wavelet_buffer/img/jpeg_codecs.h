@@ -14,6 +14,7 @@
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 
+#include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/img/color_space.h"
 #include "wavelet_buffer/img/image_codec.h"
 
@@ -24,7 +25,7 @@ namespace drift::img {
 class RgbJpegCodec : public IImageCodec {
  public:
   RgbJpegCodec();
-  explicit RgbJpegCodec(float quality);
+  explicit RgbJpegCodec(DataType quality);
 
   [[nodiscard]] bool Decode(const std::string& blob, SignalN2D* image,
                             size_t start_channel = 0) const override;
@@ -35,7 +36,7 @@ class RgbJpegCodec : public IImageCodec {
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
  private:
-  float quality_;
+  DataType quality_;
 };
 
 /**
@@ -44,7 +45,7 @@ class RgbJpegCodec : public IImageCodec {
 class HslJpegCodec : public IImageCodec {
  public:
   HslJpegCodec();
-  explicit HslJpegCodec(float quality);
+  explicit HslJpegCodec(DataType quality);
 
   [[nodiscard]] bool Decode(const std::string& blob, SignalN2D* image,
                             size_t start_channel = 0) const override;
@@ -55,7 +56,7 @@ class HslJpegCodec : public IImageCodec {
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
  private:
-  float quality_;
+  DataType quality_;
 };
 
 /**
@@ -64,7 +65,7 @@ class HslJpegCodec : public IImageCodec {
 class GrayJpegCodec : public IImageCodec {
  public:
   GrayJpegCodec();
-  explicit GrayJpegCodec(float quality);
+  explicit GrayJpegCodec(DataType quality);
 
   [[nodiscard]] bool Decode(const std::string& blob, SignalN2D* image,
                             size_t start_channel = 0) const override;
@@ -75,7 +76,7 @@ class GrayJpegCodec : public IImageCodec {
   [[nodiscard]] size_t channel_number() const override { return 1; }
 
  private:
-  float quality_;
+  DataType quality_;
 };
 
 }  // namespace drift::img

@@ -17,7 +17,7 @@ namespace drift::img {
 
 namespace bg = boost::gil;
 
-void CheckRangeQuality(float quality) {
+void CheckRangeQuality(DataType quality) {
   if ((quality < 0) || (quality > 1.f)) {
     throw std::runtime_error("write_quality out of range 0..1");
   }
@@ -31,7 +31,7 @@ std::uint8_t ToPixel(T x) {
 
 RgbJpegCodec::RgbJpegCodec() : RgbJpegCodec(1.f) {}
 
-RgbJpegCodec::RgbJpegCodec(float quality) : quality_(quality) {
+RgbJpegCodec::RgbJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 
@@ -117,7 +117,7 @@ bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
 
 HslJpegCodec::HslJpegCodec() : HslJpegCodec(1.f) {}
 
-HslJpegCodec::HslJpegCodec(float quality) : quality_(quality) {
+HslJpegCodec::HslJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 bool HslJpegCodec::Decode(const std::string& blob, SignalN2D* image,
@@ -150,7 +150,7 @@ bool HslJpegCodec::Encode(const SignalN2D& image, std::string* blob,
 
 GrayJpegCodec::GrayJpegCodec() : quality_(1.f) {}
 
-GrayJpegCodec::GrayJpegCodec(float quality) : quality_(quality) {
+GrayJpegCodec::GrayJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 

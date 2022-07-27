@@ -6,13 +6,13 @@
 
 namespace drift::img {
 
-void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
-              float* luminance) {
+void RGBToHSL(DataType red, DataType green, DataType blue, DataType* hue, DataType* saturation,
+              DataType* luminance) {
   const auto min_color = std::min({red, green, blue});
   const auto max_color = std::max({red, green, blue});
 
-  const float diff = max_color - min_color;
-  const float sum = max_color + min_color;
+  const DataType diff = max_color - min_color;
+  const DataType sum = max_color + min_color;
 
   if (std::abs(diff) < 0.001f) {
     // rgb color is gray
@@ -51,15 +51,15 @@ void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
   }
 }
 
-void HSLToRGB(float hue, float saturation, float luminance, float* red,
-              float* green, float* blue) {
+void HSLToRGB(DataType hue, DataType saturation, DataType luminance, DataType* red,
+              DataType* green, DataType* blue) {
   if (std::abs(saturation) < 0.0001) {
     // If saturation is 0, the color is a shade of gray
     *red = luminance;
     *green = luminance;
     *blue = luminance;
   } else {
-    float temp1;
+    DataType temp1;
     // Set the temporary values
     if (luminance < 0.5) {
       temp1 = luminance * (1.f + saturation);
@@ -67,11 +67,11 @@ void HSLToRGB(float hue, float saturation, float luminance, float* red,
       temp1 = (luminance + saturation) - (luminance * saturation);
     }
 
-    const float temp2 = 2.f * luminance - temp1;
+    const DataType temp2 = 2.f * luminance - temp1;
 
-    float temp_red = hue + 1.f / 3.f;
-    float temp_green = hue;
-    float temp_blue = hue - 1.f / 3.f;
+    DataType temp_red = hue + 1.f / 3.f;
+    DataType temp_green = hue;
+    DataType temp_blue = hue - 1.f / 3.f;
     if (temp_red > 1.f) {
       temp_red--;
     }
@@ -114,13 +114,13 @@ void HSLToRGB(float hue, float saturation, float luminance, float* red,
   }
 }
 
-void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
+void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
                      size_t start_channel) {
   assert(image && (image->size() >= 3 + start_channel) &&
          "must have at least 3 channels");
 
   auto& img = *image;
-  float h, s, l;
+  DataType h, s, l;
   size_t width{img[start_channel].columns()}, height{img[start_channel].rows()};
   for (size_t y = 0; y < height; ++y) {
     for (size_t x = 0; x < width; ++x) {
@@ -133,13 +133,13 @@ void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
   }
 }
 
-void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
+void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
                      size_t start_channel) {
   assert(image && (image->size() >= 3 + start_channel) &&
          "must have at least 3 channels");
 
   auto& img = *image;
-  float h, s, l;
+  DataType h, s, l;
   size_t width{img[start_channel].columns()}, height{img[start_channel].rows()};
   for (size_t y = 0; y < height; ++y) {
     for (size_t x = 0; x < width; ++x) {

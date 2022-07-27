@@ -5,6 +5,8 @@
 
 #include <blaze/Blaze.h>
 
+#include "wavelet_buffer/primitives.h"
+
 namespace drift::img {
 
 enum ColorSpace { kRGB = 1, kHSL = 2, kGray = 3 };
@@ -18,8 +20,8 @@ enum ColorSpace { kRGB = 1, kHSL = 2, kGray = 3 };
  * @param saturation
  * @param luminance
  */
-void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
-              float* luminance);
+void RGBToHSL(DataType red, DataType green, DataType blue, DataType* hue, DataType* saturation,
+              DataType* luminance);
 
 /**
  * Convert pixel from HSL to RGB color space (all values are normalized)
@@ -30,15 +32,15 @@ void RGBToHSL(float red, float green, float blue, float* hue, float* saturation,
  * @param green
  * @param blue
  */
-void HSLToRGB(float hue, float saturation, float luminance, float* red,
-              float* green, float* blue);
+void HSLToRGB(DataType hue, DataType saturation, DataType luminance, DataType* red,
+              DataType* green, DataType* blue);
 
 /**
  * Convert RGB blaze matrix to HSL matrix
  * @param RGB Image matrix
  * @param start_channel
  */
-void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
+void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
                      size_t start_channel = 0);
 
 /**
@@ -46,7 +48,7 @@ void ConvertRgbToHsl(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
  * @param RGB Image matrix
  * @param start_channel
  */
-void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<float>>* image,
+void ConvertHslToRgb(blaze::DynamicVector<blaze::DynamicMatrix<DataType>>* image,
                      size_t start_channel = 0);
 
 }  // namespace drift::img
