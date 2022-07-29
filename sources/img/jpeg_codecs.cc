@@ -1,8 +1,7 @@
-// Copyright 2020-2021 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
 
 #include "wavelet_buffer/img/jpeg_codecs.h"
 
-#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -11,7 +10,6 @@
 #include <boost/gil/typedefs.hpp>
 
 #include "wavelet_buffer/img/color_space.h"
-#include "wavelet_buffer/img/image_codec.h"
 
 namespace drift::img {
 
@@ -74,30 +72,9 @@ bool RgbJpegCodec::Decode(const std::string& blob, SignalN2D* image,
 
 bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                           size_t start_channel) const {
-//  if (image.size() < 3 + start_channel) {
-//    std::cerr << "Failed to encode: image must at least 3 + start_channel "
-//                 "channels (currently "
-//              << image.size() << ")" << std::endl;
-//    return false;
-//  }
-//
-//  const auto rows = image[start_channel].rows();
-//  const auto columns = image[start_channel].columns();
-//  for (size_t i = start_channel + 1; i < start_channel + 3; ++i) {
-//    if ((image[i].rows() != rows) || (image[i].columns() != columns)) {
-//      std::cerr << "Failed to encode: channel has different size" << std::endl;
-//      return false;
-//    }
-//  }
-//
-//  if ((rows == 0) || (columns == 0)) {
-//    std::cerr << "Failed to encode: 0x0 image" << std::endl;
-//    return false;
-//  }
   if (!checkChannelsShape(image, start_channel)) {
     return false;
   }
-
 
   const auto rows = image[start_channel].rows();
   const auto columns = image[start_channel].columns();
@@ -122,11 +99,11 @@ bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
   return true;
 }
 
-bool RgbJpegCodec::checkChannelsShape(const SignalN2D& image, size_t start_channel) const
-{
+bool RgbJpegCodec::checkChannelsShape(const SignalN2D& image,
+                                      size_t start_channel) const {
   if (image.size() < channel_number() + start_channel) {
-    std::cerr << "Failed to encode: image must at least " << channel_number() + start_channel <<
-              "channels (currently "
+    std::cerr << "Failed to encode: image must at least "
+              << channel_number() + start_channel << "channels (currently "
               << image.size() << ")" << std::endl;
     return false;
   }
@@ -172,25 +149,17 @@ bool HslJpegCodec::Encode(const SignalN2D& image, std::string* blob,
     return false;
   }
 
-//  if (image.size() < 3 + start_channel) {
-//    std::cerr << "Failed to encode: image must at least 3 + start_channel "
-//                 "channels (currently "
-//              << image.size() << ")" << std::endl;
-//    return false;
-//  }
-
-
   RgbJpegCodec rgb_codec(quality_);
   auto cpy = image;  // TODO(Aleksey Timin): We should find a way to avoid copy
   ConvertHslToRgb(&cpy, start_channel);
   return rgb_codec.Encode(cpy, blob, start_channel);
 }
 
-bool HslJpegCodec::checkChannelsShape(const SignalN2D& image, size_t start_channel) const
-{
+bool HslJpegCodec::checkChannelsShape(const SignalN2D& image,
+                                      size_t start_channel) const {
   if (image.size() < channel_number() + start_channel) {
-    std::cerr << "Failed to encode: image must at least " << channel_number() + start_channel <<
-                 "channels (currently "
+    std::cerr << "Failed to encode: image must at least "
+              << channel_number() + start_channel << "channels (currently "
               << image.size() << ")" << std::endl;
     return false;
   }
@@ -255,16 +224,6 @@ bool GrayJpegCodec::Decode(const std::string& blob, SignalN2D* img,
 
 bool GrayJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                            size_t start_channel) const {
-//  if (image.size() < start_channel + 1) {
-//    std::cerr << "Image must have at least 1 channel";
-//    return false;
-//  }
-//
-//  if (image[start_channel].columns() * image[start_channel].rows() == 0) {
-//    std::cerr << "Image mustn't be empty";
-//    return false;
-//  }
-
   if (!checkChannelsShape(image, start_channel)) {
     return false;
   }
@@ -292,7 +251,8 @@ bool GrayJpegCodec::Encode(const SignalN2D& image, std::string* blob,
   return true;
 }
 
-[[nodiscard]] bool GrayJpegCodec::checkChannelsShape(const SignalN2D& image, size_t start_channel) const {
+[[nodiscard]] bool GrayJpegCodec::checkChannelsShape(
+    const SignalN2D& image, size_t start_channel) const {
   if (image.size() < start_channel + 1) {
     std::cerr << "Image must have at least 1 channel";
     return false;

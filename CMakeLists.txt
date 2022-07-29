@@ -28,7 +28,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
         blaze/3.8
-        libjpeg/9d
+        libjpeg-turbo/2.1.2
         boost/1.73.0
         GENERATORS cmake
 )
@@ -85,6 +85,9 @@ target_compile_definitions(
 target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_20)
 set_target_properties(${WB_TARGET_NAME} PROPERTIES CXX_STANDARD_REQUIRED ON)
 
+# target_compile_options(${WB_TARGET_NAME} PUBLIC -D_GLIBCXX_DEBUG)
+# target_compile_options(sf_compressor PUBLIC -D_GLIBCXX_DEBUG)
+
 # Include paths
 target_include_directories(
     ${WB_TARGET_NAME}
@@ -97,7 +100,7 @@ target_include_directories(
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg-turbo)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
 
 # Catch2 installation

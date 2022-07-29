@@ -4,19 +4,18 @@
 #define WAVELET_BUFFER_IMG_JPEG_CODECS_H_
 
 #include <blaze/Blaze.h>
+#include <boost/gil/extension/io/jpeg.hpp>
+#include <boost/gil/image.hpp>
+#include <boost/gil/typedefs.hpp>
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
-
-#include "wavelet_buffer/primitives.h"
 #include "wavelet_buffer/img/color_space.h"
 #include "wavelet_buffer/img/image_codec.h"
+#include "wavelet_buffer/primitives.h"
 
 namespace drift::img {
 /**
@@ -35,7 +34,8 @@ class RgbJpegCodec : public IImageCodec {
 
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
-  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image,
+                                        size_t start_channel) const override;
 
  private:
   DataType quality_;
@@ -57,8 +57,8 @@ class HslJpegCodec : public IImageCodec {
 
   [[nodiscard]] size_t channel_number() const override { return 3; }
 
-  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
-
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image,
+                                        size_t start_channel) const override;
 
  private:
   DataType quality_;
@@ -80,7 +80,8 @@ class GrayJpegCodec : public IImageCodec {
 
   [[nodiscard]] size_t channel_number() const override { return 1; }
 
-  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image, size_t start_channel) const override;
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image,
+                                        size_t start_channel) const override;
 
  private:
   DataType quality_;
