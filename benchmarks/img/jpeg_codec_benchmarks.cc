@@ -16,7 +16,7 @@ const std::string kPic400x400("img/fixtures/pic400x400.jpg");
 
 TEST_CASE("JPEG codec benchmarks") {
   auto load_picture = [](const std::string& path) {
-    std::ifstream data(path);
+    std::ifstream data(path, std::ios::binary);
     assert(data);
     std::stringstream ss;
     ss << data.rdbuf();

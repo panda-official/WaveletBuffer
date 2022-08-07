@@ -25,7 +25,7 @@ class WaveletImage::WaveletImageImpl {
                                       size_t start_channel) {
     Status status;
 
-    std::ifstream file(file_path);
+    std::ifstream file(file_path, std::ios::binary);
     if (file) {
       std::stringstream ss;
       ss << file.rdbuf();
@@ -41,7 +41,7 @@ class WaveletImage::WaveletImageImpl {
                       size_t start_channel) const {
     Status status;
 
-    std::ofstream file(file_path);
+    std::ofstream file(file_path, std::ios::binary);
     if (file) {
       std::string data;
       status = ExportToString(&data, codec, start_channel);
@@ -91,7 +91,7 @@ class WaveletImage::WaveletImageImpl {
 
   Status Save(const std::string &file_path) const {
     Status status;
-    std::ofstream file(file_path);
+    std::ofstream file(file_path, std::ios::binary);
     if (file) {
       std::string data;
       status = buffer_.Serialize(&data) ? Status::kOk : Status::kWrongData;
@@ -153,7 +153,7 @@ WaveletImage::Status WaveletImage::ExportToString(std::string *data,
 std::unique_ptr<WaveletImage> WaveletImage::Load(const std::string &file_path) {
   std::unique_ptr<WaveletImage> img;
 
-  std::ifstream file(file_path);
+  std::ifstream file(file_path, std::ios::binary);
   if (file) {
     std::stringstream ss;
     ss << file.rdbuf();

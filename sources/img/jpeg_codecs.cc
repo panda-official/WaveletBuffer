@@ -47,7 +47,7 @@ bool RgbJpegCodec::Decode(const std::string& blob, SignalN2D* image,
   std::stringstream in_buffer(blob, std::ios_base::in | std::ios_base::binary);
   try {
     bg::read_image(in_buffer, bg_image, bg::jpeg_tag());
-    cimg_image.load_jpeg_buffer(reinterpret_cast<const JOCTET*>(blob.data()), blob.size());
+    //cimg_image.load_jpeg_buffer(reinterpret_cast<const JOCTET*>(blob.data()), blob.size());
 //    CImgDisplay main_disp(cimg_image,"Click a point");
 //    while(!main_disp.is_closed()) {
 //      main_disp.wait();

@@ -135,7 +135,7 @@ TEST_CASE("3-channeled JPEG codec") {
   }
 
   SECTION("should encode to empty blaze image") {
-    std::ifstream img_file(kImagePath);
+    std::ifstream img_file(kImagePath, std::ios::binary);
 
     REQUIRE(img_file);
 

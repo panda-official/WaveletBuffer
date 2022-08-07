@@ -115,7 +115,7 @@ target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::cimg)
-target_link_libraries(${WB_TARGET_NAME} X11::X11)
+#target_link_libraries(${WB_TARGET_NAME} X11::X11)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
