@@ -32,6 +32,8 @@ class WaveletBufferConan(ConanFile):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
+        self.settings.build_type = "Release"
+
     def source(self):
         local_source = os.getenv("CONAN_SOURCE_DIR")
         if local_source is not None:
@@ -57,7 +59,7 @@ class WaveletBufferConan(ConanFile):
         tc.generate()
 
     def build(self):
-        cmake = CMake(self, build_type="Release")
+        cmake = CMake(self)
         cmake.configure()
         cmake.build()
 
