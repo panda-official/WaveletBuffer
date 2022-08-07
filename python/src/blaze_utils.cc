@@ -111,7 +111,7 @@ NWaveletDecomposition NPyDecompositionToNW(
     for (int num = 0; num < nw_decompositions[ch].size(); ++num) {
       const auto signal = decompositions[ch][num];
       const auto shape = signal.shape();
-      std::vector<ssize_t> el_strides = {shape[1], 1};
+      std::vector<size_t> el_strides = {shape[1], 1};
 
       blaze::DynamicMatrix<drift::DataType> subband(shape[0], shape[1]);
       auto ptr = static_cast<float *>(signal.request(true).ptr);
