@@ -97,7 +97,10 @@ jobs:
         run: |
           cd conan
           conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Set libstdc++11
+        if : matrix.os == 'ubuntu-latest'
+        run: conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Build package for stable channel
         if: github.ref_type == 'tag'
