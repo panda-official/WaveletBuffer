@@ -37,7 +37,7 @@ class WaveletBufferConan(ConanFile):
         if local_source is not None:
             print(f"Use local sources: {local_source}")
             self.run(
-                "cp {} -r {}".format(os.getenv("CONAN_SOURCE_DIR"), self.source_folder)
+                "cp -r {}/. {}/".format(os.getenv("CONAN_SOURCE_DIR"), self.source_folder)
             )
         else:
             branch = f"v{self.version}" if self.channel == "stable" else self.channel
