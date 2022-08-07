@@ -9,10 +9,17 @@
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 
+#include <cstdio>
+#include <jpeglib.h>
+#include <jerror.h>
+#define cimg_plugin "plugins/jpeg_buffer.h"
+#include <CImg.h>
+
 #include "wavelet_buffer/img/color_space.h"
 
 namespace drift::img {
 
+using namespace cimg_library;
 namespace bg = boost::gil;
 
 void CheckRangeQuality(DataType quality) {
@@ -36,16 +43,22 @@ RgbJpegCodec::RgbJpegCodec(DataType quality) : quality_(quality) {
 bool RgbJpegCodec::Decode(const std::string& blob, SignalN2D* image,
                           size_t start_channel) const {
   bg::rgb8_image_t bg_image;
+  CImg<unsigned char> cimg_image;
   std::stringstream in_buffer(blob, std::ios_base::in | std::ios_base::binary);
   try {
     bg::read_image(in_buffer, bg_image, bg::jpeg_tag());
+    cimg_image.load_jpeg_buffer(reinterpret_cast<const JOCTET*>(blob.data()), blob.size());
+//    CImgDisplay main_disp(cimg_image,"Click a point");
+//    while(!main_disp.is_closed()) {
+//      main_disp.wait();
+    //}
   } catch (std::exception& e) {
     std::cerr << "Failed to decode image: " << e.what() << std::endl;
     return false;
   }
 
-  const auto rows = bg_image.height();
-  const auto columns = bg_image.width();
+  const auto rows = cimg_image.height();//bg_image.height();
+  const auto columns = cimg_image.width();//bg_image.width();
 
   auto& im = *image;
   if (im.size() < start_channel + 3) {

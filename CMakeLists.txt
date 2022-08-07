@@ -28,8 +28,17 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES openblas/0.3.20
         blaze/3.8
-        libjpeg-turbo/2.1.2
+        libjpeg/9d
         boost/1.73.0
+        cimg/3.0.2
+        OPTIONS
+        cimg:enable_fftw=False
+        cimg:enable_jpeg=True
+        cimg:enable_openexr=False
+        cimg:enable_png=False
+        cimg:enable_tiff=False
+        cimg:enable_ffmpeg=False
+        cimg:enable_opencv=False
         GENERATORS cmake
 )
 conan_cmake_autodetect(settings)
@@ -53,6 +62,9 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(SFCompressor)
+
+# CImg
+find_package(X11 REQUIRED)
 
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
@@ -100,8 +112,10 @@ target_include_directories(
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg-turbo)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg)
 target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
+target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::cimg)
+target_link_libraries(${WB_TARGET_NAME} X11::X11)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
