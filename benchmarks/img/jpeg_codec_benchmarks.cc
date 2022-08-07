@@ -1,18 +1,18 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/benchmark/catch_benchmark_all.hpp>
+#include <wavelet_buffer/img/jpeg_codecs.h>
 
 #include <fstream>
 
-#include <wavelet_buffer/img/jpeg_codecs.h>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark_all.hpp>
 
 using ::drift::img::HslJpegCodec;
 using ::drift::SignalN2D;
 
-const std::string kPic100x100("img/fixtures/pic100x100.jpg");
-const std::string kPic200x200("img/fixtures/pic200x200.jpg");
-const std::string kPic400x400("img/fixtures/pic400x400.jpg");
+const char kPic100x100[] = "img/fixtures/pic100x100.jpg";
+const char kPic200x200[] = "img/fixtures/pic200x200.jpg";
+const char kPic400x400[] = "img/fixtures/pic400x400.jpg";
 
 TEST_CASE("JPEG codec benchmarks") {
   auto load_picture = [](const std::string& path) {

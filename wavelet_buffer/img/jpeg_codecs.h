@@ -4,14 +4,15 @@
 #define WAVELET_BUFFER_IMG_JPEG_CODECS_H_
 
 #include <blaze/Blaze.h>
-#include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include <boost/gil/extension/io/jpeg.hpp>
+#include <boost/gil/image.hpp>
+#include <boost/gil/typedefs.hpp>
 
 #include "wavelet_buffer/img/color_space.h"
 #include "wavelet_buffer/img/image_codec.h"
