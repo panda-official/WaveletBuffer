@@ -7,37 +7,43 @@ option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
 # Conan
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
+if(CONAN_EXPORTED)
+    message(STATUS "Conan exported")
+else()
+    message(STATUS "Run conan")
 
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(
-        STATUS
-        "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+    list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+    set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
+
+    if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+        message(
+            STATUS
+            "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+        )
+        file(
+            DOWNLOAD
+                "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+                "${CMAKE_BINARY_DIR}/conan.cmake"
+            TLS_VERIFY ON
+        )
+    endif()
+
+    include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+    conan_cmake_configure(REQUIRES openblas/0.3.20
+            blaze/3.8
+            libjpeg-turbo/2.1.3
+            boost/1.73.0
+            GENERATORS CMakeDeps
     )
-    file(
-        DOWNLOAD
-            "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
-            "${CMAKE_BINARY_DIR}/conan.cmake"
-        TLS_VERIFY ON
+    conan_cmake_autodetect(settings)
+    conan_cmake_install(PATH_OR_REFERENCE .
+            BUILD missing
+            REMOTE conancenter
+            SETTINGS ${settings}
     )
 endif()
-
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-
-conan_cmake_configure(REQUIRES openblas/0.3.20
-        blaze/3.8
-        libjpeg-turbo/2.1.3
-        boost/1.73.0
-        GENERATORS CMakeDeps
-)
-conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE .
-        BUILD missing
-        REMOTE conancenter
-        SETTINGS ${settings}
-)
 
 find_package(blaze REQUIRED)
 find_package(OpenBLAS REQUIRED)

@@ -56,6 +56,7 @@ class WaveletBufferConan(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
+        tc.variables["CONAN_EXPORTED"] = True
         tc.generate()
 
     def build(self):
