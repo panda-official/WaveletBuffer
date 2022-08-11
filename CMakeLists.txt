@@ -62,9 +62,6 @@ fetchcontent_declare(
 
 fetchcontent_makeavailable(SFCompressor)
 
-# CImg
-find_package(X11 REQUIRED)
-
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
