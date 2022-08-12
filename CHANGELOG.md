@@ -4,6 +4,11 @@
 
 * DRIFT-493: WaveletImage, [PR-21](https://github.com/panda-official/WaveletBuffer/pull/21)
 * Required version for conan, [PR-27](https://github.com/panda-official/WaveletBuffer/pull/27)
+* DRIFT-507: Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
+* DRIFT-507: Add `jpeg_codec_benchmarks.cc`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
+
+### Changed
+* DRIFT-507: Conan generator to `CMakeDeps`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 
 ### Removed
 
@@ -14,6 +19,7 @@
 ### Fixed
 
 * Fix sdist Python package, [PR-20](https://github.com/panda-official/WaveletBuffer/pull/20)
+* DRIFT-507: Bugs detected when adding Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 
 ## Release 0.1.0 (2022-07-07)
 
