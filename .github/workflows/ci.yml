@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         build_type: [ Debug, Release ]
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ ubuntu-20.04, windows-2019, macos-11 ]
     steps:
       - uses: actions/checkout@v2
         with:
