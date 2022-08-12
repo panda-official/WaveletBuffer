@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install conan==1.51.1
+          pip3 install conan==1.51.1
 
       - name: Build tests, benchmarks and examples
         run: |
