@@ -9,7 +9,7 @@ on:
 
 jobs:
   cpplint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Check GStyle with cpplint
     steps:
       - uses: actions/checkout@v2
@@ -21,11 +21,12 @@ jobs:
         run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint
 
   build_test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     name: Build and test C++ part
     strategy:
       matrix:
         build_type: [ Debug, Release ]
+        os: [ ubuntu-20.04, windows-2019 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -33,15 +34,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip3 install conan
-          sudo apt-get install lcov
+          pip install conan==1.51.1
 
       - name: Build tests, benchmarks and examples
         run: |
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_TESTS=ON -DWB_BUILD_BENCHMARKS=ON -DWB_BUILD_EXAMPLES=ON -DCODE_COVERAGE=ON ..
-          cmake --build . -j
+          cmake --build . -j --config ${{ matrix.build_type }}
 
       - name: Run tests
         run: |
@@ -49,22 +49,25 @@ jobs:
           ctest --output-on-failure
 
       - name: Install wavelet_buffer
+        if : matrix.os == 'ubuntu-20.04'
         run: |
           cd build
           sudo cmake --install .
 
       - name: Check cmake target installation
+        if : matrix.os == 'ubuntu-20.04'
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
       - name: Create code coverage report
-        if: matrix.build_type == 'debug'
+        if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
         run: |
+          sudo apt-get install lcov
           lcov --directory . --capture --output-file coverage.info
           lcov --remove coverage.info '/usr/*' '*/tests/*' '*/build/*' --output-file coverage.info
           lcov --list coverage.info
 
       - name: Upload code coverage report to codecov.io
-        if: matrix.build_type == 'debug'
+        if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
         uses: codecov/codecov-action@v2
         with:
           directory: .
@@ -74,14 +77,17 @@ jobs:
           verbose: true
 
   conan:
-    needs: [ build_test ]
+    # needs: [ build_test ]
     name: "Build Conan package and upload it"
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04, windows-2019 ]
     steps:
       - uses: actions/checkout@v2
 
       - name: Install conan
-        run: pip3 install conan
+        run: pip3 install conan==1.51.1
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
@@ -91,19 +97,29 @@ jobs:
         run: |
           cd conan
           conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Set libstdc++11
+        if : matrix.os == 'ubuntu-20.04'
+        run: conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Build package for stable channel
         if: github.ref_type == 'tag'
+        env:
+          CONAN_SOURCE_DIR: ${GITHUB_WORKSPACE}
         run: |
           cd conan
-          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/stable
+          conan create . drift/stable
 
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
+        env:
+          CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
+          echo $GITHUB_WORKSPACE
+          echo $CONAN_SOURCE_DIR
+          echo `pwd`
           cd conan
-          CONAN_SOURCE_DIR=`pwd`/.. conan create . drift/develop
+          conan create . drift/develop
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
@@ -119,7 +135,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-latest ]
+        platform: [ ubuntu-20.04, windows-2019 ]
         python-version: [ "3.8", "3.9", "3.10" ]
 
     steps:
@@ -139,7 +155,7 @@ jobs:
 
   build_sdist:
     name: "Build and test SDist"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
@@ -169,21 +185,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ ubuntu-20.04, windows-2019 ]
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.6.1
+      # - name: Install cibuildwheel
+      #  run: python -m pip install cibuildwheel==2.6.1
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Build wheels
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse .
+      #  run: |
+      #    python -m cibuildwheel --output-dir wheelhouse .
+        uses: pypa/cibuildwheel@v2.8.1
 
       - name: Verify clean directory
         run: |
@@ -198,7 +215,7 @@ jobs:
   upload_all:
     name: "Upload packages if release"
     needs: [ build_wheels, build_sdist ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     #if: github.event_name == 'release' && github.event.action == 'published'
     if: ${{ startsWith(github.event.ref, 'refs/tags/v') }}
 

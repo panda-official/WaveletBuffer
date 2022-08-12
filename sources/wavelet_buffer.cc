@@ -219,10 +219,13 @@ class WaveletBuffer::Impl {
    */
   [[nodiscard]] bool Serialize(std::string* blob,
                                uint8_t sf_compression = 0) const {
+    sf_compression = std::min<uint8_t>(16, sf_compression);
+    if (IsEmpty()) {
+      sf_compression = 0;
+    }
     std::ostringstream ss;
     blaze::Archive blaze_arch(ss);
     blaze_arch << kSerializationVersion << parameters_ << sf_compression;
-    sf_compression = std::min<uint8_t>(16, sf_compression);
     if (sf_compression == 0) {
       blaze_arch << decompositions_;
     } else {
@@ -370,7 +373,7 @@ class WaveletBuffer::Impl {
                             : std::make_pair(-delta, delta);
   }
 
-  bool IsEmpty() {
+  bool IsEmpty() const {
     return std::all_of(
         decompositions_.begin(), decompositions_.end(), [](const auto& deca) {
           return std::all_of(deca.begin(), deca.end(), [](const auto& mtx) {

@@ -1,5 +1,10 @@
 // Copyright 2021-2022 PANDA GmbH
 
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 #include "blaze_utils.h"
 
 #include <utility>

@@ -1,7 +1,7 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#ifndef WAVELET_BUFFER_WAVELET_IMAGE_H_
-#define WAVELET_BUFFER_WAVELET_IMAGE_H_
+#ifndef WAVELET_BUFFER_IMG_WAVELET_IMAGE_H_
+#define WAVELET_BUFFER_IMG_WAVELET_IMAGE_H_
 
 #include <memory>
 #include <string>
@@ -125,4 +125,4 @@ class WaveletImage {
 };
 }  // namespace drift::img
 
-#endif  // WAVELET_BUFFER_WAVELET_IMAGE_H_
+#endif  // WAVELET_BUFFER_IMG_WAVELET_IMAGE_H_
