@@ -1,5 +1,3 @@
-[keep a changelog](https://keepachangelog.com/en/1.0.0/)
-
 ## Release 0.2.0 (in progress)
 
 ### Added
