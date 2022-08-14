@@ -38,7 +38,7 @@ else()
     conan_cmake_configure(REQUIRES openblas/0.3.20
             blaze/3.8
             libjpeg-turbo/2.1.3
-            boost/1.73.0
+            boost/1.79.0
             GENERATORS CMakeDeps
     )
     conan_cmake_autodetect(settings)
