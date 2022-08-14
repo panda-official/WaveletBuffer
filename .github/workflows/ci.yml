@@ -89,6 +89,9 @@ jobs:
       - name: Install conan
         run: pip3 install conan==1.50.0
 
+      - name: Build boost
+        run: conan install boost/1.79.0@ --build missing
+
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
