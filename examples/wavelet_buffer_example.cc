@@ -12,7 +12,7 @@ using drift::WaveletTypes;
 using DenoiseAlgo = drift::SimpleDenoiseAlgorithm<float>;
 
 std::vector<float> ReadData() {
-  std::ifstream cvs_file(INPUT_SIGNAL_PATH);
+  std::ifstream cvs_file(INPUT_SIGNAL_PATH, std::ios::binary);
   std::array<char, 2048> row{};
   std::vector<float> data;
   if (cvs_file.getline(row.data(), row.size())) {

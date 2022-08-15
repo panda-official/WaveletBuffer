@@ -1,46 +1,58 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(wavelet_buffer VERSION 0.2.0)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.24")
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
+project(wavelet_buffer VERSION 0.3.0)
 
 option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
 option(WB_BUILD_BENCHMARKS "Enable benchmarks" OFF)
 
 # Conan
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
+if(CONAN_EXPORTED)
+    message(STATUS "Conan exported")
+else()
+    message(STATUS "Run conan")
 
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(
-        STATUS
-        "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+    list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+    set(CMAKE_CURRENT_BINARY_DIR ${CMAKE_BINARY_DIR})
+
+    if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+        message(
+            STATUS
+            "Downloading conan.cmake from https://github.com/conan-io/cmake-conan"
+        )
+        file(
+            DOWNLOAD
+                "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+                "${CMAKE_BINARY_DIR}/conan.cmake"
+            TLS_VERIFY ON
+        )
+    endif()
+
+    include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+    conan_cmake_configure(REQUIRES openblas/0.3.20
+            blaze/3.8
+            libjpeg-turbo/2.1.3
+            boost/1.73.0
+            GENERATORS CMakeDeps
     )
-    file(
-        DOWNLOAD
-            "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
-            "${CMAKE_BINARY_DIR}/conan.cmake"
-        TLS_VERIFY ON
+    conan_cmake_autodetect(settings)
+    conan_cmake_install(PATH_OR_REFERENCE .
+            BUILD missing
+            REMOTE conancenter
+            SETTINGS ${settings}
     )
 endif()
 
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-
-conan_cmake_configure(REQUIRES openblas/0.3.20
-        blaze/3.8
-        libjpeg-turbo/2.1.2
-        boost/1.73.0
-        GENERATORS cmake
-)
-conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE .
-        BUILD missing
-        REMOTE conancenter
-        SETTINGS ${settings}
-)
-
-include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+find_package(blaze REQUIRED)
+find_package(OpenBLAS REQUIRED)
+find_package(libjpeg-turbo REQUIRED)
+find_package(Boost REQUIRED)
 
 # Dependencies
 include(FetchContent)
@@ -48,8 +60,8 @@ include(FetchContent)
 # SFCompressor
 fetchcontent_declare(
     SFCompressor
-    URL
-        https://github.com/panda-official/SfCompressor/archive/refs/tags/v1.0.1.tar.gz
+    GIT_REPOSITORY https://github.com/panda-official/SfCompressor.git
+    GIT_TAG drift-507
 )
 
 fetchcontent_makeavailable(SFCompressor)
@@ -82,7 +94,11 @@ target_compile_definitions(
 )
 
 # Set compiler features
-target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_17)
+target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_20)
+set_target_properties(${WB_TARGET_NAME} PROPERTIES CXX_STANDARD_REQUIRED ON)
+
+# target_compile_options(${WB_TARGET_NAME} PUBLIC -D_GLIBCXX_DEBUG)
+# target_compile_options(sf_compressor PUBLIC -D_GLIBCXX_DEBUG)
 
 # Include paths
 target_include_directories(
@@ -94,10 +110,10 @@ target_include_directories(
 
 # Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::blaze)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::openblas)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::libjpeg-turbo)
-target_link_libraries(${WB_TARGET_NAME} CONAN_PKG::boost)
+target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
+target_link_libraries(${WB_TARGET_NAME} OpenBLAS::OpenBLAS)
+target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
+target_link_libraries(${WB_TARGET_NAME} Boost::headers)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)

@@ -1,8 +1,7 @@
-// Copyright 2020-2021 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
 
 #include "wavelet_buffer/img/jpeg_codecs.h"
 
-#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -11,13 +10,12 @@
 #include <boost/gil/typedefs.hpp>
 
 #include "wavelet_buffer/img/color_space.h"
-#include "wavelet_buffer/img/image_codec.h"
 
 namespace drift::img {
 
 namespace bg = boost::gil;
 
-void CheckRangeQuality(float quality) {
+void CheckRangeQuality(DataType quality) {
   if ((quality < 0) || (quality > 1.f)) {
     throw std::runtime_error("write_quality out of range 0..1");
   }
@@ -31,7 +29,7 @@ std::uint8_t ToPixel(T x) {
 
 RgbJpegCodec::RgbJpegCodec() : RgbJpegCodec(1.f) {}
 
-RgbJpegCodec::RgbJpegCodec(float quality) : quality_(quality) {
+RgbJpegCodec::RgbJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 
@@ -74,26 +72,12 @@ bool RgbJpegCodec::Decode(const std::string& blob, SignalN2D* image,
 
 bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                           size_t start_channel) const {
-  if (image.size() < 3 + start_channel) {
-    std::cerr << "Failed to encode: image must at least 3 + start_channel "
-                 "channels (currently "
-              << image.size() << ")" << std::endl;
+  if (!checkChannelsShape(image, start_channel)) {
     return false;
   }
 
   const auto rows = image[start_channel].rows();
   const auto columns = image[start_channel].columns();
-  for (size_t i = start_channel + 1; i < start_channel + 3; ++i) {
-    if ((image[i].rows() != rows) || (image[i].columns() != columns)) {
-      std::cerr << "Failed to encode: channel has different size" << std::endl;
-      return false;
-    }
-  }
-
-  if ((rows == 0) || (columns == 0)) {
-    std::cerr << "Failed to encode: 0x0 image" << std::endl;
-    return false;
-  }
 
   bg::rgb8_image_t rgb_img(columns, rows);
   auto rgb_view = bg::view(rgb_img);
@@ -115,9 +99,35 @@ bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
   return true;
 }
 
+bool RgbJpegCodec::checkChannelsShape(const SignalN2D& image,
+                                      size_t start_channel) const {
+  if (image.size() < channel_number() + start_channel) {
+    std::cerr << "Failed to encode: image must at least "
+              << channel_number() + start_channel << "channels (currently "
+              << image.size() << ")" << std::endl;
+    return false;
+  }
+
+  const size_t rows0 = image[start_channel].rows();
+  const size_t columns0 = image[start_channel].columns();
+  for (size_t i = start_channel + 1; i < start_channel + 3; ++i) {
+    if ((image[i].rows() != rows0) || (image[i].columns() != columns0)) {
+      std::cerr << "Failed to encode: channel has different size" << std::endl;
+      return false;
+    }
+  }
+
+  if ((rows0 == 0) || (columns0 == 0)) {
+    std::cerr << "Failed to encode: 0x0 image" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 HslJpegCodec::HslJpegCodec() : HslJpegCodec(1.f) {}
 
-HslJpegCodec::HslJpegCodec(float quality) : quality_(quality) {
+HslJpegCodec::HslJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 bool HslJpegCodec::Decode(const std::string& blob, SignalN2D* image,
@@ -135,10 +145,7 @@ bool HslJpegCodec::Decode(const std::string& blob, SignalN2D* image,
 
 bool HslJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                           size_t start_channel) const {
-  if (image.size() < 3 + start_channel) {
-    std::cerr << "Failed to encode: image must at least 3 + start_channel "
-                 "channels (currently "
-              << image.size() << ")" << std::endl;
+  if (!checkChannelsShape(image, start_channel)) {
     return false;
   }
 
@@ -148,9 +155,35 @@ bool HslJpegCodec::Encode(const SignalN2D& image, std::string* blob,
   return rgb_codec.Encode(cpy, blob, start_channel);
 }
 
+bool HslJpegCodec::checkChannelsShape(const SignalN2D& image,
+                                      size_t start_channel) const {
+  if (image.size() < channel_number() + start_channel) {
+    std::cerr << "Failed to encode: image must at least "
+              << channel_number() + start_channel << "channels (currently "
+              << image.size() << ")" << std::endl;
+    return false;
+  }
+
+  const size_t rows0 = image[start_channel].rows();
+  const size_t columns0 = image[start_channel].columns();
+  for (size_t i = start_channel + 1; i < start_channel + 3; ++i) {
+    if ((image[i].rows() != rows0) || (image[i].columns() != columns0)) {
+      std::cerr << "Failed to encode: channel has different size" << std::endl;
+      return false;
+    }
+  }
+
+  if ((rows0 == 0) || (columns0 == 0)) {
+    std::cerr << "Failed to encode: 0x0 image" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 GrayJpegCodec::GrayJpegCodec() : quality_(1.f) {}
 
-GrayJpegCodec::GrayJpegCodec(float quality) : quality_(quality) {
+GrayJpegCodec::GrayJpegCodec(DataType quality) : quality_(quality) {
   CheckRangeQuality(quality);
 }
 
@@ -191,13 +224,7 @@ bool GrayJpegCodec::Decode(const std::string& blob, SignalN2D* img,
 
 bool GrayJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                            size_t start_channel) const {
-  if (image.size() < start_channel + 1) {
-    std::cerr << "Image must have at least 1 channel";
-    return false;
-  }
-
-  if (image[start_channel].columns() * image[start_channel].rows() == 0) {
-    std::cerr << "Image mustn't be empty";
+  if (!checkChannelsShape(image, start_channel)) {
     return false;
   }
 
@@ -218,6 +245,21 @@ bool GrayJpegCodec::Encode(const SignalN2D& image, std::string* blob,
                         std::istreambuf_iterator<char>());
   } catch (std::exception const& e) {
     std::cerr << "Encode exception: " << e.what() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+[[nodiscard]] bool GrayJpegCodec::checkChannelsShape(
+    const SignalN2D& image, size_t start_channel) const {
+  if (image.size() < start_channel + 1) {
+    std::cerr << "Image must have at least 1 channel";
+    return false;
+  }
+
+  if (image[start_channel].columns() * image[start_channel].rows() == 0) {
+    std::cerr << "Image mustn't be empty";
     return false;
   }
 

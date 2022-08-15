@@ -4,17 +4,19 @@ requires = [
     "scikit-build",
     "pybind11 >= 2.9.2",
     "cmake",
-    "conan >= 1.50.0",
-    "ninja; platform_system!='Windows'"
+    "conan == 1.51.1",
+    "ninja"
 ]
 
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+archs = ["auto64"]
 build = ["*38*", "*39*", "*310*"]
 skip = ["*musllinux*", "pp*"]
 test-extras = "test"
 test-command = "pytest {project}/python/tests"
+build-verbosity = '3'
 
 [tool.cibuildwheel.linux]
 archs = "x86_64"

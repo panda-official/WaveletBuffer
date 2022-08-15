@@ -6,7 +6,7 @@
 
 #include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/denoise_algorithms.h>
-#include <wavelet_buffer/wavelet_image.h>
+#include <wavelet_buffer/img/wavelet_image.h>
 
 #include "../wavelet_parameters.h"
 

@@ -1,5 +1,18 @@
 [keep a changelog](https://keepachangelog.com/)
 
+## Unreleased
+
+## 0.3.0 - 2022-08-15
+
+### Added
+
+* DRIFT-507: Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
+* DRIFT-533: MacOS support, [PR-28](https://github.com/panda-official/WaveletBuffer/pull/28)
+
+### Changed
+
+* DRIFT-507: Conan generator to `CMakeDeps`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
+
 ## 0.2.0 - 2022-07-22
 
 ### Added
@@ -20,6 +33,7 @@
 ### Fixed
 
 * Fix sdist Python package, [PR-20](https://github.com/panda-official/WaveletBuffer/pull/20)
+* DRIFT-507: Bugs detected when adding Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 
 ## 0.1.0 - 2022-07-07
 
