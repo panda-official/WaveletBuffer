@@ -8,6 +8,7 @@
 * Required version for conan, [PR-27](https://github.com/panda-official/WaveletBuffer/pull/27)
 * DRIFT-507: Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 * DRIFT-507: Add `jpeg_codec_benchmarks.cc`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
+* DRIFT-533: MacOS support, [PR-28](https://github.com/panda-official/WaveletBuffer/pull/28)
 
 ### Changed
 * DRIFT-507: Conan generator to `CMakeDeps`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
