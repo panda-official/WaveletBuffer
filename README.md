@@ -4,15 +4,70 @@
 # WaveletBuffer
 A universal  C++ compression library based on wavelet transformation
 
+## Features
+
+- Written in Modern C++
+- One-side wavelet decomposition for vectors and matrixes
+- 5 Daubechies Wavelets DB1-DB5
+- Different denoising alogorithms
+- Fast and effitient compression with [SFCompressor](https://github.com/panda-official/SfCompressor)
+- Crossplatform
+
 ## Requirements
 
 * CMake >= 3.16
-* C++17 compiler
-* conan
+* C++20 compiler
+* conan >= 1.50
 
 ## Bindings
 
 * [Python](python/README.md)
+
+
+## Usage Example
+```c++
+#include <wavelet_buffer/wavelet_buffer.h>
+
+using drift::Signal1D;
+using drift::WaveletBuffer;
+using drift::WaveletParameters;
+using drift::WaveletTypes;
+using DenoiseAlgo = drift::ThresholdAbsDenoiseAlgorithm<float>;
+
+int main() {
+  Signal1D original = blaze::generate(
+      1000, [](auto index) { return static_cast<float>(index % 100); });
+
+  std::cout << "Original size: " << original.size() * 4 << std::endl;
+  WaveletBuffer buffer(WaveletParameters{
+      .signal_shape = {original.size()},
+      .signal_number = 1,
+      .decomposition_steps = 3,
+      .wavelet_type = WaveletTypes::kDB1,
+  });
+
+  // Wavelet decomposition of the signal and denoising
+  buffer.Decompose(original, DenoiseAlgo(0, 0.3));
+
+  // Compress the buffer
+  std::string arch;
+  buffer.Serialize(&arch, 16);
+  std::cout << "Compressed size: " << arch.size() << std::endl;
+
+  // Decompress the buffer
+  auto restored_buffer = WaveletBuffer::Parse(arch);
+  Signal1D output_signal;
+
+  // Restore the signal from wavelet decomposition
+  restored_buffer->Compose(&output_signal);
+
+  std::cout << "Distance between original and restored signal: "
+            << blaze::norm(original - output_signal) / original.size()
+            << std::endl;
+  std::cout << "Compression rate: " << original.size() * 4. / arch.size() * 100
+            << "%" << std::endl;
+}
+```
 
 ## Build and Installing
 
@@ -59,47 +114,3 @@ find_package(LAPACK REQUIRED)
 target_link_libraries(program ${LAPACK_LIBRARIES})
 ```
 
-## Example
-```c++
-#include <wavelet_buffer/wavelet_buffer.h>
-
-using drift::Signal1D;
-using drift::WaveletBuffer;
-using drift::WaveletParameters;
-using drift::WaveletTypes;
-using DenoiseAlgo = drift::ThresholdAbsDenoiseAlgorithm<float>;
-
-int main() {
-  Signal1D original = blaze::generate(
-      1000, [](auto index) { return static_cast<float>(index % 100); });
-
-  std::cout << "Original size: " << original.size() * 4 << std::endl;
-  WaveletBuffer buffer(WaveletParameters{
-      .signal_shape = {original.size()},
-      .signal_number = 1,
-      .decomposition_steps = 3,
-      .wavelet_type = WaveletTypes::kDB1,
-  });
-
-  // Wavelet decomposition of the signal and denoising
-  buffer.Decompose(original, DenoiseAlgo(0, 0.3));
-
-  // Compress the buffer
-  std::string arch;
-  buffer.Serialize(&arch, 16);
-  std::cout << "Compressed size: " << arch.size() << std::endl;
-
-  // Decompress the buffer
-  auto restored_buffer = WaveletBuffer::Parse(arch);
-  Signal1D output_signal;
-
-  // Restore the signal from wavelet decomposition
-  restored_buffer->Compose(&output_signal);
-
-  std::cout << "Distance between original and restored signal: "
-            << blaze::norm(original - output_signal) / original.size()
-            << std::endl;
-  std::cout << "Compression rate: " << original.size() * 4. / arch.size() * 100
-            << "%" << std::endl;
-}
-```
