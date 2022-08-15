@@ -13,7 +13,6 @@
 
 * DRIFT-507: Conan generator to `CMakeDeps`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 
-
 ## 0.2.0 - 2022-07-22
 
 ### Added
