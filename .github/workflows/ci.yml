@@ -108,7 +108,7 @@ jobs:
       - name: Build package for stable channel
         if: github.ref_type == 'tag'
         env:
-          CONAN_SOURCE_DIR: ${GITHUB_WORKSPACE}
+          CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
           conan create . drift/stable
@@ -118,9 +118,6 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
-          echo $GITHUB_WORKSPACE
-          echo $CONAN_SOURCE_DIR
-          echo `pwd`
           cd conan
           conan create . drift/develop
 
