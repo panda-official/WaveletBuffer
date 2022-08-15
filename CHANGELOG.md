@@ -1,6 +1,6 @@
 [keep a changelog](https://keepachangelog.com/)
 
-## Release 0.2.0 (in progress)
+## 0.2.0 - 2022-08-15
 
 ### Added
 
@@ -11,24 +11,22 @@
 * DRIFT-533: MacOS support, [PR-28](https://github.com/panda-official/WaveletBuffer/pull/28)
 
 ### Changed
+
 * DRIFT-507: Conan generator to `CMakeDeps`, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
-
-### Changed
-
 * DRIFT-506: Upload python packages to PyPI server, [PR-23](https://github.com/panda-official/WaveletBuffer/pull/23)
 
 ### Removed
 
 *  DRIFT-512: WaveletParameters.is_raw_convolve_1d, [PR-24](https://github.com/panda-official/WaveletBuffer/pull/24)
 
-## Release 0.1.1 (2022-07-12)
+## 0.1.1 - 2022-07-12
 
 ### Fixed
 
 * Fix sdist Python package, [PR-20](https://github.com/panda-official/WaveletBuffer/pull/20)
 * DRIFT-507: Bugs detected when adding Windows support, [PR-25](https://github.com/panda-official/WaveletBuffer/pull/25)
 
-## Release 0.1.0 (2022-07-07)
+## 0.1.0 - 2022-07-07
 
 ### Added
 
