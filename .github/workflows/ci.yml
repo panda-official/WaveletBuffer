@@ -21,6 +21,7 @@ jobs:
         run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint
 
   build_test:
+    needs: [ cpplint ]
     runs-on: ${{ matrix.os }}
     name: Build and test C++ part
     strategy:
@@ -77,7 +78,7 @@ jobs:
           verbose: true
 
   conan:
-    # needs: [ build_test ]
+    needs: [ build_test ]
     name: "Build Conan package and upload it"
     runs-on: ${{ matrix.os }}
     strategy:
@@ -130,7 +131,7 @@ jobs:
 
   pip:
     name: "Build and test PIP"
-    #needs: [ conan ]
+    needs: [ build_test ]
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
@@ -155,6 +156,7 @@ jobs:
 
   build_sdist:
     name: "Build and test SDist"
+    needs: [ pip ]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -180,7 +182,7 @@ jobs:
 
   build_wheels:
     name: "Build wheels on ${{ matrix.os }}"
-    #needs: [pip]
+    needs: [ pip ]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
