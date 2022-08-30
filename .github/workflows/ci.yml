@@ -102,9 +102,6 @@ jobs:
         if : matrix.os == 'ubuntu-20.04'
         run: conan profile update settings.compiler.libcxx=libstdc++11 default
 
-      - name: Build boost
-        run: conan install boost/1.73.0@ --build missing
-
       - name: Build package for stable channel
         if: github.ref_type == 'tag'
         env:
