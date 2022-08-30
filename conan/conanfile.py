@@ -14,7 +14,7 @@ class WaveletBufferConan(ConanFile):
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
     url = "https://github.com/panda-official/WaveletBuffer"
-    requires = "openblas/0.3.20", "blaze/3.8", "libjpeg-turbo/2.1.2", "boost/1.73.0"
+    requires = "openblas/0.3.20", "blaze/3.8", "libjpeg-turbo/2.1.2", "cimg/3.0.2"
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"

@@ -38,7 +38,6 @@ else()
     conan_cmake_configure(REQUIRES openblas/0.3.20
             blaze/3.8
             libjpeg-turbo/2.1.3
-            boost/1.73.0
             cimg/3.0.2
             OPTIONS
             cimg:enable_fftw=False
@@ -126,7 +125,6 @@ target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
 target_link_libraries(${WB_TARGET_NAME} OpenBLAS::OpenBLAS)
 target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
-target_link_libraries(${WB_TARGET_NAME} Boost::headers)
 target_link_libraries(${WB_TARGET_NAME} cimg::cimg)
 
 # Catch2 installation
