@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 
+#include <cstdio>
+#include <jpeglib.h>
+#include <jerror.h>
 
 #define cimg_plugin "plugins/jpeg_buffer.h"
 #include "CImg.h"
