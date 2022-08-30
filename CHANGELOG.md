@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+* DRIFT-524: Replace boost by CImg, [PR-32](https://github.com/panda-official/WaveletBuffer/pull/32)
+
 ## 0.3.0 - 2022-08-15
 
 ### Added
