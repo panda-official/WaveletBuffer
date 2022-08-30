@@ -2,12 +2,13 @@
 
 #include "wavelet_buffer/img/jpeg_codecs.h"
 
+#include <jpeglib.h>
+#include <jerror.h>
+#include <cstdio>
+
 #include <iostream>
 #include <string>
 
-#include <cstdio>
-#include <jpeglib.h>
-#include <jerror.h>
 
 #define cimg_plugin "plugins/jpeg_buffer.h"
 #include "CImg.h"
@@ -16,7 +17,7 @@
 
 namespace drift::img {
 
-using namespace cimg_library;
+using cimg_library::CImg;
 
 void CheckRangeQuality(DataType quality) {
   if ((quality < 0) || (quality > 1.f)) {
