@@ -9,11 +9,15 @@
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 
+#define cimg_plugin "plugins/jpeg_buffer.h"
+#include "CImg.h"
+
 #include "wavelet_buffer/img/color_space.h"
 
 namespace drift::img {
 
 namespace bg = boost::gil;
+using namespace cimg_library;
 
 void CheckRangeQuality(DataType quality) {
   if ((quality < 0) || (quality > 1.f)) {
@@ -35,35 +39,34 @@ RgbJpegCodec::RgbJpegCodec(DataType quality) : quality_(quality) {
 
 bool RgbJpegCodec::Decode(const std::string& blob, SignalN2D* image,
                           size_t start_channel) const {
-  bg::rgb8_image_t bg_image;
-  std::stringstream in_buffer(blob, std::ios_base::in | std::ios_base::binary);
+  if (blob.empty()) {
+    std::cerr << "Failed to decode image: buffer is empty" << std::endl;
+    return false;
+  }
+
+  CImg<unsigned char> img;
   try {
-    bg::read_image(in_buffer, bg_image, bg::jpeg_tag());
+    img.load_jpeg_buffer(reinterpret_cast<const JOCTET*>(blob.data()), blob.size());
   } catch (std::exception& e) {
     std::cerr << "Failed to decode image: " << e.what() << std::endl;
     return false;
   }
 
-  const auto rows = bg_image.height();
-  const auto columns = bg_image.width();
+  const auto rows = img.height();
+  const auto columns = img.width();
 
   auto& im = *image;
   if (im.size() < start_channel + 3) {
     im.resize(start_channel + 3);
   }
 
-  auto rgb_view = bg::view(bg_image);
-  for (int ch = start_channel; ch < start_channel + 3; ++ch) {
+  for (size_t ch = start_channel; ch < start_channel + 3; ++ch) {
     im[ch] = Signal2D(rows, columns);
-    const auto& view_channel =
-        bg::nth_channel_view(rgb_view, ch - start_channel);
-    auto it_channel = view_channel.begin();
 
-    for (int i = 0; i < rows; i++) {
-      auto it_channel_end = it_channel + columns;
-      std::transform(it_channel, it_channel_end, im[ch].begin(i),
-                     [](auto x) { return static_cast<DataType>(x) / 255; });
-      it_channel = it_channel_end;
+    for (size_t i = 0; i < rows; ++i) {
+      for (size_t j = 0; j < columns; ++j) {
+        im[ch](i, j) = img(j, i, ch - start_channel) / 255.;
+      }
     }
   }
 
@@ -76,26 +79,23 @@ bool RgbJpegCodec::Encode(const SignalN2D& image, std::string* blob,
     return false;
   }
 
-  const auto rows = image[start_channel].rows();
-  const auto columns = image[start_channel].columns();
+  const size_t rows = image[start_channel].rows();
+  const size_t columns = image[start_channel].columns();
 
-  bg::rgb8_image_t rgb_img(columns, rows);
-  auto rgb_view = bg::view(rgb_img);
-  for (int c = start_channel; c < start_channel + 3; c++) {
-    const auto& view_channel =
-        bg::nth_channel_view(rgb_view, c - start_channel);
-    auto it = view_channel.begin();
-    for (int i = 0; i < rows; i++) {
-      it = std::transform(image[c].begin(i), image[c].end(i), it,
-                          [](auto x) { return ToPixel(x); });
+
+  CImg<unsigned char> img(columns, rows, 1, 3);
+  for (size_t c = start_channel; c < start_channel + 3; c++) {
+    for (size_t i = 0; i < rows; i++) {
+      for (size_t j = 0; j < columns; j++) {
+        img(j, i, c  - start_channel) = ToPixel(image[c](i, j));
+      }
     }
   }
+  unsigned int buffer_size = image.size() * rows * columns + 1000;
+  blob->resize(buffer_size);
+  img.save_jpeg_buffer(reinterpret_cast<JOCTET*>(blob->data()), buffer_size, static_cast<int>(quality_ * 100));
+  blob->resize(buffer_size);
 
-  std::stringstream out_buffer(std::ios_base::out | std::ios_base::binary);
-  bg::write_view(out_buffer, rgb_view,
-                 bg::image_write_info<bg::jpeg_tag>(quality_ * 100));
-
-  *blob = out_buffer.str();
   return true;
 }
 

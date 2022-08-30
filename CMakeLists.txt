@@ -39,6 +39,15 @@ else()
             blaze/3.8
             libjpeg-turbo/2.1.3
             boost/1.73.0
+            cimg/3.0.2
+            OPTIONS
+            cimg:enable_fftw=False
+            cimg:enable_jpeg=False # To avoid conflict with libjpeg-turbo
+            cimg:enable_openexr=False
+            cimg:enable_png=False
+            cimg:enable_tiff=False
+            cimg:enable_ffmpeg=False
+            cimg:enable_opencv=False
             GENERATORS CMakeDeps
     )
     conan_cmake_autodetect(settings)
@@ -53,6 +62,7 @@ find_package(blaze REQUIRED)
 find_package(OpenBLAS REQUIRED)
 find_package(libjpeg-turbo REQUIRED)
 find_package(Boost REQUIRED)
+find_package(cimg REQUIRED)
 
 # Dependencies
 include(FetchContent)
@@ -93,6 +103,9 @@ target_compile_definitions(
     PUBLIC BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0
 )
 
+# Set CImg options
+target_compile_definitions(cimg::cimg INTERFACE cimg_display=0)
+
 # Set compiler features
 target_compile_features(${WB_TARGET_NAME} PUBLIC cxx_std_20)
 set_target_properties(${WB_TARGET_NAME} PROPERTIES CXX_STANDARD_REQUIRED ON)
@@ -114,6 +127,7 @@ target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
 target_link_libraries(${WB_TARGET_NAME} OpenBLAS::OpenBLAS)
 target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
 target_link_libraries(${WB_TARGET_NAME} Boost::headers)
+target_link_libraries(${WB_TARGET_NAME} cimg::cimg)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
