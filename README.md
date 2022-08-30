@@ -113,4 +113,3 @@ target_link_libraries(program wavelet_buffer::wavelet_buffer)
 find_package(LAPACK REQUIRED)
 target_link_libraries(program ${LAPACK_LIBRARIES})
 ```
-
