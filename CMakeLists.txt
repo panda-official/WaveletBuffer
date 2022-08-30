@@ -60,7 +60,6 @@ endif()
 find_package(blaze REQUIRED)
 find_package(OpenBLAS REQUIRED)
 find_package(libjpeg-turbo REQUIRED)
-find_package(Boost REQUIRED)
 find_package(cimg REQUIRED)
 
 # Dependencies
