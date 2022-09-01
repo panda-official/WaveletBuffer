@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+* Dependencies to CI, [PR-30](https://github.com/panda-official/WaveletBuffer/pull/30)
+
+### Fixed
+
+* Build boost/1.73 package, [PR-30](https://github.com/panda-official/WaveletBuffer/pull/30)
+
 ## 0.3.0 - 2022-08-15
 
 ### Added
