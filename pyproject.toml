@@ -4,7 +4,7 @@ requires = [
     "scikit-build",
     "pybind11 >= 2.9.2",
     "cmake",
-    "conan == 1.51.1",
+    "conan == 1.52.0",
     "ninja"
 ]
 
