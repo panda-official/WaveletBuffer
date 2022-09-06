@@ -13,7 +13,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 MAJOR_VERSION = 0
-MINOR_VERSION = 4
+MINOR_VERSION = 5
 PATCH_VERSION = 0
 
 PACKAGE_NAME = "wavelet-buffer"
