@@ -10,10 +10,6 @@
 #include <sstream>
 #include <string>
 
-#include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
-
 #include "wavelet_buffer/img/color_space.h"
 #include "wavelet_buffer/img/image_codec.h"
 #include "wavelet_buffer/primitives.h"

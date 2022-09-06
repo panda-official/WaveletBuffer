@@ -23,9 +23,9 @@ TEST_CASE("JPEG codec benchmarks") {
     return ss.str();
   };
 
-  auto pic_100_x_100 = load_picture(kPic100x100);
-  auto pic_200_x_200 = load_picture(kPic200x200);
-  auto pic_400_x_400 = load_picture(kPic400x400);
+  const std::string pic_100_x_100 = load_picture(kPic100x100);
+  const std::string pic_200_x_200 = load_picture(kPic200x200);
+  const std::string pic_400_x_400 = load_picture(kPic400x400);
 
   HslJpegCodec codec;
 

@@ -6,8 +6,13 @@
 
 * Dependencies to CI, [PR-30](https://github.com/panda-official/WaveletBuffer/pull/30)
 
+### Changed
+
+* DRIFT-524: Replace boost by CImg, [PR-32](https://github.com/panda-official/WaveletBuffer/pull/32)
+
 ### Fixed
 
+* DRIFT-524: Fix benchmark fixtures, [PR-32](https://github.com/panda-official/WaveletBuffer/pull/32)
 * Build boost/1.73 package, [PR-30](https://github.com/panda-official/WaveletBuffer/pull/30)
 
 ## 0.3.0 - 2022-08-15

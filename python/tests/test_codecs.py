@@ -43,7 +43,7 @@ class TestJpegCodecs:  # pylint: disable=too-few-public-methods
             dtype=np.single,
         )
         data: bytes = codec.encode(image, 1)
-        assert len(data) > 1000
+        assert len(data) > 300
 
         pil_image: Image = Image.open(io.BytesIO(data), formats=("JPEG",))
         assert pil_image

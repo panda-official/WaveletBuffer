@@ -14,12 +14,22 @@ class WaveletBufferConan(ConanFile):
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
     url = "https://github.com/panda-official/WaveletBuffer"
-    requires = "openblas/0.3.20", "blaze/3.8", "libjpeg-turbo/2.1.2", "boost/1.73.0"
+    requires = "openblas/0.3.20", "blaze/3.8", "libjpeg-turbo/2.1.2", "cimg/3.0.2"
+    default_options = {
+        "cimg:enable_fftw": False,
+        "cimg:enable_jpeg": False,
+        "cimg:enable_openexr": False,
+        "cimg:enable_png": False,
+        "cimg:enable_tiff": False,
+        "cimg:enable_ffmpeg": False,
+        "cimg:enable_opencv": False,
+        "shared": False,
+        "fPIC": True,
+    }
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
 
     generators = "CMakeDeps"
 
@@ -39,7 +49,9 @@ class WaveletBufferConan(ConanFile):
         if local_source is not None:
             print(f"Use local sources: {local_source}")
             self.run(
-                "cp -r {}/. {}/".format(os.getenv("CONAN_SOURCE_DIR"), self.source_folder)
+                "cp -r {}/. {}/".format(
+                    os.getenv("CONAN_SOURCE_DIR"), self.source_folder
+                )
             )
         else:
             branch = f"v{self.version}" if self.channel == "stable" else self.channel
