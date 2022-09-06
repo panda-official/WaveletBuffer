@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 - 2022-09-06
+
 ### Added
 
 * Dependencies to CI, [PR-30](https://github.com/panda-official/WaveletBuffer/pull/30)
