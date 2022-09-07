@@ -83,7 +83,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-11 ]
+        os: [ ubuntu-20.04, windows-2019, macos-12 ]
     steps:
       - uses: actions/checkout@v2
 
@@ -133,7 +133,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-20.04, windows-2019, macos-11 ]
+        platform: [ ubuntu-20.04, windows-2019, macos-12 ]
         python-version: [ "3.8", "3.9", "3.10" ]
 
     steps:
@@ -184,7 +184,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-11 ]
+        os: [ ubuntu-20.04, windows-2019, macos-12 ]
 
     steps:
       - uses: actions/checkout@v2
