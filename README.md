@@ -9,9 +9,9 @@ A universal  C++ compression library based on wavelet transformation
 - Written in Modern C++
 - One-side wavelet decomposition for vectors and matrixes
 - 5 Daubechies Wavelets DB1-DB5
-- Different denoising alogorithms
-- Fast and effitient compression with [SFCompressor](https://github.com/panda-official/SfCompressor)
-- Crossplatform
+- Different denoising algorithms
+- Fast and efficient compression with [SFCompressor](https://github.com/panda-official/SfCompressor)
+- Cross-platform
 
 ## Requirements
 
@@ -113,3 +113,8 @@ target_link_libraries(program wavelet_buffer::wavelet_buffer)
 find_package(LAPACK REQUIRED)
 target_link_libraries(program ${LAPACK_LIBRARIES})
 ```
+
+## Related projects
+
+* [Drift Protocol](https://github.com/panda-official/DriftProtocol) - Protobuf Libraries to encode message in Drift infrastructure 
+* [Drift Python Client](https://github.com/panda-official/DriftPythonClient) - Python Client to access data of _PANDA|Drift_
