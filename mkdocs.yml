@@ -4,3 +4,14 @@ repo_url: https://github.com/panda-official/WaveletBuffer
 edit_uri: ""
 theme:
   name: readthedocs
+
+plugins:
+ - mkdoxy:
+#     debug: True
+     projects:
+       API:
+         src-dirs: wavelet_buffer
+#      doxygen-source: docs/doxygen-output
+#      api-path: api
+#      full-doc: True
+#      ignore-errors: False
