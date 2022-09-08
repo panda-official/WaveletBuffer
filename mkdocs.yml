@@ -1,0 +1,6 @@
+site_name: WaveletBuffer
+site_url: https://waveletbuffer.readthedocs.io/
+repo_url: https://github.com/panda-official/WaveletBuffer
+edit_uri: ""
+theme:
+  name: readthedocs

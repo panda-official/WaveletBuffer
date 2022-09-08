@@ -1,0 +1,6 @@
+* Aleksey Timin [@atimin](https://github.com/atimin)
+* Clemens Koch [@cko-dev](https://github.com/cko-dev)
+* Ekaterina Pocherevina [@epocherevina](https://github.com/EkaterinaPocherevina)
+* Eugene Kulak [@keu](https://github.com/keu)
+* Maxim Filippovv [@maxfilippov](https://github.com/maxfilippov)
+* Victor Kataev [@victor1234](https://github.com/victor1234)
