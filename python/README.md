@@ -1,5 +1,8 @@
 # wavelet-buffer
 
+![PyPI](https://img.shields.io/pypi/v/wavelet-buffer)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/wavelet-buffer)
+
 A python wrapper for WaveletBuffer Framework
 
 # Install from PyPI
