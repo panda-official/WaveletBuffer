@@ -1,0 +1,89 @@
+site_name: Wavelet Buffer
+docs_dir: .
+
+site_url: https://waveletbuffer.readthedocs.io/
+repo_url: https://github.com/panda-official/WaveletBuffer
+edit_uri: edit/develop/docs
+
+extra:
+  homepage: https://panda.technology
+# Configuration
+theme:
+  name: material
+  logo: docs/img/logo.svg
+  favicon: docs/img/favicon.png
+  language: en
+  palette:
+    primary: black
+  font:
+    text: Roboto
+    code: JetBrains Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.top
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      base_path: docs
+      check_paths: true
+  - plantuml_markdown:
+      format: svg
+
+nav:
+  - Home:
+      - README: README.md
+  - API Reference:
+      - api/namespacedrift.md
+      - api/classdrift_1_1DenoiseAlgorithm.md
+      - api/classdrift_1_1NullDenoiseAlgorithm.md
+      - api/classdrift_1_1PaddingAlgorithm.md
+      - api/classdrift_1_1SimpleDenoiseAlgorithm.md
+      - api/structdrift_1_1Size.md
+      - api/classdrift_1_1ThresholdAbsDenoiseAlgorithm.md
+      - api/classdrift_1_1WaveletBufferView.md
+      - api/structdrift_1_1WaveletParameters.md
+      - api/classdrift_1_1ZeroDerivativePaddingAlgorithm.md
+      - api/classdrift_1_1ZeroPaddingAlgorithm.md
+      - api/namespacedrift_1_1img.md
+      - api/classdrift_1_1img_1_1GrayJpegCodec.md
+      - api/classdrift_1_1img_1_1HslJpegCodec.md
+      - api/classdrift_1_1img_1_1IImageCodec.md
+      - api/classdrift_1_1img_1_1RgbJpegCodec.md
+      - api/classdrift_1_1img_1_1WaveletImage.md
+
+
+plugins:
+  - same-dir
+  - mkdoxy:
+      projects:
+        api:
+          src-dirs: wavelet_buffer

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+* DRIFT:284 Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
+
 ### Changed
 
 * Use MacOs-12 as build system in CI, [PR-33](https://github.com/panda-official/WaveletBuffer/pull/33)
