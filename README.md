@@ -114,8 +114,9 @@ find_package(LAPACK REQUIRED)
 target_link_libraries(program ${LAPACK_LIBRARIES})
 ```
 
-## Related projects
+## References
 
+* [Documentation](https://waveletbuffer.readthedocs.io)
 * [Drift Protocol](https://github.com/panda-official/DriftProtocol) - Protobuf Libraries to encode message in Drift infrastructure 
 * [Drift Python Client](https://github.com/panda-official/DriftPythonClient) - Python Client to access data of _PANDA|Drift_
 
