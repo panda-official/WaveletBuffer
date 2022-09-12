@@ -29,7 +29,7 @@ class WaveletBufferView;
 class WaveletBuffer {
  public:
   /**
-   * Initialize buffer
+   * @brief Initialize buffer
    * @param parameters the parameters of the wavelet decomposition
    */
   explicit WaveletBuffer(const WaveletParameters& parameters);
