@@ -1,12 +1,19 @@
-site_name: WaveletBuffer
+site_name: Wavelet Buffer
+docs_dir: .
+
 site_url: https://waveletbuffer.readthedocs.io/
 repo_url: https://github.com/panda-official/WaveletBuffer
-edit_uri: ""
+edit_uri: edit/develop/docs
 theme:
   name: material
 
+nav:
+  - Home:
+    - README: README.md
 plugins:
- - mkdoxy:
+  - same-dir
+  - mkdoxy:
      projects:
        API:
          src-dirs: wavelet_buffer
+:wq
