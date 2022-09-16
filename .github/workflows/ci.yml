@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install cpplint
-        run: pip3 install -r requirements/format.txt
+        run: pip3 install -r python/requirements/format.txt
 
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint
@@ -25,12 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install cpplint
-        run: pip3 install -r requirements/format.txt
+        run: pip3 install -r python/requirements/format.txt
       - name: Check
         run: black --check
 
   build_test:
-    needs: [ cpplint ]
+    needs: [ cpplint, black ]
     runs-on: ${{ matrix.os }}
     name: Build and test C++ part
     strategy:
