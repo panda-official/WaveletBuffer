@@ -1,14 +1,15 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "wavelet_image.h"
+#include "src/img/wavelet_image.h"
 
 #include <pybind11/stl.h>
-
-#include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/denoise_algorithms.h>
+#include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/img/wavelet_image.h>
 
-#include "../wavelet_parameters.h"
+#include <memory>
+#include <string>
+#include <vector>
 
 using Denoiser = drift::DenoiseAlgorithm<drift::DataType>;
 

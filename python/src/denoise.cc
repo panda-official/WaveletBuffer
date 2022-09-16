@@ -1,6 +1,6 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "denoise.h"
+#include "src/denoise.h"
 
 #include <wavelet_buffer/denoise_algorithms.h>
 

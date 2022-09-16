@@ -37,5 +37,6 @@ target_compile_definitions(
     _wavelet_buffer
     PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES
 )
+target_include_directories(_wavelet_buffer PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/)
 
 install(TARGETS _wavelet_buffer DESTINATION .)

@@ -18,7 +18,7 @@ jobs:
         run: pip3 install -r python/requirements/format.txt
 
       - name: Run cpplint
-        run: find {benchmarks,tests,sources,wavelet_buffer,examples}/ -name "*.cc" -o -name "*.h" | xargs cpplint
+        run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs cpplint
   black:
     runs-on: ubuntu-20.04
     name: Check PEP-8
@@ -154,16 +154,18 @@ jobs:
 
       - name: Build and install
         run: |
-          pip install --verbose .[test]
+          pip install --verbose .
 
       - name: Test
         run: |
+          pip install python/requirements/test.txt
           pytest python/tests
 
   build_sdist:
     name: "Build and test SDist"
     needs: [ pip ]
     runs-on: ubuntu-20.04
+    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
       - uses: actions/checkout@v2
 
@@ -195,6 +197,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04, windows-2019, macos-12 ]
 
+    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
       - uses: actions/checkout@v2
 

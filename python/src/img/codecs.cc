@@ -1,15 +1,15 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "codecs.h"
-
-#include <wavelet_buffer/img/image_codec.h>
-#include <wavelet_buffer/img/jpeg_codecs.h>
+#include "src/img/codecs.h"
 
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>
+#include <wavelet_buffer/img/image_codec.h>
+#include <wavelet_buffer/img/jpeg_codecs.h>
 
-#include "../blaze_utils.h"
+#include <string>
 
+#include "src/blaze_utils.h"
 
 void WrapCodecAlgorithms(py::module* m) {
   using drift::SignalN2D;

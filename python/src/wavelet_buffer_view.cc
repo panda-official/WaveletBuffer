@@ -1,11 +1,11 @@
 // Copyright 2021-2022 PANDA GmbH
 
-#include "wavelet_buffer_view.h"
+#include "src/wavelet_buffer_view.h"
 
 #include <wavelet_buffer/wavelet_buffer_view.h>
 
-#include "blaze_utils.h"
-#include "wavelet_buffer_view_proxy.h"
+#include "src/blaze_utils.h"
+#include "src/wavelet_buffer_view_proxy.h"
 
 namespace py = pybind11;
 

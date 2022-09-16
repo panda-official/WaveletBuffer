@@ -1,11 +1,11 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "denoise.h"
-#include "img/codecs.h"
-#include "img/wavelet_image.h"
-#include "wavelet_buffer.h"
-#include "wavelet_buffer_view.h"
-#include "wavelet_parameters.h"
+#include "src/denoise.h"
+#include "src/img/codecs.h"
+#include "src/img/wavelet_image.h"
+#include "src/wavelet_buffer.h"
+#include "src/wavelet_buffer_view.h"
+#include "src/wavelet_parameters.h"
 
 PYBIND11_MODULE(_wavelet_buffer, m) {
   WrapWaveletType(&m);
