@@ -206,9 +206,9 @@ def test__parameters(params):
     shape_str = "x".join(map(str, params["signal_shape"]))
     expected_str = (
         "WaveletParameters<"
-        f"signal_number={params.signal_number}, signal_shape=({shape_str}), "
-        f"decomposition_steps={params.decomposition_steps}, "
-        f"wavelet_type={params.wavelet_type}>"
+        f"signal_number={params['signal_number']}, signal_shape=({shape_str}), "
+        f"decomposition_steps={params['decomposition_steps']}, "
+        f"wavelet_type={params['wavelet_type']}>"
     )
 
     with pytest.raises(AttributeError, match="can't set attribute"):
