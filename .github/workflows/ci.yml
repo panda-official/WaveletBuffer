@@ -154,12 +154,14 @@ jobs:
 
       - name: Build and install
         run: |
+          pip install python/requirements/test.txt
           pip install --verbose .
 
-      - name: Test
-        run: |
-          pip install python/requirements/test.txt
-          pytest python/tests
+      - name: Lint Test
+        run: pylint python/tests
+
+      - name: Run Test
+        run: pytest python/tests
 
   build_sdist:
     name: "Build and test SDist"
