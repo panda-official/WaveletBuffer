@@ -27,7 +27,7 @@ jobs:
       - name: Install cpplint
         run: pip3 install -r python/requirements/format.txt
       - name: Check
-        run: black --check
+        run: black --check .
 
   build_test:
     needs: [ cpplint, black ]
