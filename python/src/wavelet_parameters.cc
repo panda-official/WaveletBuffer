@@ -1,4 +1,6 @@
-#include "wavelet_parameters.h"
+// Copyright 2020-2022 PANDA GmbH
+
+#include "src/wavelet_parameters.h"
 
 #include <pybind11/stl.h>
 

@@ -1,13 +1,17 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include "wavelet_buffer.h"
+#include "src/wavelet_buffer.h"
 
 #include <pybind11/numpy.h>
 #include <wavelet_buffer/wavelet_buffer.h>
 
-#include "blaze_utils.h"
-#include "wavelet_buffer_view_proxy.h"
-#include "wavelet_parameters.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "src/blaze_utils.h"
+#include "src/wavelet_buffer_view_proxy.h"
+#include "src/wavelet_parameters.h"
 
 using Denoiser = drift::DenoiseAlgorithm<float>;
 

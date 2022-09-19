@@ -1,7 +1,7 @@
 // Copyright 2021-2022 PANDA GmbH
 
-#ifndef SRC_WAVELET_BUFFER_VIEW_PROXY_H_
-#define SRC_WAVELET_BUFFER_VIEW_PROXY_H_
+#ifndef PYTHON_SRC_WAVELET_BUFFER_VIEW_PROXY_H_
+#define PYTHON_SRC_WAVELET_BUFFER_VIEW_PROXY_H_
 
 #include <pybind11/pytypes.h>
 #include <wavelet_buffer/wavelet_buffer.h>
@@ -18,4 +18,4 @@ struct WaveletBufferViewProxy {
   int count;
 };
 
-#endif  // SRC_WAVELET_BUFFER_VIEW_PROXY_H_
+#endif  // PYTHON_SRC_WAVELET_BUFFER_VIEW_PROXY_H_

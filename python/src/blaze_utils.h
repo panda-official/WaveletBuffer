@@ -1,7 +1,7 @@
 // Copyright 2021-2022 PANDA GmbH
 
-#ifndef SRC_BLAZE_UTILS_H_
-#define SRC_BLAZE_UTILS_H_
+#ifndef PYTHON_SRC_BLAZE_UTILS_H_
+#define PYTHON_SRC_BLAZE_UTILS_H_
 
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
@@ -40,4 +40,4 @@ drift::NWaveletDecomposition NPyDecompositionToNW(
 pybind11::array_t<float> VecVecToPyArray(
     const blaze::DynamicVector<blaze::DynamicVector<float>>& data);
 
-#endif  // SRC_BLAZE_UTILS_H_
+#endif  // PYTHON_SRC_BLAZE_UTILS_H_

@@ -5,7 +5,7 @@
 typedef SSIZE_T ssize_t;
 #endif
 
-#include "blaze_utils.h"
+#include "src/blaze_utils.h"
 
 #include <utility>
 

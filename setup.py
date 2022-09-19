@@ -47,7 +47,6 @@ setup(
     package_dir={"": "python/src"},
     cmake_install_dir="python/src/wavelet_buffer",
     cmake_source_dir="python",
-    extras_require={"test": ["pytest", "numpy", "Pillow"]},
     author="PANDA, GmbH",
     author_email="info@panda.technology",
     description="A universal C++ compression library based on wavelet transformation",
