@@ -6,6 +6,7 @@
 
 * DRIFT-284: Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
 * DRIFT-518: Linter and cppcheck for Python bindings, [PR-36](https://github.com/panda-official/WaveletBuffer/pull/36)
+* DRIFT-534: Add dependencies compatibility table, [PR-37](https://github.com/panda-official/WaveletBuffer/pull/37)
 
 ### Changed
 
