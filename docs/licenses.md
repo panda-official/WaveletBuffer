@@ -1,4 +1,4 @@
-### Dependences compatibility by license
+### Dependence and license compatibility
 
 | Name | License | Compatibility |
 |------|---------|---------------|
