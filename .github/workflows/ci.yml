@@ -96,6 +96,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
+
+
       - name: Install conan
         run: pip3 install conan==1.52.0
 
