@@ -4,8 +4,17 @@ on:
     branches: [master, develop]
     tags:
       - 'v*'
+    paths-ignore:
+      - docs/**
+      - README.md
+      - CHANGELOG.md
+
   pull_request:
     branches: [master, develop]
+    paths-ignore:
+      - docs/**
+      - README.md
+      - CHANGELOG.md
 
 jobs:
   cpplint:
