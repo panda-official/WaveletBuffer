@@ -3,6 +3,10 @@
 import wavelet_buffer._wavelet_buffer.denoise as impl
 
 
+class BasicDenoiser(impl.Base):
+    pass
+
+
 class Null(impl.Null):
     """Denoiser doesn't do anything"""
 

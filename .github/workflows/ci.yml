@@ -161,6 +161,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
+
       - name: Build and install
         run: |
           pip install -r python/requirements/test.txt

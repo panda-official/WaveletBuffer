@@ -1,8 +1,7 @@
 from ._wavelet_buffer import (
-    WaveletBuffer,
-    WaveletType,
-    WaveletParameters,
     WaveletBufferView,
     distance,
     energy_distribution,
 )
+
+from wavelet_buffer.wavelet_buffer import WaveletBuffer, WaveletParameters, WaveletType
