@@ -42,6 +42,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
+
       - name: Install dependencies
         run: |
           pip3 install conan==1.52.0
