@@ -5,5 +5,4 @@ from ._wavelet_buffer import (
     WaveletBufferView,
     distance,
     energy_distribution,
-    denoise,
 )
