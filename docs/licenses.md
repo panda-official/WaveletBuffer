@@ -8,3 +8,4 @@
 | libjpeg-turbo (Turbo jpeg API) | BSD-3 | Yes |
 | libjpeg-turbo (SIMD) | zlib | Yes |
 | CImg | CeCILL-C | Yes |
+| pybind11 | [BSD-like](https://github.com/pybind/pybind11/blob/master/LICENSE) | Yes |
