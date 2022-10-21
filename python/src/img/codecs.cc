@@ -4,22 +4,46 @@
 
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>
-#include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/img/jpeg_codecs.h>
 
 #include <string>
 
 #include "src/blaze_utils.h"
 
+using drift::SignalN2D;
+using drift::img::IImageCodec;
+
+class StubCodec : public IImageCodec {
+ public:
+  StubCodec() = default;
+
+  [[nodiscard]] bool Decode(const std::string& blob, SignalN2D* image,
+                            size_t start_channel = 0) const override {
+    return true;
+  }
+
+  [[nodiscard]] bool Encode(const SignalN2D& image, std::string* blob,
+                            size_t start_channel = 0) const override {
+    return true;
+  }
+  [[nodiscard]] size_t channel_number() const override { return 3; }
+
+  [[nodiscard]] bool checkChannelsShape(const SignalN2D& image,
+                                        size_t start_channel) const override {
+    return true;
+  }
+};
+
 void WrapCodecAlgorithms(py::module* m) {
-  using drift::SignalN2D;
   using drift::img::ColorSpace;
   using drift::img::GrayJpegCodec;
   using drift::img::HslJpegCodec;
-  using drift::img::IImageCodec;
   using drift::img::RgbJpegCodec;
 
-  auto base = py::class_<IImageCodec>(*m, "BaseCodec");
+  auto base =
+      py::class_<StubCodec, IImageCodec>(*m, "BaseCodec").def(py::init([] {
+        return StubCodec();
+      }));
 
   auto decode = [](IImageCodec& self, const py::bytes& data) {
     SignalN2D image;

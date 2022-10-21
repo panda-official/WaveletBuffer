@@ -2,7 +2,7 @@
 from typing import List, Optional
 import wavelet_buffer._wavelet_buffer as impl
 
-from wavelet_buffer.denoise import BasicDenoiser
+from wavelet_buffer.denoise import BaseDenoiser
 
 
 class WaveletType(impl.WaveletType):
@@ -90,9 +90,7 @@ class WaveletBuffer(impl.WaveletBuffer):
         """
         return impl.WaveletBuffer.parse(blob)
 
-    def decompose(
-        self, data: "np.ndarray[np.float32]", denoiser: BasicDenoiser
-    ) -> None:
+    def decompose(self, data: "np.ndarray[np.float32]", denoiser: BaseDenoiser) -> None:
         """
         Decompose signal with wavelet decomposition
         The signal should have a shape which was set in the constructor of the buffer

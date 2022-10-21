@@ -3,7 +3,7 @@
 import wavelet_buffer._wavelet_buffer.denoise as impl
 
 
-class BasicDenoiser(impl.Base):
+class BaseDenoiser(impl.Base):
     pass
 
 

@@ -4,6 +4,7 @@
 #define PYTHON_SRC_IMG_CODECS_H_
 
 #include <pybind11/pybind11.h>
+#include <wavelet_buffer/img/image_codec.h>
 
 namespace py = pybind11;
 
