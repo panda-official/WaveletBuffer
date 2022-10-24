@@ -55,6 +55,17 @@ setup(
     url="https://github.com/panda-official/WaveletBuffer",
     python_requires=">=3.8",
     license="MPL-2.0",
+    extra_require={
+        "docs": [
+            "mkdocs~=1.3",
+            "git+https://github.com/JakubAndrysek/mkdoxy",
+            "mkdocs-material~=8.4",
+            "plantuml-markdown~=3.5",
+            "mkdocs-same-dir~=0.1",
+            "mkdocs-jupyter~=0.21",
+            " mkdocstrings[python]~=0.19",
+        ]
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",
