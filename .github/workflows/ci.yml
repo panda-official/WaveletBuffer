@@ -15,7 +15,8 @@ on:
       - docs/**
       - README.md
       - CHANGELOG.md
-
+env:
+  CONAN_VERSION: 1.53.0
 jobs:
   cpplint:
     runs-on: ubuntu-20.04
@@ -51,13 +52,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Select Xcode 13.4
-        if: matrix.os == 'macos-12'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
-
       - name: Install dependencies
         run: |
-          pip3 install conan==1.52.0
+          pip3 install conan==${{ env.CONAN_VERSION }}
 
       - name: Build tests, benchmarks and examples
         run: |
@@ -109,13 +106,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Select Xcode 13.4
-        if: matrix.os == 'macos-12'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
-
-
       - name: Install conan
-        run: pip3 install conan==1.52.0
+        run: pip3 install conan==${{ env.CONAN_VERSION }}
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
@@ -169,10 +161,6 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Select Xcode 13.4
-        if: matrix.os == 'macos-12'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
 
       - name: Build and install
         run: |
