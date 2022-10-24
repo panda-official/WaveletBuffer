@@ -41,9 +41,9 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+#  - pymdownx.emoji:
+#      emoji_index: !!python/name:materialx.emoji.twemoji
+#      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -61,7 +61,7 @@ markdown_extensions:
 nav:
   - Home:
       - README: README.md
-  - API Reference:
+  - C++ API Reference:
       - api/namespacedrift.md
       - api/classdrift_1_1DenoiseAlgorithm.md
       - api/classdrift_1_1NullDenoiseAlgorithm.md
@@ -80,6 +80,14 @@ nav:
       - api/classdrift_1_1img_1_1RgbJpegCodec.md
       - api/classdrift_1_1img_1_1WaveletImage.md
 
+  - Python API Reference:
+      - WaveletBuffer: docs/py_api/wavelet_buffer.md
+      - WaveletParameters: docs/py_api/wavelet_parameters.md
+      - deonise: docs/py_api/denoise.md
+      - img.WaveletImage: docs/py_api/img/wavelet_image.md
+      - img.codecs: docs/py_api/img/codecs.md
+
+
 
 plugins:
   - same-dir
@@ -87,3 +95,15 @@ plugins:
       projects:
         api:
           src-dirs: wavelet_buffer
+  - mkdocstrings:
+      default_handler: python
+      enable_inventory: false
+      handlers:
+        python:
+          rendering:
+            show_root_heading: true
+            show_bases: false
+            show_source: false
+          selection:
+            docstring_style: google
+  - autorefs
