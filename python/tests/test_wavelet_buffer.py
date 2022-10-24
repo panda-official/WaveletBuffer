@@ -5,13 +5,11 @@ import re
 
 import numpy as np
 import pytest
-
 from wavelet_buffer import (
     WaveletBuffer,
     WaveletType,
     distance,
     energy_distribution,
-    WaveletParameters,
 )  # pylint: disable=no-name-in-module
 from wavelet_buffer import denoise  # pylint: disable=no-name-in-module
 
@@ -213,7 +211,7 @@ def test__parameters(params):
     )
 
     with pytest.raises(AttributeError, match="can't set attribute"):
-        buffer.parameters = WaveletParameters()
+        buffer.parameters = None
 
     ro_params = buffer.parameters  # but can read
 
