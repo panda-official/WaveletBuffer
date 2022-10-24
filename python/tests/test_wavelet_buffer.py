@@ -5,7 +5,6 @@ import re
 
 import numpy as np
 import pytest
-
 from wavelet_buffer import (
     WaveletBuffer,
     WaveletType,
@@ -212,7 +211,7 @@ def test__parameters(params):
     )
 
     with pytest.raises(AttributeError, match="can't set attribute"):
-        buffer.parameters = 10
+        buffer.parameters = None
 
     ro_params = buffer.parameters  # but can read
 
