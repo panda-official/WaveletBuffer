@@ -147,7 +147,7 @@ jobs:
   pip:
     name: "Build and test PIP"
     needs: [ build_test ]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
