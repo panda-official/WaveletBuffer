@@ -34,13 +34,13 @@ class WaveletImage(impl.WaveletImage):
         start_channel: int = 0,
     ) -> None:
         super(WaveletImage, self).import_from_file(
-            file_path, denoiser, codec, start_channel
+            file_path, denoiser, codec._impl, start_channel
         )
 
     def export_to_file(
         self, file_path: str, codec: BaseCodec, start_channel: int = 0
     ) -> None:
-        super(WaveletImage, self).export_to_file(file_path, codec, start_channel)
+        super(WaveletImage, self).export_to_file(file_path, codec._impl, start_channel)
 
     def import_from_string(
         self,
@@ -49,10 +49,12 @@ class WaveletImage(impl.WaveletImage):
         codec: BaseCodec,
         start_channel: int = 0,
     ) -> None:
-        super(WaveletImage, self).import_from_file(data, denoiser, codec, start_channel)
+        super(WaveletImage, self).import_from_string(
+            data, denoiser, codec._impl, start_channel
+        )
 
     def export_to_string(self, codec: BaseCodec, start_channel: int = 0) -> bytes:
-        return super(WaveletImage, self).export_to_file(file_path, codec, start_channel)
+        return super(WaveletImage, self).export_to_string(codec._impl, start_channel)
 
     @staticmethod
     def load(file_path: str) -> "WaveletImage":
@@ -61,8 +63,8 @@ class WaveletImage(impl.WaveletImage):
     def save(self, file_path: str) -> None:
         super(WaveletImage, self).save(file_path)
 
-    def distance(self, other: "WaveletImage"):
-        super(WaveletImage, self).distance(other)
+    def distance(self, other: "WaveletImage") -> float:
+        return super(WaveletImage, self).distance(other)
 
     @property
     def buffer(self) -> WaveletBuffer:

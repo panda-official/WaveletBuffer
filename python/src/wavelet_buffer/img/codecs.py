@@ -2,11 +2,8 @@
 import wavelet_buffer._wavelet_buffer as impl
 
 
-class BaseCodec(impl.BaseCodec):
+class BaseCodec:
     """Interface for codes to decode/encode images from/to different image formats"""
-
-    def __init__(self):
-        super().__init__()
 
     def decode(self, blob: bytes) -> "np.ndarray[np.float32]":
         """Decode an image from bytes to a numpy image
@@ -17,10 +14,11 @@ class BaseCodec(impl.BaseCodec):
         """
         raise NotImplemented()
 
-    def encode(self, data: "np.ndarray[np.float32]") -> bytes:
+    def encode(self, data: "np.ndarray[np.float32]", start_channel: int = 0) -> bytes:
         """Encode a numpy image to byte string
         Args:
             data: numpy image
+            start_channel: start channel for conversion
         Returns:
             serialized image e.g. JPEG
         """
@@ -39,17 +37,16 @@ class RgbJpeg(BaseCodec):
         Args:
             write_quality: quality of encoded image. Should be from 0 to 1.0
         """
-        _impl = impl.RgbJpeg(write_quality)
-        super().__init__()
+        self._impl = impl.RgbJpeg(write_quality)
 
     def decode(self, blob: bytes) -> "np.ndarray[np.float32]":
-        return _imp.decode(blob)
+        return self._impl.decode(blob)
 
-    def encode(self, data: "np.ndarray[np.float32]") -> bytes:
-        return _imp.encode(data)
+    def encode(self, data: "np.ndarray[np.float32]", start_channel: int = 0) -> bytes:
+        return self._impl.encode(data, start_channel)
 
     def channel_number(self) -> int:
-        return _imp.channel_number()
+        return self._impl.channel_number()
 
 
 class HslJpeg(BaseCodec):
@@ -60,17 +57,16 @@ class HslJpeg(BaseCodec):
         Args:
             write_quality: quality of encoded image. Should be from 0 to 1.0
         """
-        _impl = impl.HslJpeg(write_quality)
-        super().__init__()
+        self._impl = impl.HslJpeg(write_quality)
 
     def decode(self, blob: bytes) -> "np.ndarray[np.float32]":
-        return _imp.decode(blob)
+        return self._impl.decode(blob)
 
-    def encode(self, data: "np.ndarray[np.float32]") -> bytes:
-        return _imp.encode(data)
+    def encode(self, data: "np.ndarray[np.float32]", start_channel: int = 0) -> bytes:
+        return self._impl.encode(data, start_channel)
 
     def channel_number(self) -> int:
-        return _imp.channel_number()
+        return self._impl.channel_number()
 
 
 class GrayJpeg(BaseCodec):
@@ -81,14 +77,13 @@ class GrayJpeg(BaseCodec):
         Args:
             write_quality: quality of encoded image. Should be from 0 to 1.0
         """
-        _impl = impl.GrayJpeg(write_quality)
-        super().__init__()
+        self._impl = impl.GrayJpeg(write_quality)
 
     def decode(self, blob: bytes) -> "np.ndarray[np.float32]":
-        return _imp.decode(blob)
+        return self._impl.decode(blob)
 
-    def encode(self, data: "np.ndarray[np.float32]") -> bytes:
-        return _imp.encode(data)
+    def encode(self, data: "np.ndarray[np.float32]", start_channel: int = 0) -> bytes:
+        return self._impl.encode(data, start_channel)
 
     def channel_number(self) -> int:
-        return _imp.channel_number()
+        return self._impl.channel_number()
