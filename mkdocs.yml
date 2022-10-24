@@ -61,6 +61,7 @@ markdown_extensions:
 nav:
   - Home:
       - README: README.md
+      - Python Bindings: python/README.md
   - C++ API Reference:
       - api/namespacedrift.md
       - api/classdrift_1_1DenoiseAlgorithm.md
