@@ -6,7 +6,7 @@
 
 * DRIFT-284: Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
 * DRIFT-518: Linter and cppcheck for Python bindings, [PR-36](https://github.com/panda-official/WaveletBuffer/pull/36)
-
+* DRIFT-550: Add wrappers for Python bindins with docstrings, [PR-38](https://github.com/panda-official/WaveletBuffer/pull/38)
 ### Changed
 
 * Use MacOs-12 as build system in CI, [PR-33](https://github.com/panda-official/WaveletBuffer/pull/33)
