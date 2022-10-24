@@ -17,7 +17,7 @@ A universal  C++ compression library based on wavelet transformation
 
 * CMake >= 3.16
 * C++20 compiler
-* conan >= 1.50
+* conan >= 1.53
 
 ## Bindings
 
@@ -117,6 +117,5 @@ target_link_libraries(program ${LAPACK_LIBRARIES})
 ## References
 
 * [Documentation](https://waveletbuffer.readthedocs.io)
-* [Drift Protocol](https://github.com/panda-official/DriftProtocol) - Protobuf Libraries to encode message in Drift infrastructure 
+* [Drift Protocol](https://github.com/panda-official/DriftProtocol) - Protobuf Libraries to encode message in Drift infrastructure
 * [Drift Python Client](https://github.com/panda-official/DriftPythonClient) - Python Client to access data of _PANDA|Drift_
-
