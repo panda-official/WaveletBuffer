@@ -7,7 +7,9 @@
 * DRIFT-284: Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
 * DRIFT-518: Linter and cppcheck for Python bindings, [PR-36](https://github.com/panda-official/WaveletBuffer/pull/36)
 * DRIFT-534: Dependencies compatibility table, [PR-37](https://github.com/panda-official/WaveletBuffer/pull/37)
-* DRIFT-550: Add wrappers for Python bindins with docstrings, [PR-38](https://github.com/panda-official/WaveletBuffer/pull/38)
+* DRIFT-550: Add wrappers for Python bindins with
+  docstrings, [PR-38](https://github.com/panda-official/WaveletBuffer/pull/38)
+* DRIFT-579: Publish Python API referencts on RTD, [PR-39](https://github.com/panda-official/WaveletBuffer/pull/39)
 
 ### Changed
 
@@ -52,7 +54,7 @@
 
 ### Removed
 
-*  DRIFT-512: WaveletParameters.is_raw_convolve_1d, [PR-24](https://github.com/panda-official/WaveletBuffer/pull/24)
+* DRIFT-512: WaveletParameters.is_raw_convolve_1d, [PR-24](https://github.com/panda-official/WaveletBuffer/pull/24)
 
 ## 0.1.1 - 2022-07-12
 
@@ -75,7 +77,8 @@
 ### Changed
 
 * DRIFT-480: Bump up Catch version to 3.0.1, [PR-11](https://github.com/panda-official/WaveletBuffer/pull/11)
-* DRIFT-491: Move needed metric to wavelet buffer, remove metric with dependencies, [PR-15](https://github.com/panda-official/WaveletBuffer/pull/15/checks)
+* DRIFT-491: Move needed metric to wavelet buffer, remove metric with
+  dependencies, [PR-15](https://github.com/panda-official/WaveletBuffer/pull/15/checks)
 
 ### Fixed
 

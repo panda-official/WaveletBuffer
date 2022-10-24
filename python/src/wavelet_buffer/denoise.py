@@ -32,7 +32,7 @@ class Threshold(impl.Threshold):
     def __init__(self, a, b):
         """
         Args
-        :param a:
-        :param b:
+            a:
+            b:
         """
         super().__init__(a, b)

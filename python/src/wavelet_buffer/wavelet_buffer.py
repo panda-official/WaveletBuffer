@@ -126,6 +126,7 @@ class WaveletBuffer(impl.WaveletBuffer):
     @property
     def parameters(self) -> WaveletParameters:
         """
-        Return current wave late parameters
+        Returns:
+            current wavelet parameters
         """
         return super(WaveletBuffer, self).parameters
