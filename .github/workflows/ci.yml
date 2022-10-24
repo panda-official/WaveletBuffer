@@ -42,6 +42,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
+
       - name: Install dependencies
         run: |
           pip3 install conan==1.52.0
@@ -96,6 +100,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
+
+
       - name: Install conan
         run: pip3 install conan==1.52.0
 
@@ -138,11 +147,11 @@ jobs:
   pip:
     name: "Build and test PIP"
     needs: [ build_test ]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        platform: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ ubuntu-20.04, windows-2019, macos-12 ]
         python-version: [ "3.8", "3.9", "3.10" ]
 
     steps:
@@ -151,6 +160,10 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Select Xcode 13.4
+        if: matrix.os == 'macos-12'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.app
 
       - name: Build and install
         run: |

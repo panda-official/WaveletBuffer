@@ -1,1 +1,2 @@
-from .._wavelet_buffer import WaveletImage, RgbJpeg, HslJpeg, GrayJpeg, BaseCodec
+from wavelet_buffer.img.wavelet_image import WaveletImage
+from wavelet_buffer.img.codecs import RgbJpeg, HslJpeg, GrayJpeg, BaseCodec

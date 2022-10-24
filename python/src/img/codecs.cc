@@ -4,19 +4,19 @@
 
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>
-#include <wavelet_buffer/img/image_codec.h>
 #include <wavelet_buffer/img/jpeg_codecs.h>
 
 #include <string>
 
 #include "src/blaze_utils.h"
 
+using drift::SignalN2D;
+using drift::img::IImageCodec;
+
 void WrapCodecAlgorithms(py::module* m) {
-  using drift::SignalN2D;
   using drift::img::ColorSpace;
   using drift::img::GrayJpegCodec;
   using drift::img::HslJpegCodec;
-  using drift::img::IImageCodec;
   using drift::img::RgbJpegCodec;
 
   auto base = py::class_<IImageCodec>(*m, "BaseCodec");
