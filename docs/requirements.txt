@@ -4,3 +4,4 @@ mkdocs-material~=8.4
 plantuml-markdown~=3.5
 mkdocs-same-dir~=0.1
 mkdocs-jupyter~=0.21
+mkdocstrings[python]~=0.19
