@@ -14,6 +14,7 @@
 ### Changed
 
 * Use MacOs-12 as build system in CI, [PR-33](https://github.com/panda-official/WaveletBuffer/pull/33)
+* Update conan to 1.53, [PR-40](https://github.com/panda-official/WaveletBuffer/pull/40)
 
 ## 0.4.0 - 2022-09-06
 
