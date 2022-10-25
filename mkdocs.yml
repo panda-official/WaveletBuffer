@@ -3,7 +3,7 @@ docs_dir: .
 
 site_url: https://waveletbuffer.readthedocs.io/
 repo_url: https://github.com/panda-official/WaveletBuffer
-edit_uri: edit/develop/docs
+edit_uri: edit/develop/
 
 extra:
   homepage: https://panda.technology
@@ -41,9 +41,9 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
-#  - pymdownx.emoji:
-#      emoji_index: !!python/name:materialx.emoji.twemoji
-#      emoji_generator: !!python/name:materialx.emoji.to_svg
+  #  - pymdownx.emoji:
+  #      emoji_index: !!python/name:materialx.emoji.twemoji
+  #      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -63,6 +63,9 @@ nav:
       - README: README.md
       - Python Bindings: python/README.md
       - Dependencies: docs/dependencies.md
+  - Tutorials:
+      - Wavelet Buffer In A Nutshell: docs/tutorials/wavelet_buffer_in_a_nutshell.md
+
   - C++ API Reference:
       - api/namespacedrift.md
       - api/classdrift_1_1DenoiseAlgorithm.md
@@ -88,7 +91,6 @@ nav:
       - denoise: docs/py_api/denoise.md
       - img.WaveletImage: docs/py_api/img/wavelet_image.md
       - img.codecs: docs/py_api/img/codecs.md
-
 
 
 plugins:
