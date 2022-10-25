@@ -128,7 +128,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
-          conan create . drift/stable
+          conan create . drift/stable --build=missing
 
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
@@ -136,7 +136,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
-          conan create . drift/develop
+          conan create . drift/develop --build=missing
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
