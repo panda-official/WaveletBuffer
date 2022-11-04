@@ -44,6 +44,10 @@ Wavelet Decomposition can be applied to 2-D matrices, the difference is that we 
 * High frequency detalization by horizontal
 * High frequency detalization by diagonal
 
+Here you can see how it looks like for one decomposition step:
+
+![Wavelet Decomposition 2D](../img/wavelet_2d.jpeg)
+
 ## Structure
 
 In a nutshell, Wavelet is just a wrapper around the wavelet subbands:
