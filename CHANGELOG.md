@@ -10,6 +10,7 @@
 * DRIFT-550: Add wrappers for Python bindings with
   docstrings, [PR-38](https://github.com/panda-official/WaveletBuffer/pull/38)
 * DRIFT-579: Publish Python API references on RTD, [PR-39](https://github.com/panda-official/WaveletBuffer/pull/39)
+* DRIFT-585: WaveletBuffer explanation, [PR-41](https://github.com/panda-official/WaveletBuffer/pull/41)
 
 ### Changed
 
