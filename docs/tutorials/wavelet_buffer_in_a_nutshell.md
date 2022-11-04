@@ -88,8 +88,8 @@ The current implementation of the compressor supports the following size of the 
 | 7 (bfloat)                                 | 16                                            |
 
 !!! warning
-Because we use float values, we always have some error, which depends on the range of the values. You should adjust
-compression level by using knowledge about your data.
+    Because we use float values, we always have some error, which depends on the range of the values. You should adjust
+    compression level by using knowledge about your data.
 
 ## Scalar Values
 
