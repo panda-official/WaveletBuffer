@@ -31,18 +31,18 @@ approach has the following advantages:
    than 1920 points. So, we can compose only some low-level subbands without reconstructing the whole original signal.
 
 In the diagram, I showed only one step of the decomposition, but we can decompose the signal recursively, by applying
-the wavelet
-decomposition on the low-frequency subband again. Therefore, we can decompose our signal to a few subbands: N/1 H-freq
-subband, N/2 H-freq subband, …. N/M L-freq subband, where N size of the original signal and M – the number of the
-decomposition steps. When we make many steps of the decomposition, we do better denoising and zooming because now we can
-get signal of sizes N/2, N/4 … or N/M.
+the wavelet decomposition on the low-frequency subband again. Therefore, we can decompose our signal to a few subbands:
+N/1 H-freq subband (D), N/2 H-freq subband (AD), …. N/M L-freq subband (ADm), where N size of the original signal and M
+– the number of the decomposition steps. After the decomposition, we have a representation of our signal as an array of
+subbands e.ge for 3 steps it will be [AAAA, ADDD, ADD, AD, D]. When we make many steps of the decomposition, we do better
+denoising and zooming because now we can get signal of sizes N/2, N/4 … or N/M if we restore only part of all the steps.
 
 Wavelet Decomposition can be applied to 2-D matrices, the difference is that we have 4 types of subbands:
 
-* Low frequency approximation
-* High frequency detalization by vertical
-* High frequency detalization by horizontal
-* High frequency detalization by diagonal
+* Low frequency approximation (A)
+* High frequency detalization by vertical (Dv)
+* High frequency detalization by horizontal (Dh)
+* High frequency detalization by diagonal (Dd)
 
 Here you can see how it looks like for one decomposition step:
 
@@ -88,8 +88,8 @@ The current implementation of the compressor supports the following size of the 
 | 7 (bfloat)                                 | 16                                            |
 
 !!! warning
-    Because we use float values, we always have some error, which depends on the range of the values. You should adjust
-    compression level by using knowledge about your data.
+Because we use float values, we always have some error, which depends on the range of the values. You should adjust
+compression level by using knowledge about your data.
 
 ## Scalar Values
 
