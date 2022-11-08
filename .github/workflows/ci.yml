@@ -54,7 +54,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip3 install conan==${{ env.CONAN_VERSION }}
+          pipx install conan==${{ env.CONAN_VERSION }}
 
       - name: Build tests, benchmarks and examples
         run: |
