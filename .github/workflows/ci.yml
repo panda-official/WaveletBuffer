@@ -107,7 +107,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install conan
-        run: pip3 install conan==${{ env.CONAN_VERSION }}
+        run: pipx install conan==${{ env.CONAN_VERSION }}
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
