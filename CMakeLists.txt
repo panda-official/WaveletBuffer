@@ -47,7 +47,9 @@ else()
             cimg:enable_tiff=False
             cimg:enable_ffmpeg=False
             cimg:enable_opencv=False
+            openblas:dynamic_arch=True
             GENERATORS CMakeDeps
+            ENV openblas:TARGET=ARMV8
     )
     conan_cmake_autodetect(settings)
     conan_cmake_install(PATH_OR_REFERENCE .
