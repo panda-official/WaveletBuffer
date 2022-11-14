@@ -17,6 +17,7 @@
 * Use MacOs-12 as build system in CI, [PR-33](https://github.com/panda-official/WaveletBuffer/pull/33)
 * Update conan to 1.53, [PR-40](https://github.com/panda-official/WaveletBuffer/pull/40)
 * ISSUE-42: Update dependencies license page, [PR-43](https://github.com/panda-official/WaveletBuffer/pull/43)
+* DRIFT-612: Fix broken pipeline for MacOS, [PR-45](https://github.com/panda-official/WaveletBuffer/pull/45)
 
 ## 0.4.0 - 2022-09-06
 
