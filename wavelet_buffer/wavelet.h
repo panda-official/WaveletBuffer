@@ -56,7 +56,6 @@ Signal1D dbwavf(const int wnum);
 std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
     Signal1D const &W_in);
 
-
 /**
  * Wavelet decomposition using Daubechies matrix
  * @param signal
@@ -64,8 +63,8 @@ std::tuple<Signal1D, Signal1D, Signal1D, Signal1D> Orthfilt(
  * @return
  */
 std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
-    const blaze::DynamicVector<DataType>& signal,
-    const blaze::CompressedMatrix<DataType>& dmat);
+    const blaze::DynamicVector<DataType> &signal,
+    const blaze::CompressedMatrix<DataType> &dmat);
 
 /**
  * Wavelet composition using Daubechies matrix
@@ -75,8 +74,8 @@ std::tuple<blaze::DynamicVector<DataType>, blaze::DynamicVector<DataType>> dwt(
  * @return
  */
 blaze::DynamicVector<DataType> idwt(
-    const blaze::DynamicVector<DataType>& low_subband,
-    const blaze::DynamicVector<DataType>& high_subband,
-    const blaze::CompressedMatrix<DataType>& dmat);
+    const blaze::DynamicVector<DataType> &low_subband,
+    const blaze::DynamicVector<DataType> &high_subband,
+    const blaze::CompressedMatrix<DataType> &dmat);
 }  // namespace drift::wavelet
 #endif  // WAVELET_BUFFER_WAVELET_H_

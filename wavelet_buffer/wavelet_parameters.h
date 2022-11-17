@@ -3,9 +3,9 @@
 #define WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 
 #include <blaze/Blaze.h>
-#include <cstddef>
 
 #include <algorithm>
+#include <cstddef>
 #include <ostream>
 #include <vector>
 
