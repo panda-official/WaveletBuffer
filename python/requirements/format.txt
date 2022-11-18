@@ -1,2 +1,3 @@
 black~=22.8
 cpplint~=1.6
+clang-format==15.0.4
