@@ -2,17 +2,15 @@
 
 #include "wavelet_buffer/img/jpeg_codecs.h"
 
-#include <jpeglib.h>
 #include <jerror.h>
-#include <cstdio>
+#include <jpeglib.h>
 
+#include <cstdio>
 #include <iostream>
 #include <string>
 
-
 #define cimg_plugin "plugins/jpeg_buffer.h"
 #include "CImg.h"
-
 #include "wavelet_buffer/img/color_space.h"
 
 namespace drift::img {

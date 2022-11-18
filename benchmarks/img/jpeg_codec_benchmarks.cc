@@ -4,11 +4,11 @@
 
 #include <fstream>
 
-#include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-using ::drift::img::HslJpegCodec;
 using ::drift::SignalN2D;
+using ::drift::img::HslJpegCodec;
 
 const char kPic100x100[] = "img/fixtures/pic100x100.jpg";
 const char kPic200x200[] = "img/fixtures/pic200x200.jpg";

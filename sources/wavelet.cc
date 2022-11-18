@@ -5,7 +5,7 @@
 namespace drift::wavelet {
 
 blaze::CompressedMatrix<DataType> DaubechiesMat(size_t size, int order,
-                                         Padding padding) {
+                                                Padding padding) {
   assert(order % 2 == 0);
   assert(size >= order);
 
@@ -387,7 +387,7 @@ blaze::DynamicVector<DataType> idwt(
     }
   } else {
     blaze::DynamicVector<DataType> encoded(low_subband.size() +
-        high_subband.size());
+                                           high_subband.size());
     blaze::subvector(encoded, 0, low_subband.size()) = low_subband;
     blaze::subvector(encoded, low_subband.size(), high_subband.size()) =
         high_subband;
