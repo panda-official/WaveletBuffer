@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 - 2022-11-18
+
 ### Added
 
 * DRIFT-284: Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
