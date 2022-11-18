@@ -24,11 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Remove clang-format provided by apt
-        run: sudo apt purge clang-format
-
       - name: Install dependencies
-        run: pip3 install -r python/requirements/format.txt
+        run: pipx install -r python/requirements/format.txt
 
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs cpplint
