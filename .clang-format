@@ -1,3 +1,5 @@
+# For clang-format-15.0.4
+
 BasedOnStyle: Google
 
 # Somehow clang-format output with default setting for google-style doesn't
