@@ -1,18 +1,24 @@
 BasedOnStyle: Google
 
-#IncludeCategories:
-#  - Regex:           '^<ext/.*\.h>'
-#    Priority:        2
-#    SortPriority:    0
-#  - Regex:           '^<.*\.hpp>'
-#    Priority:        1
-#    SortPriority:    0
-#  - Regex:           '^<.*\.h>'
-#    Priority:        1
-#    SortPriority:    0
-#  - Regex:           '^<.*'
-#    Priority:        2
-#    SortPriority:    0
-#  - Regex:           '.*'
-#    Priority:        3
-#    SortPriority:    0
+# Somehow clang-format output with default setting for google-style doesn't pass
+# cpplint utility due include categories order.
+# According to google-style description it must be: Related header, C system headers,
+# C++ standard library headers, other libraries' headers, your project's
+# headers.
+# This custom setting represent that order
+IncludeCategories:
+  - Regex:           '^<.*\.h>'
+    Priority:        1
+    SortPriority:    0
+  - Regex:           '^<[^\.]+>'
+    Priority:        2
+    SortPriority:    0
+  - Regex:           '^<ext/.*\.h>'
+    Priority:        3
+    SortPriority:    0
+  - Regex:           '^<.*'
+    Priority:        3
+    SortPriority:    0
+  - Regex:           '.*'
+    Priority:        4
+    SortPriority:    0
