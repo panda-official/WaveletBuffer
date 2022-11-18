@@ -30,9 +30,6 @@ jobs:
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs cpplint
 
-      - name: Install clang-format
-        run: pipx install clang-format
-
       - name: Run clang-format
         run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs clang-format --dry-run --Werror
 
