@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Remove clang-format provided by apt
-        run: sudo purge clang-format
+        run: sudo apt purge clang-format
 
       - name: Install dependencies
         run: pip3 install -r python/requirements/format.txt
