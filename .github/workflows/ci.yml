@@ -20,7 +20,7 @@ env:
 jobs:
   cpplint:
     runs-on: ubuntu-20.04
-    name: Check GStyle with cpplint
+    name: Check C++ format and style
     steps:
       - uses: actions/checkout@v2
 
