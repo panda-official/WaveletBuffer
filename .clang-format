@@ -1,10 +1,12 @@
 BasedOnStyle: Google
 
-# Somehow clang-format output with default setting for google-style doesn't pass
-# cpplint utility due include categories order.
-# According to google-style description it must be: Related header, C system headers,
-# C++ standard library headers, other libraries' headers, your project's
-# headers.
+# Somehow clang-format output with default setting for google-style doesn't
+# pass cpplint utility due include categories order.
+#
+# According to google-style description it must be: Related header,
+# C system headers, C++ standard library headers, other libraries' headers,
+# your project's headers.
+#
 # This custom setting represent that order
 IncludeCategories:
   - Regex:           '^<.*\.h>'
