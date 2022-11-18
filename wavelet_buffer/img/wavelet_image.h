@@ -25,13 +25,13 @@ class WaveletImage {
    * Statuses for error handling
    */
   // NOLINTNEXTLINE
-  enum [[nodiscard]] Status{
-      kOk = 0,                  // No errors
-      kWrongSize = 1,           // the image has wrong size
-      kDecompositionError = 2,  // Failed to decompose
-      kCompositionError = 3,    // Failed to compose
-      kIOError = 4,             // Failed open, write or read a file
-      kWrongData = 5            // Bad input data
+  enum [[nodiscard]] Status {
+    kOk = 0,                  // No errors
+    kWrongSize = 1,           // the image has wrong size
+    kDecompositionError = 2,  // Failed to decompose
+    kCompositionError = 3,    // Failed to compose
+    kIOError = 4,             // Failed open, write or read a file
+    kWrongData = 5            // Bad input data
   };
 
   /**
