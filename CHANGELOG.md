@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+* DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+
+### Changed
+
+* DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+
 ## 0.5.0 - 2022-11-18
 
 ### Added
@@ -13,14 +21,12 @@
   docstrings, [PR-38](https://github.com/panda-official/WaveletBuffer/pull/38)
 * DRIFT-579: Publish Python API references on RTD, [PR-39](https://github.com/panda-official/WaveletBuffer/pull/39)
 * DRIFT-585: WaveletBuffer explanation, [PR-41](https://github.com/panda-official/WaveletBuffer/pull/41)
-* DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
 
 ### Changed
 
 * Use MacOs-12 as build system in CI, [PR-33](https://github.com/panda-official/WaveletBuffer/pull/33)
 * Update conan to 1.53, [PR-40](https://github.com/panda-official/WaveletBuffer/pull/40)
 * ISSUE-42: Update dependencies license page, [PR-43](https://github.com/panda-official/WaveletBuffer/pull/43)
-* DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
 * DRIFT-612: Fix broken pipeline for MacOS, [PR-45](https://github.com/panda-official/WaveletBuffer/pull/45)
 
 ## 0.4.0 - 2022-09-06
