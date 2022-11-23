@@ -83,7 +83,6 @@ bool ComposeImpl(const WaveletParameters& params, SignalN2D* data,
                  const NWaveletDecomposition& decomposition, size_t steps,
                  size_t start_signal, size_t count);
 
-
 /**
  * Remove padding depending on signal shape and dimension
  * @tparam Container type of Matrix

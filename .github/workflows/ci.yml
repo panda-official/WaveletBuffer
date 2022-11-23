@@ -20,15 +20,19 @@ env:
 jobs:
   cpplint:
     runs-on: ubuntu-20.04
-    name: Check GStyle with cpplint
+    name: Check C++ format and style
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install cpplint
+      - name: Install dependencies
         run: pip3 install -r python/requirements/format.txt
 
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs cpplint
+
+      - name: Run clang-format
+        run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs clang-format --dry-run --Werror
+
   black:
     runs-on: ubuntu-20.04
     name: Check PEP-8

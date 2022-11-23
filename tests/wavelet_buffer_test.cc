@@ -20,7 +20,6 @@ using drift::WaveletBuffer;
 using drift::WaveletParameters;
 using drift::WaveletTypes;
 
-
 static bool Compose(const WaveletBuffer &buffer, SignalN2D *signal,
                     int scale = 0) {
   if (buffer.parameters().signal_shape.size() == 1) {
@@ -500,7 +499,7 @@ TEST_CASE("Should keep size", "[wavelets]") {
   CAPTURE(signals[buffer_num][0]);
 
   CAPTURE(output_signal[0]);
-  REQUIRE(signals[buffer_num][0].rows() ==output_signal[0].rows());
+  REQUIRE(signals[buffer_num][0].rows() == output_signal[0].rows());
 }
 
 // TODO(victor1234): for future wavelet work

@@ -1,6 +1,7 @@
 // Copyright 2020-2022 PANDA GmbH
 
 #include <wavelet_buffer/wavelet_parameters.h>
+
 #include <catch2/catch_test_macros.hpp>
 
 using drift::WaveletParameters;

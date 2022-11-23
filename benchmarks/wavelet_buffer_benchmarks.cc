@@ -1,11 +1,11 @@
 // Copyright 2020-2022 PANDA GmbH
 
-#include <wavelet_buffer/wavelet.h>
+#include <wavelet_buffer/denoise_algorithms.h>
 #include <wavelet_buffer/primitives.h>
+#include <wavelet_buffer/wavelet.h>
 #include <wavelet_buffer/wavelet_buffer.h>
 #include <wavelet_buffer/wavelet_parameters.h>
 #include <wavelet_buffer/wavelet_utils.h>
-#include <wavelet_buffer/denoise_algorithms.h>
 
 #include <fstream>
 
@@ -19,10 +19,10 @@ using drift::DataType;
 using drift::Signal1D;
 using drift::SignalN2D;
 using drift::WaveletBuffer;
+using drift::utils::GetRandomSignal;
 using drift::wavelet::DaubechiesMat;
 using drift::wavelet::dbwavf;
 using drift::wavelet::Orthfilt;
-using drift::utils::GetRandomSignal;
 
 TEST_CASE("Wavelet algorithms benchmark 1D") {
   using drift::NullDenoiseAlgorithm;
