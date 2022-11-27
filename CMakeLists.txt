@@ -35,7 +35,7 @@ else()
 
     include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-    conan_cmake_configure(REQUIRES openblas/0.3.20
+    conan_cmake_configure(REQUIRES
             blaze/3.8
             libjpeg-turbo/2.1.3
             cimg/3.0.2
@@ -58,7 +58,6 @@ else()
 endif()
 
 find_package(blaze REQUIRED)
-find_package(OpenBLAS REQUIRED)
 find_package(libjpeg-turbo REQUIRED)
 find_package(cimg REQUIRED)
 
@@ -122,7 +121,6 @@ target_include_directories(
 # Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
 target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
-target_link_libraries(${WB_TARGET_NAME} OpenBLAS::OpenBLAS)
 target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
 target_link_libraries(${WB_TARGET_NAME} cimg::cimg)
 
