@@ -1,17 +1,18 @@
 // Copyright 2020-2021 PANDA GmbH
 
+#include "wavelet_buffer/wavelet_buffer.h"
+
 #include <blaze/Blaze.h>
 #include <sf_compressor/sf_compressor.h>
 
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
-#include <iostream>
 
-#include "wavelet_buffer/wavelet_buffer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 namespace drift {

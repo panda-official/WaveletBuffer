@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include <wavelet_buffer/wavelet_buffer.h>
+
+#include <iostream>
 
 using drift::Signal1D;
 using drift::WaveletBuffer;

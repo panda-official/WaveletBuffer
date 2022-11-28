@@ -2,8 +2,8 @@
 
 #include <wavelet_buffer/wavelet_buffer.h>
 
-#include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 using drift::EnergyDistribution;
 using drift::SignalN2D;

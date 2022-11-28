@@ -1,18 +1,19 @@
 // Copyright 2021-2022 PANDA GmbH
 
 #include "wavelet_buffer/wavelet.h"
-#include "wavelet_buffer/padding.h"
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
+#include "wavelet_buffer/padding.h"
+
 using drift::DataType;
 using drift::Signal1D;
+using drift::ZeroDerivativePaddingAlgorithm;
 using drift::wavelet::DaubechiesMat;
 using drift::wavelet::dbwavf;
 using drift::wavelet::Orthfilt;
-using drift::ZeroDerivativePaddingAlgorithm;
 
 TEST_CASE("DaubechiesMat", "[wavelet]") {
   auto wnum = GENERATE(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);

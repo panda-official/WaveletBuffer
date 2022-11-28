@@ -5,9 +5,9 @@
 typedef SSIZE_T ssize_t;
 #endif
 
-#include "src/blaze_utils.h"
-
 #include <utility>
+
+#include "src/blaze_utils.h"
 
 namespace py = pybind11;
 using drift::NWaveletDecomposition;

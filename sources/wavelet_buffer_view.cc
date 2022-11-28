@@ -1,8 +1,8 @@
 // Copyright 2021 PANDA GmbH
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #include "wavelet_buffer/wavelet_utils.h"
 

@@ -6,6 +6,16 @@
 
 ### Added
 
+* DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+
+### Changed
+
+* DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+
+## 0.5.0 - 2022-11-18
+
+### Added
+
 * DRIFT-284: Setup Doxygen and publish on readthedocs, [PR-34](https://github.com/panda-official/WaveletBuffer/pull/34/)
 * DRIFT-518: Linter and cppcheck for Python bindings, [PR-36](https://github.com/panda-official/WaveletBuffer/pull/36)
 * DRIFT-534: Dependencies compatibility table, [PR-37](https://github.com/panda-official/WaveletBuffer/pull/37)
