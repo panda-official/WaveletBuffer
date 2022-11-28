@@ -17,9 +17,10 @@ on:
       - CHANGELOG.md
 env:
   CONAN_VERSION: 1.53.0
+  LINUX_INSTANCE: ubuntu-20.04
 jobs:
   cpplint:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ env.LINUX_INSTANCE }}
     name: Check GStyle with cpplint
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +31,7 @@ jobs:
       - name: Run cpplint
         run: find {benchmarks,tests,sources,wavelet_buffer,examples,python/src}/ -name "*.cc" -o -name "*.h" | xargs cpplint
   black:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ env.LINUX_INSTANCE }}
     name: Check PEP-8
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +47,7 @@ jobs:
     strategy:
       matrix:
         build_type: [ Debug, Release ]
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ env.LINUX_INSTANCE, windows-2019, macos-12 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -69,17 +70,17 @@ jobs:
           ctest --output-on-failure
 
       - name: Install wavelet_buffer
-        if : matrix.os == 'ubuntu-20.04'
+        if : matrix.os == env.LINUX_INSTANCE
         run: |
           cd build
           sudo cmake --install .
 
       - name: Check cmake target installation
-        if : matrix.os == 'ubuntu-20.04'
+        if : matrix.os == env.LINUX_INSTANCE
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
       - name: Create code coverage report
-        if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
+        if: matrix.build_type == 'debug' && matrix.os == env.LINUX_INSTANCE
         run: |
           sudo apt-get install lcov
           lcov --directory . --capture --output-file coverage.info
@@ -87,7 +88,7 @@ jobs:
           lcov --list coverage.info
 
       - name: Upload code coverage report to codecov.io
-        if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
+        if: matrix.build_type == 'debug' && matrix.os == env.LINUX_INSTANCE
         uses: codecov/codecov-action@v2
         with:
           directory: .
@@ -102,7 +103,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ env.LINUX_INSTANCE, windows-2019, macos-12 ]
     steps:
       - uses: actions/checkout@v2
 
@@ -119,7 +120,7 @@ jobs:
           conan profile new default --detect
 
       - name: Set libstdc++11
-        if : matrix.os == 'ubuntu-20.04'
+        if : matrix.os == env.LINUX_INSTANCE
         run: conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Build package for stable channel
@@ -152,7 +153,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ env.LINUX_INSTANCE, windows-2019, macos-12 ]
         python-version: [ "3.8", "3.9", "3.10" ]
 
     steps:
@@ -176,7 +177,7 @@ jobs:
   build_sdist:
     name: "Build and test SDist"
     needs: [ pip ]
-    runs-on: ubuntu-20.04
+    runs-on: ${{ env.LINUX_INSTANCE }}
     if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
       - uses: actions/checkout@v2
@@ -207,7 +208,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        os: [ env.LINUX_INSTANCE, windows-2019, macos-12 ]
 
     if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
@@ -233,7 +234,7 @@ jobs:
   upload_all:
     name: "Upload packages if release"
     needs: [ build_wheels, build_sdist ]
-    runs-on: ubuntu-20.04
+    runs-on: ${{ env.LINUX_INSTANCE }}
     #if: github.event_name == 'release' && github.event.action == 'published'
     if: ${{ startsWith(github.event.ref, 'refs/tags/v') }}
 
