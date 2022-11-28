@@ -110,6 +110,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install compiler toolkit
+        run: sudo apt install g++-aarch64-linux-gnu
+
       - name: Install conan
         run: pipx install conan==${{ env.CONAN_VERSION }}
 
