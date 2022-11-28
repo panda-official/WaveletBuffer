@@ -134,6 +134,22 @@ jobs:
           cd conan
           conan create . drift/stable --build=missing
 
+      - name: Build ARM64 package for stable channel
+        if: matrix.os == 'ubuntu-20.04' && github.ref_type == 'tag'
+        env:
+          CONAN_SOURCE_DIR: ${{ github.workspace }}
+        run: |
+          cd conan
+          conan create . drift/stable --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
+
+      - name: Build ARM64 package for develop channel
+        if: matrix.os == 'ubuntu-20.04' && github.ref_type == 'branch'
+        env:
+          CONAN_SOURCE_DIR: ${{ github.workspace }}
+        run: |
+          cd conan
+          conan create . drift/stable --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
+
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
         env:
