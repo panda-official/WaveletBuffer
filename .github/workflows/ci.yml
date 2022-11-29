@@ -131,7 +131,6 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
-          sudo apt-get install g++-aarch64-linux-gnu
           cd conan
           conan create . drift/stable --build=missing
 
@@ -149,6 +148,7 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
+          sudo apt-get install g++-aarch64-linux-gnu
           cd conan
           conan create . drift/stable --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
 
