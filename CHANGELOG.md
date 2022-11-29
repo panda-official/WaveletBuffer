@@ -5,6 +5,7 @@
 ### Added
 
 * DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+* DRIFT-617: Add conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
 
 ### Changed
 
