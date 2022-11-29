@@ -110,9 +110,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install compiler toolkit
-        run: sudo apt-get install g++-aarch64-linux-gnu
-
       - name: Install conan
         run: pipx install conan==${{ env.CONAN_VERSION }}
 
@@ -134,6 +131,7 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
+          sudo apt-get install g++-aarch64-linux-gnu
           cd conan
           conan create . drift/stable --build=missing
 
@@ -142,6 +140,7 @@ jobs:
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
+          sudo apt-get install g++-aarch64-linux-gnu
           cd conan
           conan create . drift/stable --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
 
