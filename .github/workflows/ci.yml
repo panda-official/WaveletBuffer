@@ -150,7 +150,7 @@ jobs:
         run: |
           sudo apt-get install g++-aarch64-linux-gnu
           cd conan
-          conan create . drift/stable --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
+          conan create . drift/develop --build=missing -pr:b default -pr:h ./linux_armv8 -tf=None
 
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
