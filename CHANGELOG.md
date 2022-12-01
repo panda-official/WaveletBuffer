@@ -2,15 +2,18 @@
 
 ## Unreleased
 
-## 0.5.0 - 2022-11-18
-
 ### Added
 
 * DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+* DRIFT-617: Add conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
 
 ### Changed
 
 * DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+
+### Removed
+
+* DRIFT-617: Remove OpenBLAS, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
 
 ## 0.5.0 - 2022-11-18
 

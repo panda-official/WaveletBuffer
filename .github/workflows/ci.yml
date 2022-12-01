@@ -107,11 +107,27 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04, windows-2019, macos-12 ]
+        arch: [x86_64, armv8]
+        exclude:
+          - os: windows-2019
+            arch: armv8
+          - os: macos-12
+            arch: armv8
+        include:
+          - arch: x86_64
+            dep_install_cmd: ""
+            conan_tail: ""
+          - arch: armv8
+            dep_install_cmd: "sudo apt-get install g++-aarch64-linux-gnu"
+            conan_tail: " -pr:b default -pr:h ./linux_armv8 -tf=None"
     steps:
       - uses: actions/checkout@v2
 
       - name: Install conan
         run: pipx install conan==${{ env.CONAN_VERSION }}
+
+      - name: Install compiler toolkit
+        run: ${{ matrix.dep_install_cmd }}
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
@@ -132,7 +148,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
-          conan create . drift/stable --build=missing
+          conan create . drift/stable --build=missing ${{ matrix.conan_tail }}
 
       - name: Build package for develop channel
         if: github.ref_type == 'branch'
@@ -140,7 +156,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
-          conan create . drift/develop --build=missing
+          conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
