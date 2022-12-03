@@ -2,6 +2,8 @@
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
+#include <blaze/util/serialization/Archive.h>
+
 #include <fstream>
 #include <sstream>
 
@@ -267,6 +269,9 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   } else {
     REQUIRE(false);
   }
+
+  blaze::Archive<std::ofstream> archive(filename);
+  archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
 }
 
 TEST_CASE("Wavelet Buffer") {
