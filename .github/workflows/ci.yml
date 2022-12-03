@@ -82,19 +82,25 @@ jobs:
         if : matrix.os == 'ubuntu-20.04'
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
+      - name: Rename serialized blobs
+        run: |
+          cd build/tests
+          mv signal_1d.bin signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
+          mv signal_2d.bin signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
+
       - name: Upload serialized signal_1d buffer
         uses: actions/upload-artifact@v3
         with:
           name: signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
-          path: build/tests/signal_1d.bin
-          retention-days: 1
+          path: build/tests/signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
+          retention-days: 3
 
       - name: Upload serialized signal_2d buffer
         uses: actions/upload-artifact@v3
         with:
           name: signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
-          path: build/tests/signal_2d.bin
-          retention-days: 1
+          path: build/tests/signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
+          retention-days: 3
 
       - name: Create code coverage report
         if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
