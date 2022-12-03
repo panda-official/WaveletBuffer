@@ -246,7 +246,7 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
 
   /* Serialize */
   std::string blob;
-  size_t compression_level = 7;
+  size_t compression_level = 0;
   REQUIRE(buffer.Serialize(&blob, compression_level));
 
   std::stringstream ss;
@@ -270,8 +270,8 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
     REQUIRE(false);
   }
 
-  blaze::Archive<std::ofstream> archive(filename);
-  archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+  // blaze::Archive<std::ofstream> archive(filename);
+  // archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
 }
 
 TEST_CASE("Wavelet Buffer") {
