@@ -83,14 +83,14 @@ jobs:
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
       - name: Upload serialized signal_1d buffer
-        uses: actions/upload-artifacts@3
+        uses: actions/upload-artifact@3
         with:
           name: signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
           path: build/tests/signal_1d.bin
           retention-days: 1
 
       - name: Upload serialized signal_2d buffer
-        uses: actions/upload-artifacts@3
+        uses: actions/upload-artifact@3
         with:
           name: signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
           path: build/tests/signal_2d.bin
