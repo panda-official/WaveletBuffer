@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
-          path: build/tests/signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
+          path: build/tests/signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
           retention-days: 3
 
       - name: Create code coverage report
