@@ -224,9 +224,11 @@ class WaveletBuffer::Impl {
     if (IsEmpty()) {
       sf_compression = 0;
     }
+
     std::ostringstream ss;
     blaze::Archive blaze_arch(ss);
     blaze_arch << kSerializationVersion << parameters_ << sf_compression;
+
     if (sf_compression == 0) {
       blaze_arch << decompositions_;
     } else {
