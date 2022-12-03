@@ -2,6 +2,9 @@
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
+#include <fstream>
+#include <sstream>
+
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -218,6 +221,54 @@ TEST_CASE("WaveletBuffer::Parse(), WaveletBuffer::Serialize()",
     }
   }
 }
+
+/* Create serialized blobs */
+TEST_CASE("WaveletBuffer::Serialize() save to file") {
+  DataGenerator dg;
+
+  /* Create wavelet buffers */
+  std::vector<WaveletBuffer> buffers = {
+      WaveletBuffer(MakeParams({10000}, 10)),
+      WaveletBuffer(MakeParams({100, 100}, 5))};
+
+  /* Generate signals */
+  std::vector<SignalN2D> signals{SignalN2D{dg.GenerateMatrix2d(10000, 1)},
+                                 SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+
+  const auto buffer_num = GENERATE(0, 1);
+  auto buffer = buffers[buffer_num];
+
+  /* Decompose */
+  REQUIRE(Decompose(&buffer, signals[buffer_num],
+                    SimpleDenoiseAlgorithm<float>(0.7)));
+
+  /* Serialize */
+  std::string blob;
+  size_t compression_level = 7;
+  REQUIRE(buffer.Serialize(&blob, compression_level));
+
+  std::stringstream ss;
+  ss << blob;
+
+  /* Choose filename */
+  std::string filename;
+  if (buffer_num == 0) {
+    filename = "signal_1d.bin";
+  } else if (buffer_num == 1) {
+    filename = "signal_2d.bin";
+  } else {
+    REQUIRE(false);
+  }
+
+  /* Save blob */
+  std::ofstream file(filename);
+  if (file.is_open()) {
+    file << ss.rdbuf();
+  } else {
+    REQUIRE(false);
+  }
+}
+
 TEST_CASE("Wavelet Buffer") {
   NullDenoiseAlgorithm<float> denoiser;
   DataGenerator dg;

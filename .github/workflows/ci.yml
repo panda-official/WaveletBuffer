@@ -82,6 +82,20 @@ jobs:
         if : matrix.os == 'ubuntu-20.04'
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
+      - name: Upload serialized signal_1d buffer
+        uses: actions/upload-artifacts@3
+        with:
+          name: signal_1d-${{  matrix.os }}-${{ matrix.build_type }}
+          path: build/tests/signal_1d.bin
+          retention-days: 1
+
+      - name: Upload serialized signal_2d buffer
+        uses: actions/upload-artifacts@3
+        with:
+          name: signal_2d-${{  matrix.os }}-${{ matrix.build_type }}
+          path: build/tests/signal_2d.bin
+          retention-days: 1
+
       - name: Create code coverage report
         if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
         run: |
@@ -100,173 +114,173 @@ jobs:
           flags: unittests
           verbose: true
 
-  conan:
-    needs: [ build_test ]
-    name: "Build Conan package and upload it"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
-        arch: [x86_64, armv8]
-        exclude:
-          - os: windows-2019
-            arch: armv8
-          - os: macos-12
-            arch: armv8
-        include:
-          - arch: x86_64
-            dep_install_cmd: ""
-            conan_tail: ""
-          - arch: armv8
-            dep_install_cmd: "sudo apt-get install g++-aarch64-linux-gnu"
-            conan_tail: " -pr:b default -pr:h ./linux_armv8 -tf=None"
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install conan
-        run: pipx install conan==${{ env.CONAN_VERSION }}
-
-      - name: Install compiler toolkit
-        run: ${{ matrix.dep_install_cmd }}
-
-      - name: Prefix version for development version
-        if: ${{ (github.ref == 'refs/heads/develop') }}
-        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
-
-      - name: Create profile
-        run: |
-          cd conan
-          conan profile new default --detect
-
-      - name: Set libstdc++11
-        if : matrix.os == 'ubuntu-20.04'
-        run: conan profile update settings.compiler.libcxx=libstdc++11 default
-
-      - name: Build package for stable channel
-        if: github.ref_type == 'tag'
-        env:
-          CONAN_SOURCE_DIR: ${{ github.workspace }}
-        run: |
-          cd conan
-          conan create . drift/stable --build=missing ${{ matrix.conan_tail }}
-
-      - name: Build package for develop channel
-        if: github.ref_type == 'branch'
-        env:
-          CONAN_SOURCE_DIR: ${{ github.workspace }}
-        run: |
-          cd conan
-          conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
-
-      - name: Upload package
-        if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
-        run: |
-          conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
-          conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
-          conan upload wavelet_buffer --all --confirm --remote=panda
-
-  pip:
-    name: "Build and test PIP"
-    needs: [ build_test ]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
-        python-version: [ "3.8", "3.9", "3.10" ]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Build and install
-        run: |
-          pip install -r python/requirements/test.txt
-          pip install --verbose .
-
-      - name: Lint Test
-        run: pylint python/tests
-
-      - name: Run Test
-        run: pytest python/tests
-
-  build_sdist:
-    name: "Build and test SDist"
-    needs: [ pip ]
-    runs-on: ubuntu-20.04
-    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Prefix version for development version
-        if: ${{ (github.ref == 'refs/heads/develop') }}
-        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
-
-      - name: Build SDist
-        run: |
-          pipx run build --sdist
-
-      - name: Check metadata
-        run: |
-          pipx run twine check dist/*
-
-      - name: Install SDist package
-        run:  pip3 install dist/*
-
-      - uses: actions/upload-artifact@v2
-        with:
-          path: dist/*.tar.gz
-
-  build_wheels:
-    name: "Build wheels on ${{ matrix.os }}"
-    needs: [ pip ]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-12 ]
-
-    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Prefix version for development version
-        if: ${{ (github.ref == 'refs/heads/develop') }}
-        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.8.1
-
-      - name: Verify clean directory
-        run: |
-          git diff --exit-code
-        shell: bash
-
-      - name: Upload wheels
-        uses: actions/upload-artifact@v2
-        with:
-          path: wheelhouse/*.whl
-
-  upload_all:
-    name: "Upload packages if release"
-    needs: [ build_wheels, build_sdist ]
-    runs-on: ubuntu-20.04
-    #if: github.event_name == 'release' && github.event.action == 'published'
-    if: ${{ startsWith(github.event.ref, 'refs/tags/v') }}
-
-    steps:
-      - uses: actions/setup-python@v2
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: artifact
-          path: dist
-
-      - name: "Upload to PyPI"
-        uses: pypa/gh-action-pypi-publish@v1.5.0
-        with:
-          user: ${{ secrets.PYPI_USERNAME }}
-          password: ${{ secrets.PYPI_PASSWORD }}
+            #  conan:
+            #    needs: [ build_test ]
+            #    name: "Build Conan package and upload it"
+            #    runs-on: ${{ matrix.os }}
+            #    strategy:
+            #      matrix:
+            #        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+            #        arch: [x86_64, armv8]
+            #        exclude:
+            #          - os: windows-2019
+            #            arch: armv8
+            #          - os: macos-12
+            #            arch: armv8
+            #        include:
+            #          - arch: x86_64
+            #            dep_install_cmd: ""
+            #            conan_tail: ""
+            #          - arch: armv8
+            #            dep_install_cmd: "sudo apt-get install g++-aarch64-linux-gnu"
+            #            conan_tail: " -pr:b default -pr:h ./linux_armv8 -tf=None"
+            #    steps:
+            #      - uses: actions/checkout@v2
+            #
+            #      - name: Install conan
+            #        run: pipx install conan==${{ env.CONAN_VERSION }}
+            #
+            #      - name: Install compiler toolkit
+            #        run: ${{ matrix.dep_install_cmd }}
+            #
+            #      - name: Prefix version for development version
+            #        if: ${{ (github.ref == 'refs/heads/develop') }}
+            #        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
+            #
+            #      - name: Create profile
+            #        run: |
+            #          cd conan
+            #          conan profile new default --detect
+            #
+            #      - name: Set libstdc++11
+            #        if : matrix.os == 'ubuntu-20.04'
+            #        run: conan profile update settings.compiler.libcxx=libstdc++11 default
+            #
+            #      - name: Build package for stable channel
+            #        if: github.ref_type == 'tag'
+            #        env:
+            #          CONAN_SOURCE_DIR: ${{ github.workspace }}
+            #        run: |
+            #          cd conan
+            #          conan create . drift/stable --build=missing ${{ matrix.conan_tail }}
+            #
+            #      - name: Build package for develop channel
+            #        if: github.ref_type == 'branch'
+            #        env:
+            #          CONAN_SOURCE_DIR: ${{ github.workspace }}
+            #        run: |
+            #          cd conan
+            #          conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
+            #
+            #      - name: Upload package
+            #        if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+            #        run: |
+            #          conan remote add panda https://conan.panda.technology/artifactory/api/conan/drift
+            #          conan user -p ${{secrets.CONAN_PASSWORD}} -r panda --skip-auth ${{secrets.CONAN_LOGIN_USERNAME}}
+            #          conan upload wavelet_buffer --all --confirm --remote=panda
+            #
+            #  pip:
+            #    name: "Build and test PIP"
+            #    needs: [ build_test ]
+            #    runs-on: ${{ matrix.os }}
+            #    strategy:
+            #      fail-fast: false
+            #      matrix:
+            #        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+            #        python-version: [ "3.8", "3.9", "3.10" ]
+            #
+            #    steps:
+            #      - uses: actions/checkout@v3
+            #
+            #      - uses: actions/setup-python@v3
+            #        with:
+            #          python-version: ${{ matrix.python-version }}
+            #
+            #      - name: Build and install
+            #        run: |
+            #          pip install -r python/requirements/test.txt
+            #          pip install --verbose .
+            #
+            #      - name: Lint Test
+            #        run: pylint python/tests
+            #
+            #      - name: Run Test
+            #        run: pytest python/tests
+            #
+            #  build_sdist:
+            #    name: "Build and test SDist"
+            #    needs: [ pip ]
+            #    runs-on: ubuntu-20.04
+            #    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+            #    steps:
+            #      - uses: actions/checkout@v2
+            #
+            #      - name: Prefix version for development version
+            #        if: ${{ (github.ref == 'refs/heads/develop') }}
+            #        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
+            #
+            #      - name: Build SDist
+            #        run: |
+            #          pipx run build --sdist
+            #
+            #      - name: Check metadata
+            #        run: |
+            #          pipx run twine check dist/*
+            #
+            #      - name: Install SDist package
+            #        run:  pip3 install dist/*
+            #
+            #      - uses: actions/upload-artifact@v2
+            #        with:
+            #          path: dist/*.tar.gz
+            #
+            #  build_wheels:
+            #    name: "Build wheels on ${{ matrix.os }}"
+            #    needs: [ pip ]
+            #    runs-on: ${{ matrix.os }}
+            #    strategy:
+            #      fail-fast: false
+            #      matrix:
+            #        os: [ ubuntu-20.04, windows-2019, macos-12 ]
+            #
+            #    if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
+            #    steps:
+            #      - uses: actions/checkout@v2
+            #
+            #      - name: Prefix version for development version
+            #        if: ${{ (github.ref == 'refs/heads/develop') }}
+            #        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
+            #
+            #      - name: Build wheels
+            #        uses: pypa/cibuildwheel@v2.8.1
+            #
+            #      - name: Verify clean directory
+            #        run: |
+            #          git diff --exit-code
+            #        shell: bash
+            #
+            #      - name: Upload wheels
+            #        uses: actions/upload-artifact@v2
+            #        with:
+            #          path: wheelhouse/*.whl
+            #
+            #  upload_all:
+            #    name: "Upload packages if release"
+            #    needs: [ build_wheels, build_sdist ]
+            #    runs-on: ubuntu-20.04
+            #    #if: github.event_name == 'release' && github.event.action == 'published'
+            #    if: ${{ startsWith(github.event.ref, 'refs/tags/v') }}
+            #
+            #    steps:
+            #      - uses: actions/setup-python@v2
+            #
+            #      - uses: actions/download-artifact@v2
+            #        with:
+            #          name: artifact
+            #          path: dist
+            #
+            #      - name: "Upload to PyPI"
+            #        uses: pypa/gh-action-pypi-publish@v1.5.0
+            #        with:
+            #          user: ${{ secrets.PYPI_USERNAME }}
+            #          password: ${{ secrets.PYPI_PASSWORD }}
