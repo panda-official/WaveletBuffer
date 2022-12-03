@@ -67,9 +67,9 @@ class DataGenerator {
   blaze::DynamicMatrix<float> GenerateMatrix2d(size_t rows, size_t cols);
 };
 
-blaze::DynamicVector<float> DataGenerator::GenerateMatrix1d(size_t i) {
+blaze::DynamicVector<float> DataGenerator::GenerateMatrix1d(size_t size) {
   return blaze::generate<blaze::columnVector>(
-      100, [this](size_t i) { return normal_distribution_(random_engine_); });
+      size, [this](size_t i) { return normal_distribution_(random_engine_); });
 }
 
 blaze::DynamicMatrix<float> DataGenerator::GenerateMatrix2d(size_t rows,
