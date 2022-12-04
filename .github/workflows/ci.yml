@@ -120,6 +120,41 @@ jobs:
           flags: unittests
           verbose: true
 
+  test_parse:
+    needs: [build_test]
+    runs-on: ${{ matrix.os }}
+    name: Test WaveletBuffer::Parse()
+    strategy:
+      matrix:
+        build_type: [ Debug, Release ]
+        os: [ ubuntu-20.04, macos-12 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          pipx install conan==${{ env.CONAN_VERSION }}
+
+      - name: Build tests, benchmarks and examples
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_EXAMPLES=ON ..
+          cmake --build . -j --config ${{ matrix.build_type }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: data
+
+      - name: Run parse test
+        run: |
+          cd build/examples
+          find ../../ -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
+
+
             #  conan:
             #    needs: [ build_test ]
             #    name: "Build Conan package and upload it"
