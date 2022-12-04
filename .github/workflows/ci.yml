@@ -152,7 +152,7 @@ jobs:
       - name: Run parse test
         run: |
           cd build/examples
-          find ../../data -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
+          find ../../data -type f -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
 
 
             #  conan:
