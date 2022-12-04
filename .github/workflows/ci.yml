@@ -137,7 +137,7 @@ jobs:
         run: |
           pipx install conan==${{ env.CONAN_VERSION }}
 
-      - name: Build tests, benchmarks and examples
+      - name: Build examples
         run: |
           mkdir build
           cd build
@@ -152,7 +152,7 @@ jobs:
       - name: Run parse test
         run: |
           cd build/examples
-          find ../../ -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
+          find ../../data -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
 
 
             #  conan:
