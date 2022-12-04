@@ -36,5 +36,7 @@ int main(int argc, char* argv[]) {
   /* Load wavelet buffer from binary */
   auto wb = drift::WaveletBuffer::Parse(blob.str());
 
+  std::cout << "Loaded" << std::endl;
+
   return EXIT_SUCCESS;
 }
