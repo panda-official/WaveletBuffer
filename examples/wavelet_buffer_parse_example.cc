@@ -23,19 +23,23 @@ int main(int argc, char* argv[]) {
 
   // return 0;
 
-  /* Read file to std::string */
-  std::ifstream file(argv[1]);
-  if (!file.is_open()) {
-    std::cerr << "Could not open file " << argv[1] << std::endl;
+  try {
+    /* Read file to std::string */
+    std::ifstream file(argv[1]);
+    if (!file.is_open()) {
+      std::cerr << "Could not open file " << argv[1] << std::endl;
+      return EXIT_FAILURE;
+    }
+
+    std::stringstream blob;
+    blob << file.rdbuf();
+
+    /* Load wavelet buffer from binary */
+    auto wb = drift::WaveletBuffer::Parse(blob.str());
+  } catch (std::exception& e) {
+    std::cerr << "Failed parse data: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
-
-  std::stringstream blob;
-  blob << file.rdbuf();
-
-  /* Load wavelet buffer from binary */
-  auto wb = drift::WaveletBuffer::Parse(blob.str());
-
   std::cout << "Loaded" << std::endl;
 
   return EXIT_SUCCESS;
