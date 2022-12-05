@@ -263,15 +263,15 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   }
 
   /* Save blob */
-  std::ofstream file(filename);
-  if (file.is_open()) {
-    file << ss.rdbuf();
-  } else {
-    REQUIRE(false);
-  }
+  // std::ofstream file(filename);
+  // if (file.is_open()) {
+  // file << ss.rdbuf();
+  //} else {
+  // REQUIRE(false);
+  //}
 
-  // blaze::Archive<std::ofstream> archive(filename);
-  // archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+  blaze::Archive<std::ofstream> archive(filename);
+  archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
 }
 
 TEST_CASE("Wavelet Buffer") {

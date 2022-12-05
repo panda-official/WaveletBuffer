@@ -14,14 +14,14 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Load " << argv[1] << std::endl;
 
-  // drift::WaveletParameters params1, params2;
-  // blaze::Archive<std::ifstream> archive(argv[1]);
-  // archive >> params1 >> params2;
+  drift::WaveletParameters params1, params2;
+  blaze::Archive<std::ifstream> archive(argv[1]);
+  archive >> params1 >> params2;
 
-  // std::cout << params1 << std::endl;
-  // std::cout << params2 << std::endl;
+  std::cout << params1 << std::endl;
+  std::cout << params2 << std::endl;
 
-  // return 0;
+  return 0;
 
   try {
     /* Read file to std::string */
