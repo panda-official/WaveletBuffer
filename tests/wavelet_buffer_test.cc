@@ -272,7 +272,9 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   //}
   {
     blaze::Archive<std::ofstream> archive(filename);
-    archive << MakeParams({10000}, 10);
+    //  archive << MakeParams({10000}, 10);
+    archive << uint64_t(1) << uint64_t(10000) << uint64_t(1) << uint64_t(10)
+            << int32_t(2);
   }
   {
     std::stringstream ss;
