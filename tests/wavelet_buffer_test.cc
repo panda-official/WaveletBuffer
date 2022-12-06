@@ -2,6 +2,7 @@
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
+#include <blaze/util/Types.h>
 #include <blaze/util/serialization/Archive.h>
 
 #include <fstream>
@@ -274,12 +275,14 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
     blaze::Archive<std::ofstream> archive(filename);
     //  archive << MakeParams({10000}, 10);
     archive << uint64_t(1) << uint64_t(10000) << uint64_t(1) << uint64_t(10)
-            << int32_t(2);
+            << uint64_t(2);
   }
   {
     blaze::Archive<std::ifstream> archive2(filename);
+    blaze::uint16_t t;
     uint64_t s, d, sn, ds;
-    int32_t wt;
+    // int32_t wt;
+    uint64_t wt;
     archive2 >> s >> d >> sn >> ds >> wt;
     REQUIRE(s == 1);
     REQUIRE(d == 10000);
