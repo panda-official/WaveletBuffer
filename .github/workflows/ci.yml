@@ -149,6 +149,11 @@ jobs:
         with:
           path: data
 
+      - name: Show hexdump
+        run: |
+          cd build/examples
+          find ../../data -type f -name "signal*" -exec hexdump -v {} \;
+
       - name: Run parse test
         run: |
           cd build/examples
