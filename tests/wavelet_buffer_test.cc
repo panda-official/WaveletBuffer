@@ -5,6 +5,7 @@
 #include <blaze/util/serialization/Archive.h>
 
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 #include <catch2/catch_approx.hpp>
@@ -269,9 +270,16 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   //} else {
   // REQUIRE(false);
   //}
-
-  blaze::Archive<std::ofstream> archive(filename);
-  archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+  {
+    blaze::Archive<std::ofstream> archive(filename);
+    archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+  }
+  {
+    std::stringstream ss;
+    blaze::Archive<std::stringstream> archive(ss);
+    archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+    std::cout << ss.str() << std::endl;
+  }
 }
 
 TEST_CASE("Wavelet Buffer") {
