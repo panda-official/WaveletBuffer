@@ -3,6 +3,7 @@
 #include <wavelet_buffer/wavelet_parameters.h>
 
 #include <catch2/catch_test_macros.hpp>
+#include <cereal/archives/portable_binary.hpp>
 
 using drift::WaveletParameters;
 using drift::WaveletTypes;
@@ -78,4 +79,23 @@ TEST_CASE("WaveletParameters") {
     REQUIRE_FALSE(params_3d > big);
     REQUIRE_FALSE(params_3d == big);
   }
+}
+
+TEST_CASE("WaveletParameters::serialization()") {
+  WaveletParameters p;
+
+  std::stringstream ss;
+
+  {
+    cereal::PortableBinaryOutputArchive archive(ss);
+    archive(p);
+  }
+
+  WaveletParameters p2;
+  {
+    cereal::PortableBinaryInputArchive archive(ss);
+    archive(p2);
+  }
+
+  REQUIRE(p == p2);
 }

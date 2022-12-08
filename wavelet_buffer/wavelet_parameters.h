@@ -10,6 +10,9 @@
 #include <ostream>
 #include <vector>
 
+#include <cereal/archives/portable_binary.hpp>
+#include <cereal/types/vector.hpp>
+
 namespace drift {
 
 /**
@@ -67,22 +70,12 @@ struct WaveletParameters {
   }
 
   /**
-   * Cereal save interface
+   * Cereal serialization interface
    * @tparam Archive
    * @param ar
    */
   template <class Archive>
-  void save(Archive& ar) const {  // NOLINT
-    ar(signal_shape, signal_number, decomposition_steps, wavelet_type);
-  }
-
-  /**
-   * Cereal load interface
-   * @tparam Archive
-   * @param ar
-   */
-  template <class Archive>
-  void load(Archive& ar) {  // NOLINT
+  void cereal_serialize(Archive& ar) {  // NOLINT
     ar(signal_shape, signal_number, decomposition_steps, wavelet_type);
   }
 
