@@ -6,7 +6,7 @@
 
 namespace cereal {
 
-// ! Serialization of DynamicVector
+// ! Save of DynamicVector
 template <class Archive, class T>
 inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
                                       blaze::DynamicVector<T> const& vector) {
@@ -15,6 +15,7 @@ inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
   for (auto&& v : vector) ar(v);
 }
 
+/* Load of DynamicVector */
 template <class Archive, class T>
 inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
                                       blaze::DynamicVector<T>& vector) {
@@ -25,7 +26,39 @@ inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
   for (auto&& v : vector) ar(v);
 }
 
-// Serialization of CompressedMatrix
+/* Save of DynamicMatrix */
+template <class Archive, class T>
+inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
+                                      blaze::DynamicMatrix<T> const& matrix) {
+  ar(make_size_tag(static_cast<size_type>(matrix.rows())));  // number of rows
+  ar(make_size_tag(
+      static_cast<size_type>(matrix.columns())));  // number of columns
+  for (size_t i = 0; i < matrix.rows(); ++i) {
+    for (size_t j = 0; j < matrix.columns(); ++j) {
+      ar(matrix(i, j));
+    }
+  }
+}
+
+/* Load of DynamicMatrix */
+template <class Archive, class T>
+inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
+                                      blaze::DynamicMatrix<T>& matrix) {
+  size_type rows;
+  size_type columns;
+  ar(make_size_tag(rows));
+  ar(make_size_tag(columns));
+
+  matrix.resize(static_cast<std::size_t>(rows),
+                static_cast<std::size_t>(columns));
+  for (size_t i = 0; i < matrix.rows(); ++i) {
+    for (size_t j = 0; j < matrix.columns(); ++j) {
+      ar(matrix(i, j));
+    }
+  }
+}
+
+/* Save of CompressedMatrix */
 template <class Archive, class T>
 inline void CEREAL_SAVE_FUNCTION_NAME(
     Archive& ar, blaze::CompressedMatrix<T> const& matrix) {
@@ -45,6 +78,7 @@ inline void CEREAL_SAVE_FUNCTION_NAME(
   }
 }
 
+/* Load of CompressedMatrix */
 template <class Archive, class T>
 inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
                                       blaze::CompressedMatrix<T>& matrix) {

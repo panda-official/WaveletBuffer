@@ -36,6 +36,21 @@ TEST_CASE("Serialize DynamicVector<DynamicVector>") {
   REQUIRE(vec == vec2);
 }
 
+TEST_CASE("Serialize DynamicMatrix") {
+  blaze::DynamicMatrix<double> mat{{1, 0, 3}, {0, 0, 6}};
+  std::stringstream ss;
+  {
+    cereal::PortableBinaryOutputArchive oarchive(ss);
+    oarchive(mat);
+  }
+  blaze::DynamicMatrix<double> mat2;
+  {
+    cereal::PortableBinaryInputArchive iarchive(ss);
+    iarchive(mat2);
+  }
+  REQUIRE(mat == mat2);
+}
+
 TEST_CASE("Serialize CompressedMatrix") {
   blaze::CompressedMatrix<double> mat{{1, 0, 3}, {0, 0, 6}};
   std::stringstream ss;
