@@ -248,7 +248,7 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
 
   /* Serialize */
   std::string blob;
-  size_t compression_level = 3;
+  size_t compression_level = 0;
   REQUIRE(buffer.Serialize(&blob, compression_level));
 
   std::stringstream ss;
