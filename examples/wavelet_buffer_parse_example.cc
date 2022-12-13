@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
   std::cout << "Load " << argv[1] << std::endl;
 
   /* Read file to std::string */
-  std::ifstream file(argv[1]);
+  std::ifstream file(argv[1], std::ios::binary);
   if (!file.is_open()) {
     std::cerr << "Could not open file " << argv[1] << std::endl;
     return EXIT_FAILURE;

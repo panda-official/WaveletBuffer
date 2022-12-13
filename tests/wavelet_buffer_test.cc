@@ -265,7 +265,7 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   }
 
   /* Save blob */
-  std::ofstream file(filename);
+  std::ofstream file(filename, std::ios::binary);
   if (file.is_open()) {
     file << ss.rdbuf();
   } else {
