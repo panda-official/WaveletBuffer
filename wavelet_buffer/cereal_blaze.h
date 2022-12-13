@@ -1,3 +1,5 @@
+// Copyright 2020-2021 PANDA GmbH
+
 #pragma once
 
 #include <blaze/Blaze.h>
@@ -8,7 +10,7 @@ namespace cereal {
 
 // ! Save of DynamicVector
 template <class Archive, class T>
-inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
+inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,  // NOLINT
                                       blaze::DynamicVector<T> const& vector) {
   ar(make_size_tag(
       static_cast<size_type>(vector.size())));  // number of elements
@@ -17,8 +19,9 @@ inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
 
 /* Load of DynamicVector */
 template <class Archive, class T>
-inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
-                                      blaze::DynamicVector<T>& vector) {
+inline void CEREAL_LOAD_FUNCTION_NAME(
+    Archive& ar,                        // NOLINT
+    blaze::DynamicVector<T>& vector) {  // NOLINT
   size_type size;
   ar(make_size_tag(size));
 
@@ -28,7 +31,7 @@ inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
 
 /* Save of DynamicMatrix */
 template <class Archive, class T>
-inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
+inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,  // NOLINT
                                       blaze::DynamicMatrix<T> const& matrix) {
   ar(make_size_tag(static_cast<size_type>(matrix.rows())));  // number of rows
   ar(make_size_tag(
@@ -42,8 +45,9 @@ inline void CEREAL_SAVE_FUNCTION_NAME(Archive& ar,
 
 /* Load of DynamicMatrix */
 template <class Archive, class T>
-inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
-                                      blaze::DynamicMatrix<T>& matrix) {
+inline void CEREAL_LOAD_FUNCTION_NAME(
+    Archive& ar,                        // NOLINT
+    blaze::DynamicMatrix<T>& matrix) {  // NOLINT
   size_type rows;
   size_type columns;
   ar(make_size_tag(rows));
@@ -61,7 +65,7 @@ inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
 /* Save of CompressedMatrix */
 template <class Archive, class T>
 inline void CEREAL_SAVE_FUNCTION_NAME(
-    Archive& ar, blaze::CompressedMatrix<T> const& matrix) {
+    Archive& ar, blaze::CompressedMatrix<T> const& matrix) {  // NOLINT
   ar(make_size_tag(static_cast<size_type>(matrix.rows())));
   ar(make_size_tag(static_cast<size_type>(matrix.columns())));
   ar(make_size_tag(
@@ -80,8 +84,9 @@ inline void CEREAL_SAVE_FUNCTION_NAME(
 
 /* Load of CompressedMatrix */
 template <class Archive, class T>
-inline void CEREAL_LOAD_FUNCTION_NAME(Archive& ar,
-                                      blaze::CompressedMatrix<T>& matrix) {
+inline void CEREAL_LOAD_FUNCTION_NAME(
+    Archive& ar,                           // NOLINT
+    blaze::CompressedMatrix<T>& matrix) {  // NOLINT
   size_type rows, columns;
   ar(make_size_tag(rows));
   ar(make_size_tag(columns));
