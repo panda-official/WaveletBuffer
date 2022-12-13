@@ -7,113 +7,63 @@
 namespace drift {
 [[nodiscard]] std::unique_ptr<WaveletBuffer> WaveletBufferSerializer::Parse(
     const std::string& blob) {
-  // try {
-  //   std::unique_ptr<WaveletBuffer> buffer;
-  //
-  //   std::istringstream ss(blob);
-  //   blaze::Archive blaze_arch(ss);
-  //
-  //   uint8_t serialization_version;
-  //   blaze_arch >> serialization_version;
-  //
-  //   if (true /*serialization_version == kSerializationVersion*/) {
-  //     std::istringstream css(blob);
-  //     cereal::PortableBinaryInputArchive arch(css);
-  //
-  //     uint8_t sv;
-  //     arch(sv);
-  //
-  //     WaveletParameters params{};
-  //     uint8_t sf_compression;
-  //     arch(params, sf_compression);
-  //
-  //     buffer = std::make_unique<WaveletBuffer>(params);
-  //
-  //     if (sf_compression == 0) {
-  //       arch(buffer->impl_->decompositions_);
-  //     } else {
-  //       for (int n = 0; n < params.signal_number; ++n) {
-  //         for (int s = 0; s < buffer->impl_->decompositions_[n].size(); ++s)
-  //         {
-  //           blaze::DynamicVector<uint8_t> compressed_subband;
-  //           arch(compressed_subband);
-  //
-  //           std::vector<uint8_t> data(compressed_subband.begin(),
-  //                                     compressed_subband.end());
-  //
-  //           size_t expected_points =
-  //               GetMemorySizeForSfCompressor(params.signal_shape, s);
-  //           SfCompressor compressor(
-  //               expected_points);  // TODO(Alexey Timin): Should
-  //                                  // reallocate memory because of a
-  //                                  // bug in SfCompressor
-  //           SfCompressor::OriginalData out_data;
-  //           if (!compressor.Decompress(data, &out_data)) {
-  //             return nullptr;
-  //           }
-  //
-  //           auto subband = Subband(out_data.rows, out_data.columns, 0);
-  //           for (int i = 0; i < out_data.indexes.size(); ++i) {
-  //             subband(out_data.indexes[i] / out_data.columns,
-  //                     out_data.indexes[i] % out_data.columns) =
-  //                 out_data.values[i];
-  //           }
-  //           buffer->impl_->decompositions_[n][s] = std::move(subband);
-  //         }
-  //       }
-  //     }
-  //   } else if (serialization_version == 2) {
-  //     WaveletParameters params{};
-  //     uint8_t sf_compression;
-  //
-  //     blaze_arch >> params >> sf_compression;
-  //
-  //     buffer = std::make_unique<WaveletBuffer>(params);
-  //
-  //     if (sf_compression == 0) {
-  //       blaze_arch >> buffer->impl_->decompositions_;
-  //     } else {
-  //       for (int n = 0; n < params.signal_number; ++n) {
-  //         for (int s = 0; s < buffer->impl_->decompositions_[n].size(); ++s)
-  //         {
-  //           blaze::DynamicVector<uint8_t> compressed_subband;
-  //           blaze_arch >> compressed_subband;
-  //
-  //           std::vector<uint8_t> data(compressed_subband.begin(),
-  //                                     compressed_subband.end());
-  //
-  //           size_t expected_points =
-  //               GetMemorySizeForSfCompressor(params.signal_shape, s);
-  //           SfCompressor compressor(
-  //               expected_points);  // TODO(Alexey Timin): Should
-  //                                  // reallocate memory because of a
-  //                                  // bug in SfCompressor
-  //           SfCompressor::OriginalData out_data;
-  //           if (!compressor.Decompress(data, &out_data)) {
-  //             return nullptr;
-  //           }
-  //
-  //           auto subband = Subband(out_data.rows, out_data.columns, 0);
-  //           for (int i = 0; i < out_data.indexes.size(); ++i) {
-  //             subband(out_data.indexes[i] / out_data.columns,
-  //                     out_data.indexes[i] % out_data.columns) =
-  //                 out_data.values[i];
-  //           }
-  //           buffer->impl_->decompositions_[n][s] = std::move(subband);
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     std::cerr << "Wrong version of binary: It is "
-  //               << static_cast<int>(serialization_version) << " but must be "
-  //               << static_cast<int>(kSerializationVersion) << std::endl;
-  //     return nullptr;
-  //   }
-  //   return buffer;
-  // } catch (std::exception& e) {
-  //   std::cerr << "Failed parse data: " << e.what() << std::endl;
-  return nullptr;
-  // }
+  try {
+    std::unique_ptr<WaveletBuffer> buffer;
+
+    std::istringstream ss(blob);
+    blaze::Archive blaze_arch(ss);
+
+    uint8_t serialization_version;
+    WaveletParameters params{};
+    uint8_t sf_compression;
+    blaze_arch >> serialization_version >> params >> sf_compression;
+
+    buffer = std::make_unique<WaveletBuffer>(params);
+
+    if (serialization_version != kSerializationVersion) {
+      std::cerr << "Wrong version of binary: It is "
+                << static_cast<int>(serialization_version) << " but must be "
+                << static_cast<int>(kSerializationVersion) << std::endl;
+      return nullptr;
+    } else {
+      if (sf_compression != 0) {
+        for (int n = 0; n < params.signal_number; ++n) {
+          for (int s = 0; s < buffer->decompositions()[n].size(); ++s) {
+            blaze::DynamicVector<uint8_t> compressed_subband;
+            blaze_arch >> compressed_subband;
+
+            std::vector<uint8_t> data(compressed_subband.begin(),
+                                      compressed_subband.end());
+
+            size_t expected_points =
+                GetMemorySizeForSfCompressor(params.signal_shape, s);
+            sf::SfCompressor compressor(
+                expected_points);  // TODO(Alexey Timin): Should
+                                   // reallocate memory because of a
+                                   // bug in SfCompressor
+            sf::SfCompressor::OriginalData out_data;
+            if (!compressor.Decompress(data, &out_data)) {
+              return nullptr;
+            }
+
+            auto subband = Subband(out_data.rows, out_data.columns, 0);
+            for (int i = 0; i < out_data.indexes.size(); ++i) {
+              subband(out_data.indexes[i] / out_data.columns,
+                      out_data.indexes[i] % out_data.columns) =
+                  out_data.values[i];
+            }
+            buffer->decompositions()[n][s] = std::move(subband);
+          }
+        }
+      } else {
+        blaze_arch >> buffer->decompositions();
+      }
+    }
+    return buffer;
+  } catch (std::exception& e) {
+    std::cerr << "Failed parse data: " << e.what() << std::endl;
+    return nullptr;
+  }
 }
 
 [[nodiscard]] bool WaveletBufferSerializer::Serialize(
