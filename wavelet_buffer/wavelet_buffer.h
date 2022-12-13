@@ -20,7 +20,7 @@
 namespace drift {
 
 constexpr uint8_t kSerializationVersion =
-    2;  // Increase if we brake compatibility
+    3;  // Increase if we brake compatibility
 
 class WaveletBufferView;
 /**

@@ -265,37 +265,37 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
   }
 
   /* Save blob */
-  // std::ofstream file(filename);
-  // if (file.is_open()) {
-  // file << ss.rdbuf();
-  //} else {
-  // REQUIRE(false);
-  //}
-  {
-    blaze::Archive<std::ofstream> archive(filename);
-    //  archive << MakeParams({10000}, 10);
-    archive << uint64_t(1) << uint64_t(10000) << uint64_t(1) << uint64_t(10)
-            << uint64_t(2);
+  std::ofstream file(filename);
+  if (file.is_open()) {
+    file << ss.rdbuf();
+  } else {
+    REQUIRE(false);
   }
-  {
-    blaze::Archive<std::ifstream> archive2(filename);
-    blaze::uint16_t t;
-    uint64_t s, d, sn, ds;
-    // int32_t wt;
-    uint64_t wt;
-    archive2 >> s >> d >> sn >> ds >> wt;
-    REQUIRE(s == 1);
-    REQUIRE(d == 10000);
-    REQUIRE(sn == 1);
-    REQUIRE(ds == 10);
-    REQUIRE(wt == 2);
-  }
-  {
-    std::stringstream ss;
-    blaze::Archive<std::stringstream> archive(ss);
-    archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
-    std::cout << ss.str() << std::endl;
-  }
+  // {
+  //   blaze::Archive<std::ofstream> archive(filename);
+  //   //  archive << MakeParams({10000}, 10);
+  //   archive << uint64_t(1) << uint64_t(10000) << uint64_t(1) << uint64_t(10)
+  //           << uint64_t(2);
+  // }
+  // {
+  //   blaze::Archive<std::ifstream> archive2(filename);
+  //   blaze::uint16_t t;
+  //   uint64_t s, d, sn, ds;
+  //   // int32_t wt;
+  //   uint64_t wt;
+  //   archive2 >> s >> d >> sn >> ds >> wt;
+  //   REQUIRE(s == 1);
+  //   REQUIRE(d == 10000);
+  //   REQUIRE(sn == 1);
+  //   REQUIRE(ds == 10);
+  //   REQUIRE(wt == 2);
+  // }
+  // {
+  //   std::stringstream ss;
+  //   blaze::Archive<std::stringstream> archive(ss);
+  //   archive << MakeParams({10000}, 10) << MakeParams({100, 100}, 5);
+  //   std::cout << ss.str() << std::endl;
+  // }
 }
 
 TEST_CASE("Wavelet Buffer") {
