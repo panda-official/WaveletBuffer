@@ -1,3 +1,4 @@
+// Copyright 2021-2022 PANDA GmbH
 #include "wavelet_buffer/wavelet_buffer_serializer.h"
 
 #include <sf_compressor/sf_compressor.h>
