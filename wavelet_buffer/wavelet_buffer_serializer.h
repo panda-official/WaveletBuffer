@@ -1,6 +1,9 @@
-// 2020-2022 PANDA GmbH
+// Copyright 020-2022 PANDA GmbH
 
 #pragma once
+
+#include <memory>
+#include <string>
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
