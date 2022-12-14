@@ -1,4 +1,5 @@
 // Copyright 2020 PANDA GmbH
+
 #ifndef WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 #define WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 
@@ -9,9 +10,6 @@
 #include <cstdint>
 #include <ostream>
 #include <vector>
-
-#include <cereal/archives/portable_binary.hpp>
-#include <cereal/types/vector.hpp>
 
 namespace drift {
 
@@ -69,16 +67,6 @@ struct WaveletParameters {
     return *std::min_element(std::begin(signal_shape), std::end(signal_shape));
   }
 
-  /**
-   * Cereal serialization interface
-   * @tparam Archive
-   * @param ar
-   */
-  template <class Archive>
-  void cereal_serialize(Archive& ar) {  // NOLINT
-    ar(signal_shape, signal_number, decomposition_steps, wavelet_type);
-  }
-
   friend std::ostream& operator<<(std::ostream& os,
                                   const WaveletParameters& parameters) {
     os << "WaveletParameters {" << std::endl
@@ -103,7 +91,10 @@ struct WaveletParameters {
  */
 template <typename Archive>
 void serialize(Archive& archive, const SignalShape& p) {  // NOLINT
+  /* Save size */
   archive << static_cast<std::uint64_t>(p.size());
+
+  /* Save elemetnts */
   for (const auto& el : p) {
     archive << static_cast<std::uint64_t>(el);
   }
@@ -118,10 +109,12 @@ void serialize(Archive& archive, const SignalShape& p) {  // NOLINT
  */
 template <typename Archive>
 void deserialize(Archive& archive, SignalShape& p) {  // NOLINT
+  /* Load size */
   uint64_t size;
   archive >> size;
   p.resize(size);
 
+  /* Load elements */
   for (auto& pel : p) {
     uint64_t el;
     archive >> el;
