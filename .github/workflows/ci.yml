@@ -149,15 +149,10 @@ jobs:
         with:
           path: data
 
-      - name: Show hexdump
-        run: |
-          cd build/examples
-          find ../../data -type f -name "signal*" -exec hexdump -v {} \;
-
       - name: Run parse test
         run: |
           cd build/examples
-          find ../../data -type f -name "signal*" -exec ./wavelet_buffer_parse_example {} \;
+          find ../../data -type f -name "signal*" | xargs -n 1 ./wavelet_buffer_parse_example
 
 
             #  conan:
