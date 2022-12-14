@@ -1,6 +1,7 @@
-// Copyright 020-2022 PANDA GmbH
+// Copyright 2020-2022 PANDA GmbH
 
-#pragma once
+#ifndef WAVELET_BUFFER_WAVELET_BUFFER_SERIALIZER_H_
+#define WAVELET_BUFFER_WAVELET_BUFFER_SERIALIZER_H_
 
 #include <memory>
 #include <string>
@@ -37,3 +38,5 @@ class WaveletBufferSerializer {
                                              int sub_number = 0);
 };
 }  // namespace drift
+
+#endif  // WAVELET_BUFFER_WAVELET_BUFFER_SERIALIZER_H_
