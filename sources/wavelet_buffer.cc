@@ -148,7 +148,22 @@ class WaveletBuffer::Impl {
    */
   [[nodiscard]] static std::unique_ptr<WaveletBuffer> Parse(
       const std::string& blob) {
-    return WaveletBufferSerializer::Parse(blob);
+    /* Read binary version */
+    std::istringstream ss(blob);
+    uint8_t version;
+    ss >> version;
+
+    /* Choose serializer */
+    if (version == kSerializationVersion) {
+      return WaveletBufferSerializer().Parse(blob);
+    } else if (version == 2) {
+      return WaveletBufferSerializerLegacy().Parse(blob);
+    } else {
+      std::cerr << "Wrong version of binary: It is "
+                << static_cast<int>(version) << " but must be "
+                << static_cast<int>(kSerializationVersion) << std::endl;
+      return nullptr;
+    }
   }
   /**
    * Serialize the buffer into the blob for saving in a file or sending via
@@ -159,8 +174,8 @@ class WaveletBuffer::Impl {
    */
   [[nodiscard]] bool Serialize(std::string* blob,
                                uint8_t sf_compression = 0) const {
-    return WaveletBufferSerializer::Serialize({parameters_, decompositions_},
-                                              blob, sf_compression);
+    return WaveletBufferSerializer().Serialize({parameters_, decompositions_},
+                                               blob, sf_compression);
   }
 
   /******** Accessors ***************/
