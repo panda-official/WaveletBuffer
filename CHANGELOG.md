@@ -4,8 +4,8 @@
 
 ### Added
 
-* DRIFT-605: Add clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
-* DRIFT-617: Add conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
+* DRIFT-605: Clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+* DRIFT-617: Conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
 
 ### Changed
 
@@ -13,7 +13,11 @@
 
 ### Removed
 
-* DRIFT-617: Remove OpenBLAS, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
+* DRIFT-617: OpenBLAS, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
+
+### Fixed
+
+* DRIFT-622: Incorrect WaveletBuffer decompositions serilization with sf_compression=0, [PR-50](https://github.com/panda-official/WaveletBuffer/pull/50)
 
 ## 0.5.0 - 2022-11-18
 
