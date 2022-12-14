@@ -9,7 +9,6 @@ add_executable(
     img/wavelet_image_test.cc
     img/color_space_test.cc
     img/jpeg_codec_test.cc
-    cereal_blaze_test.cc
 )
 target_link_libraries(unit_tests PRIVATE ${WB_TARGET_NAME})
 target_link_libraries(unit_tests PRIVATE Catch2::Catch2WithMain)
