@@ -92,7 +92,7 @@ TEST_CASE("WaveletParameters::serialization()") {
   WaveletParameters p2;
   {
     blaze::Archive archive(ss);
-    archive >> p;
+    archive >> p2;
   }
 
   REQUIRE(p == p2);

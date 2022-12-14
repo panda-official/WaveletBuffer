@@ -93,7 +93,7 @@ namespace drift {
     arch << kSerializationVersion << buffer.parameters() << sf_compression;
 
     if (sf_compression == 0) {
-      for (const auto& signal : buffer->decompositions()) {
+      for (const auto& signal : buffer.decompositions()) {
         for (const auto& subband : signal) {
           arch << subband;
         }
