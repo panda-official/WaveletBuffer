@@ -57,7 +57,13 @@ namespace drift {
           }
         }
       } else {
-        blaze_arch >> buffer->decompositions();
+        for (int c = 0; c < params.signal_number; ++c) {
+          for (int s = 0; s < buffer->decompositions()[c].size(); ++s) {
+            Subband subband;
+            blaze_arch >> subband;
+            buffer->decompositions()[c][s] = std::move(subband);
+          }
+        }
       }
     }
     return buffer;
@@ -81,7 +87,11 @@ namespace drift {
     arch << kSerializationVersion << buffer.parameters() << sf_compression;
 
     if (sf_compression == 0) {
-      arch << buffer.decompositions();
+      for (size_t c = 0; c < buffer.decompositions().size(); ++c) {
+        for (size_t s = 0; s < buffer.decompositions()[c].size(); ++s) {
+          arch << buffer.decompositions()[c][s];
+        }
+      }
     } else {
       uint8_t frag_len;
       if (sf_compression == 1) {
