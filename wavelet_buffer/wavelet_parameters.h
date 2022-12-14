@@ -6,8 +6,6 @@
 #include <blaze/Blaze.h>
 
 #include <algorithm>
-#include <cstddef>
-#include <cstdint>
 #include <ostream>
 #include <vector>
 
@@ -94,7 +92,7 @@ void serialize(Archive& archive, const SignalShape& p) {  // NOLINT
   /* Save size */
   archive << static_cast<std::uint64_t>(p.size());
 
-  /* Save elemetnts */
+  /* Save elements */
   for (const auto& el : p) {
     archive << static_cast<std::uint64_t>(el);
   }
