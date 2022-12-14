@@ -4,7 +4,6 @@
 
 #include <blaze/Blaze.h>
 
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -12,9 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include <cereal/archives/portable_binary.hpp>
-
-#include "wavelet_buffer/cereal_blaze.h"
 #include "wavelet_buffer/wavelet_buffer_serializer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
@@ -262,7 +258,7 @@ class WaveletBuffer::Impl {
                             : std::make_pair(-delta, delta);
   }
 
-  bool IsEmpty() const {
+  [[nodiscard]] bool IsEmpty() const {
     return std::all_of(
         decompositions_.begin(), decompositions_.end(), [](const auto& deca) {
           return std::all_of(deca.begin(), deca.end(), [](const auto& mtx) {
