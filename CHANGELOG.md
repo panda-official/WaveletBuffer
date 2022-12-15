@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+**IMPORTANT**: We have changed serialization of subbands. The current version of the serialization is 3. We support
+de-serialization of version 2 and 3. However, the serialization of version 2 is not supported anymore and to parse 
+archives you have to update to version 0.6.0.
+
 ### Added
 
 * DRIFT-605: Clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
@@ -17,7 +21,7 @@
 
 ### Fixed
 
-* DRIFT-622: Incorrect WaveletBuffer decompositions serilization with sf_compression=0, [PR-50](https://github.com/panda-official/WaveletBuffer/pull/50)
+* DRIFT-622: Incorrect WaveletBuffer decompositions serialization with sf_compression=0, [PR-50](https://github.com/panda-official/WaveletBuffer/pull/50)
 
 ## 0.5.0 - 2022-11-18
 
