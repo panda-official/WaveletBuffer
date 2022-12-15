@@ -248,7 +248,7 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
 
   /* Serialize */
   std::string blob;
-  size_t compression_level = 0;
+  const size_t compression_level = GENERATE(0, 5);
   REQUIRE(buffer.Serialize(&blob, compression_level));
 
   std::stringstream ss;
@@ -256,13 +256,8 @@ TEST_CASE("WaveletBuffer::Serialize() save to file") {
 
   /* Choose filename */
   std::string filename;
-  if (buffer_num == 0) {
-    filename = "signal_1d.bin";
-  } else if (buffer_num == 1) {
-    filename = "signal_2d.bin";
-  } else {
-    REQUIRE(false);
-  }
+  filename = "signal_" + std::to_string(buffer_num + 1) + "d_" +
+             std::to_string(compression_level) + "cl.bin";
 
   /* Save blob */
   std::ofstream file(filename, std::ios::binary);
