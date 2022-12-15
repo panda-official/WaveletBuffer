@@ -2,6 +2,13 @@
 
 #include "wavelet_buffer/wavelet_buffer.h"
 
+#include <blaze/util/Types.h>
+#include <blaze/util/serialization/Archive.h>
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -67,9 +74,9 @@ class DataGenerator {
   blaze::DynamicMatrix<float> GenerateMatrix2d(size_t rows, size_t cols);
 };
 
-blaze::DynamicVector<float> DataGenerator::GenerateMatrix1d(size_t i) {
+blaze::DynamicVector<float> DataGenerator::GenerateMatrix1d(size_t size) {
   return blaze::generate<blaze::columnVector>(
-      100, [this](size_t i) { return normal_distribution_(random_engine_); });
+      size, [this](size_t i) { return normal_distribution_(random_engine_); });
 }
 
 blaze::DynamicMatrix<float> DataGenerator::GenerateMatrix2d(size_t rows,
@@ -218,6 +225,49 @@ TEST_CASE("WaveletBuffer::Parse(), WaveletBuffer::Serialize()",
     }
   }
 }
+
+/* Create serialized blobs */
+TEST_CASE("WaveletBuffer::Serialize() save to file") {
+  DataGenerator dg;
+
+  /* Create wavelet buffers */
+  std::vector<WaveletBuffer> buffers = {
+      WaveletBuffer(MakeParams({10000}, 10)),
+      WaveletBuffer(MakeParams({100, 100}, 5))};
+
+  /* Generate signals */
+  std::vector<SignalN2D> signals{SignalN2D{dg.GenerateMatrix2d(10000, 1)},
+                                 SignalN2D{dg.GenerateMatrix2d(100, 100)}};
+
+  const auto buffer_num = GENERATE(0, 1);
+  auto buffer = buffers[buffer_num];
+
+  /* Decompose */
+  REQUIRE(Decompose(&buffer, signals[buffer_num],
+                    SimpleDenoiseAlgorithm<float>(0.7)));
+
+  /* Serialize */
+  std::string blob;
+  const size_t compression_level = GENERATE(0, 5);
+  REQUIRE(buffer.Serialize(&blob, compression_level));
+
+  std::stringstream ss;
+  ss << blob;
+
+  /* Choose filename */
+  std::string filename;
+  filename = "signal_" + std::to_string(buffer_num + 1) + "d_" +
+             std::to_string(compression_level) + "cl.bin";
+
+  /* Save blob */
+  std::ofstream file(filename, std::ios::binary);
+  if (file.is_open()) {
+    file << ss.rdbuf();
+  } else {
+    REQUIRE(false);
+  }
+}
+
 TEST_CASE("Wavelet Buffer") {
   NullDenoiseAlgorithm<float> denoiser;
   DataGenerator dg;

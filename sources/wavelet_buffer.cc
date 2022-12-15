@@ -3,9 +3,7 @@
 #include "wavelet_buffer/wavelet_buffer.h"
 
 #include <blaze/Blaze.h>
-#include <sf_compressor/sf_compressor.h>
 
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -13,11 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "wavelet_buffer/wavelet_buffer_serializer.h"
 #include "wavelet_buffer/wavelet_buffer_view.h"
 
 namespace drift {
-
-using drift::sf::SfCompressor;
 
 /**
  * Encapsulate implementation details of WaveletBuffer
@@ -151,66 +148,27 @@ class WaveletBuffer::Impl {
    */
   [[nodiscard]] static std::unique_ptr<WaveletBuffer> Parse(
       const std::string& blob) {
-    try {
-      std::istringstream ss(blob);
-      blaze::Archive blaze_arch(ss);
+    /* Read binary version */
+    std::istringstream ss(blob);
+    uint8_t version;
+    ss >> version;
 
-      uint8_t serialization_version;
-      blaze_arch >> serialization_version;
+    std::unique_ptr<IWaveletBufferSerializer> serializer;
 
-      if (serialization_version != kSerializationVersion) {
-        std::cerr << "Wrong version of binary: It is "
-                  << static_cast<int>(serialization_version) << " but must be "
-                  << static_cast<int>(kSerializationVersion) << std::endl;
-        return nullptr;
-      }
-
-      WaveletParameters params{};
-      uint8_t sf_compression;
-
-      blaze_arch >> params >> sf_compression;
-
-      auto buffer = std::make_unique<WaveletBuffer>(params);
-
-      if (sf_compression == 0) {
-        blaze_arch >> buffer->impl_->decompositions_;
-      } else {
-        for (int n = 0; n < params.signal_number; ++n) {
-          for (int s = 0; s < buffer->impl_->decompositions_[n].size(); ++s) {
-            blaze::DynamicVector<uint8_t> compressed_subband;
-            blaze_arch >> compressed_subband;
-
-            std::vector<uint8_t> data(compressed_subband.begin(),
-                                      compressed_subband.end());
-
-            size_t expected_points =
-                GetMemorySizeForSfCompressor(params.signal_shape, s);
-            SfCompressor compressor(
-                expected_points);  // TODO(Alexey Timin): Should
-                                   // reallocate memory because of a
-                                   // bug in SfCompressor
-            SfCompressor::OriginalData out_data;
-            if (!compressor.Decompress(data, &out_data)) {
-              return nullptr;
-            }
-
-            auto subband = Subband(out_data.rows, out_data.columns, 0);
-            for (int i = 0; i < out_data.indexes.size(); ++i) {
-              subband(out_data.indexes[i] / out_data.columns,
-                      out_data.indexes[i] % out_data.columns) =
-                  out_data.values[i];
-            }
-            buffer->impl_->decompositions_[n][s] = std::move(subband);
-          }
-        }
-      }
-      return buffer;
-    } catch (std::exception& e) {
-      std::cerr << "Failed parse data: " << e.what() << std::endl;
+    /* Choose serializer */
+    if (version == kSerializationVersion) {
+      serializer = std::make_unique<WaveletBufferSerializer>();
+    } else if (version == 2) {
+      serializer = std::make_unique<WaveletBufferSerializerLegacy>();
+    } else {
+      std::cerr << "Wrong version of binary: It is "
+                << static_cast<int>(version) << " but must be "
+                << static_cast<int>(kSerializationVersion) << std::endl;
       return nullptr;
     }
-  }
 
+    return serializer->Parse(blob);
+  }
   /**
    * Serialize the buffer into the blob for saving in a file or sending via
    * network
@@ -220,63 +178,8 @@ class WaveletBuffer::Impl {
    */
   [[nodiscard]] bool Serialize(std::string* blob,
                                uint8_t sf_compression = 0) const {
-    sf_compression = std::min<uint8_t>(16, sf_compression);
-    if (IsEmpty()) {
-      sf_compression = 0;
-    }
-    std::ostringstream ss;
-    blaze::Archive blaze_arch(ss);
-    blaze_arch << kSerializationVersion << parameters_ << sf_compression;
-    if (sf_compression == 0) {
-      blaze_arch << decompositions_;
-    } else {
-      uint8_t frag_len;
-      if (sf_compression == 1) {
-        frag_len = 23;
-      } else {
-        frag_len = 23 - sf_compression;
-      }
-
-      size_t expected_points =
-          GetMemorySizeForSfCompressor(parameters_.signal_shape);
-      SfCompressor compressor(expected_points);
-      for (int n = 0; n < parameters_.signal_number; ++n) {
-        for (const auto& subband : decompositions_[n]) {
-          SfCompressor::OriginalData in_data = {
-              .frag_length = frag_len,
-              .row_based = true,
-              .rows = subband.rows(),
-              .columns = subband.columns(),
-              .indexes{},
-              .values{},
-          };
-
-          in_data.indexes.reserve(subband.nonZeros());
-          in_data.values.reserve(subband.nonZeros());
-          blaze::CompressedMatrix<DataType> compressed_matrix = subband;
-          for (int i = 0; i < compressed_matrix.rows(); ++i) {
-            const auto base_index = i * subband.columns();
-            for (auto it = compressed_matrix.begin(i);
-                 it != compressed_matrix.end(i); ++it) {
-              in_data.values.push_back(it->value());
-              in_data.indexes.push_back(base_index + it->index());
-            }
-          }
-
-          std::vector<uint8_t> compressed_subband;
-          if (!compressor.Compress(in_data, &compressed_subband)) {
-            return false;
-          }
-
-          blaze_arch << blaze::DynamicVector<uint8_t>(
-              compressed_subband.size(), compressed_subband.data());
-        }
-      }
-    }
-
-    *blob = ss.str();
-
-    return true;
+    return WaveletBufferSerializer().Serialize({parameters_, decompositions_},
+                                               blob, sf_compression);
   }
 
   /******** Accessors ***************/
@@ -354,8 +257,8 @@ class WaveletBuffer::Impl {
   /**
    * Gets min and max factors of values in subband
    * example:
-   *    if your signal has values in interval 0..5, so the pair (-2, 2) means
-   *    that you a subband has values in interval -10..10
+   *    if your signal has values in interval 0..5, so the pair (-2, 2)
+   * means that you a subband has values in interval -10..10
    * @param index the index of the subband
    * @return a pair of min and max factors
    */
@@ -374,7 +277,7 @@ class WaveletBuffer::Impl {
                             : std::make_pair(-delta, delta);
   }
 
-  bool IsEmpty() const {
+  [[nodiscard]] bool IsEmpty() const {
     return std::all_of(
         decompositions_.begin(), decompositions_.end(), [](const auto& deca) {
           return std::all_of(deca.begin(), deca.end(), [](const auto& mtx) {
@@ -384,26 +287,10 @@ class WaveletBuffer::Impl {
   }
 
  private:
-  /**
-   * We need to allocate data for SfComprressor depending on subband size
-   * @param signal_shape
-   * @param sub_number number of suuband, if 0 it is the original signal
-   * @return needed memory size of subband in bytes + 50% reserve
-   */
-  static size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
-                                             int sub_number = 0) {
-    const bool is_one_dim = signal_shape.size() == 1;
-    const auto max_size =
-        (is_one_dim ? signal_shape[0] : signal_shape[0] * signal_shape[1]) *
-        sizeof(DataType);
-    const auto divisor =
-        is_one_dim ? std::pow(2, sub_number) : std::pow(4, sub_number / 3);
-    return static_cast<size_t>(static_cast<double>(max_size) / divisor * 1.5);
-  }
-
   WaveletParameters parameters_;
 
-  /* Channel -> subbands (vector of all details and last approx in the end) */
+  /* Channel -> subbands (vector of all details and last approx in the end)
+   */
   blaze::DynamicVector<WaveletDecomposition> decompositions_;
 };
 

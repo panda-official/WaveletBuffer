@@ -79,3 +79,21 @@ TEST_CASE("WaveletParameters") {
     REQUIRE_FALSE(params_3d == big);
   }
 }
+
+TEST_CASE("WaveletParameters::serialization()") {
+  std::stringstream ss;
+
+  WaveletParameters p{{100, 100}, 3, 7, drift::kDB4};
+  {
+    blaze::Archive archive(ss);
+    archive << p;
+  }
+
+  WaveletParameters p2;
+  {
+    blaze::Archive archive(ss);
+    archive >> p2;
+  }
+
+  REQUIRE(p == p2);
+}

@@ -78,6 +78,7 @@ set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
     ${WB_TARGET_NAME}
     sources/wavelet_buffer.cc
+    sources/wavelet_buffer_serializer.cc
     sources/wavelet_utils.cc
     sources/wavelet_buffer_view.cc
     sources/padding.cc

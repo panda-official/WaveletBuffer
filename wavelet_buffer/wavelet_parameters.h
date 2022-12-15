@@ -1,11 +1,11 @@
 // Copyright 2020 PANDA GmbH
+
 #ifndef WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 #define WAVELET_BUFFER_WAVELET_PARAMETERS_H_
 
 #include <blaze/Blaze.h>
 
 #include <algorithm>
-#include <cstddef>
 #include <ostream>
 #include <vector>
 
@@ -65,26 +65,6 @@ struct WaveletParameters {
     return *std::min_element(std::begin(signal_shape), std::end(signal_shape));
   }
 
-  /**
-   * Cereal save interface
-   * @tparam Archive
-   * @param ar
-   */
-  template <class Archive>
-  void save(Archive& ar) const {  // NOLINT
-    ar(signal_shape, signal_number, decomposition_steps, wavelet_type);
-  }
-
-  /**
-   * Cereal load interface
-   * @tparam Archive
-   * @param ar
-   */
-  template <class Archive>
-  void load(Archive& ar) {  // NOLINT
-    ar(signal_shape, signal_number, decomposition_steps, wavelet_type);
-  }
-
   friend std::ostream& operator<<(std::ostream& os,
                                   const WaveletParameters& parameters) {
     os << "WaveletParameters {" << std::endl
@@ -109,9 +89,12 @@ struct WaveletParameters {
  */
 template <typename Archive>
 void serialize(Archive& archive, const SignalShape& p) {  // NOLINT
-  archive << p.size();
+  /* Save size */
+  archive << static_cast<std::uint64_t>(p.size());
+
+  /* Save elements */
   for (const auto& el : p) {
-    archive << el;
+    archive << static_cast<std::uint64_t>(el);
   }
 }
 
@@ -124,12 +107,17 @@ void serialize(Archive& archive, const SignalShape& p) {  // NOLINT
  */
 template <typename Archive>
 void deserialize(Archive& archive, SignalShape& p) {  // NOLINT
-  size_t size;
+  /* Load size */
+  uint64_t size;
   archive >> size;
   p.resize(size);
 
-  for (size_t i = 0; i < size; i++) {
-    archive >> p[i];
+  /* Load elements */
+  for (auto& pel : p) {
+    uint64_t el;
+    archive >> el;
+
+    pel = static_cast<size_t>(el);
   }
 }
 
@@ -142,7 +130,9 @@ void deserialize(Archive& archive, SignalShape& p) {  // NOLINT
 template <typename Archive>
 void serialize(Archive& archive, const WaveletParameters& p) {  // NOLINT
   serialize(archive, p.signal_shape);
-  archive << p.signal_number << p.decomposition_steps << int(p.wavelet_type);
+  archive << static_cast<std::uint64_t>(p.signal_number)
+          << static_cast<std::uint64_t>(p.decomposition_steps)
+          << static_cast<std::int32_t>(p.wavelet_type);
 }
 
 /**
@@ -153,10 +143,15 @@ void serialize(Archive& archive, const WaveletParameters& p) {  // NOLINT
  */
 template <typename Archive>
 void deserialize(Archive& archive, WaveletParameters& p) {  // NOLINT
-  int wavelet_type;
   deserialize(archive, p.signal_shape);
-  archive >> p.signal_number >> p.decomposition_steps >> wavelet_type;
-  p.wavelet_type = WaveletTypes(wavelet_type);
+
+  int32_t wavelet_type_32;
+  uint64_t signal_number_64, decomposition_steps_64;
+  archive >> signal_number_64 >> decomposition_steps_64 >> wavelet_type_32;
+
+  p.signal_number = static_cast<size_t>(signal_number_64);
+  p.decomposition_steps = static_cast<size_t>(decomposition_steps_64);
+  p.wavelet_type = WaveletTypes(static_cast<int>(wavelet_type_32));
 }
 
 }  // namespace drift

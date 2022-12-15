@@ -1,7 +1,7 @@
 name: CI/CD actions [Linux]
 on:
   push:
-    branches: [master, develop]
+    branches: [ master, develop ]
     tags:
       - 'v*'
     paths-ignore:
@@ -10,7 +10,7 @@ on:
       - CHANGELOG.md
 
   pull_request:
-    branches: [master, develop]
+    branches: [ master, develop ]
     paths-ignore:
       - docs/**
       - README.md
@@ -73,14 +73,29 @@ jobs:
           ctest --output-on-failure
 
       - name: Install wavelet_buffer
-        if : matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           cd build
           sudo cmake --install .
 
       - name: Check cmake target installation
-        if : matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+
+      - name: Rename serialized blobs
+        run: |
+          cd build/tests
+          mv signal_1d_0cl.bin signal_1d_0cl-${{  matrix.os }}-${{ matrix.build_type }}
+          mv signal_1d_5cl.bin signal_1d_5cl-${{  matrix.os }}-${{ matrix.build_type }}
+          mv signal_2d_0cl.bin signal_2d_0cl-${{  matrix.os }}-${{ matrix.build_type }}
+          mv signal_2d_5cl.bin signal_2d_5cl-${{  matrix.os }}-${{ matrix.build_type }}
+
+      - name: Upload serialized buffer
+        uses: actions/upload-artifact@v3
+        with:
+          name: signals-${{  matrix.os }}-${{ matrix.build_type }}
+          path: build/tests/signal*
+          retention-days: 3
 
       - name: Create code coverage report
         if: matrix.build_type == 'debug' && matrix.os == 'ubuntu-20.04'
@@ -100,6 +115,47 @@ jobs:
           flags: unittests
           verbose: true
 
+  test_parse:
+    needs: [ build_test ]
+    runs-on: ${{ matrix.os }}
+    name: Test WaveletBuffer::Parse()
+    strategy:
+      matrix:
+        build_type: [ Debug, Release ]
+        os: [ ubuntu-20.04, macos-12 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          pipx install conan==${{ env.CONAN_VERSION }}
+
+      - name: Build examples
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_BUILD_EXAMPLES=ON ..
+          cmake --build . -j --config ${{ matrix.build_type }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: data
+
+      - name: Run parse test
+        run: |
+          cd build/examples
+          find ../../data -type f -name "signal*" | xargs -n 1 ./wavelet_buffer_parse_example
+
+      - name: Parse binary v2
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          cd build/examples
+          ./wavelet_buffer_parse_example ../../tests/fixtures/signal_1d_0cl_v2.bin
+
+
   conan:
     needs: [ build_test ]
     name: "Build Conan package and upload it"
@@ -107,7 +163,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04, windows-2019, macos-12 ]
-        arch: [x86_64, armv8]
+        arch: [ x86_64, armv8 ]
         exclude:
           - os: windows-2019
             arch: armv8
@@ -139,7 +195,7 @@ jobs:
           conan profile new default --detect
 
       - name: Set libstdc++11
-        if : matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Build package for stable channel
@@ -214,7 +270,7 @@ jobs:
           pipx run twine check dist/*
 
       - name: Install SDist package
-        run:  pip3 install dist/*
+        run: pip3 install dist/*
 
       - uses: actions/upload-artifact@v2
         with:
