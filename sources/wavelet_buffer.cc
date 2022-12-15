@@ -153,17 +153,21 @@ class WaveletBuffer::Impl {
     uint8_t version;
     ss >> version;
 
+    std::unique_ptr<IWaveletBufferSerializer> serializer;
+
     /* Choose serializer */
     if (version == kSerializationVersion) {
-      return WaveletBufferSerializer().Parse(blob);
+      serializer = std::make_unique<WaveletBufferSerializer>();
     } else if (version == 2) {
-      return WaveletBufferSerializerLegacy().Parse(blob);
+      serializer = std::make_unique<WaveletBufferSerializerLegacy>();
     } else {
       std::cerr << "Wrong version of binary: It is "
                 << static_cast<int>(version) << " but must be "
                 << static_cast<int>(kSerializationVersion) << std::endl;
       return nullptr;
     }
+
+    return serializer->Parse(blob);
   }
   /**
    * Serialize the buffer into the blob for saving in a file or sending via

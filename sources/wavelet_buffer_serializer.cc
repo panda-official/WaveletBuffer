@@ -24,8 +24,8 @@ static size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
  * @param buffer WaveletBuffer
  * @return success
  */
-static bool ParseCompressedSubbands(blaze::Archive<std::istringstream>& archive,
-                                    std::unique_ptr<WaveletBuffer>& buffer);
+static bool ParseCompressedSubbands(blaze::Archive<std::istringstream>* archive,
+                                    WaveletBuffer* buffer);
 
 [[nodiscard]] std::unique_ptr<WaveletBuffer>
 WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
@@ -43,7 +43,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     auto buffer = std::make_unique<WaveletBuffer>(params);
 
     if (sf_compression != 0) {
-      if (!ParseCompressedSubbands(archive, buffer)) {
+      if (!ParseCompressedSubbands(&archive, buffer.get())) {
         return nullptr;
       }
     } else {
@@ -51,7 +51,6 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     }
 
     return buffer;
-
   } catch (std::exception& e) {
     std::cerr << "Failed parse data: " << e.what() << std::endl;
     return nullptr;
@@ -78,7 +77,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
 
     auto buffer = std::make_unique<WaveletBuffer>(params);
     if (sf_compression != 0) {
-      if (!ParseCompressedSubbands(archive, buffer)) {
+      if (!ParseCompressedSubbands(&archive, buffer.get())) {
         return nullptr;
       }
     } else {
@@ -182,13 +181,13 @@ size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
   return static_cast<size_t>(static_cast<double>(max_size) / divisor * 1.5);
 }
 
-bool ParseCompressedSubbands(blaze::Archive<std::istringstream>& archive,
-                             std::unique_ptr<WaveletBuffer>& buffer) {
+bool ParseCompressedSubbands(blaze::Archive<std::istringstream>* archive,
+                             WaveletBuffer* buffer) {
   /* Iterate through sabbands */
   for (int n = 0; n < buffer->parameters().signal_number; ++n) {
     for (int s = 0; s < buffer->decompositions()[n].size(); ++s) {
       blaze::DynamicVector<uint8_t> compressed_subband;
-      archive >> compressed_subband;
+      *archive >> compressed_subband;
 
       std::vector<uint8_t> data(compressed_subband.begin(),
                                 compressed_subband.end());
