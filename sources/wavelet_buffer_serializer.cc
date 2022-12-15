@@ -108,11 +108,12 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     arch << kSerializationVersion << buffer.parameters() << sf_compression;
 
     if (sf_compression == 0) {
-      for (const auto& signal : buffer.decompositions()) {
-        for (const auto& subband : signal) {
-          arch << subband;
-        }
-      }
+      // for (const auto& signal : buffer.decompositions()) {
+      //   for (const auto& subband : signal) {
+      // arch << subband;
+      //   }
+      // }
+      arch << buffer.decompositions();
     } else {
       uint8_t frag_len;
       if (sf_compression == 1) {

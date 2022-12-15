@@ -149,6 +149,12 @@ jobs:
           cd build/examples
           find ../../data -type f -name "signal*" | xargs -n 1 ./wavelet_buffer_parse_example
 
+      - name: Parse binary v2
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          cd build/examples
+          ./wavelet_buffer_parse_example ../../tests/fixtures/signal_1d_0cl_v2.bin
+
 
   conan:
     needs: [ build_test ]
