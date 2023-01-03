@@ -14,6 +14,7 @@ archives you have to update to version 0.6.0.
 ### Changed
 
 * DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
+* DRIFT-638: Change g++ version in conan profile, [PR-52](https://github.com/panda-official/WaveletBuffer/pull/52)
 
 ### Removed
 
