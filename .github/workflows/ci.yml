@@ -252,7 +252,7 @@ jobs:
   build_sdist:
     name: "Build and test SDist"
     # needs: [ pip ]
-    runs-on: [ ubuntu-22.04, macos-12, windows-2019 ]
+    runs-on: ubuntu-22.04
     # if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
       - uses: actions/checkout@v2
@@ -264,7 +264,7 @@ jobs:
       # - name: Install conan
       #   run: pipx install conan
 
-      - name: Build SDist
+      - name: Create sdist package and build binary from it
         run: |
           pipx run build --sdist
 
@@ -273,7 +273,7 @@ jobs:
           pipx run twine check dist/*
 
       - name: Install SDist package
-        run: pip3 install dist/* --verbose
+        run: pip3 install dist/* --verbose --isolated
 
       - uses: actions/upload-artifact@v2
         with:
