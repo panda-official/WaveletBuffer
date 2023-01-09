@@ -261,8 +261,8 @@ jobs:
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
-      # - name: Install conan
-      #   run: pipx install conan
+      - name: Install conan
+        run: pipx install conan
 
       - name: Create sdist package and build binary from it
         run: |
