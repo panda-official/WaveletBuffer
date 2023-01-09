@@ -273,7 +273,7 @@ jobs:
           pipx run twine check dist/*
 
       - name: Install SDist package
-        run: pip3 install dist/* --verbose --isolated
+        run: pipx install dist/* --verbose --isolated
 
       - uses: actions/upload-artifact@v2
         with:
