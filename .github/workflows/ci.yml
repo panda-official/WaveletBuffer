@@ -261,8 +261,8 @@ jobs:
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Install conan
+        run: pipx install conan
 
       - name: Build SDist
         run: |
