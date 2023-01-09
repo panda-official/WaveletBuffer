@@ -261,8 +261,8 @@ jobs:
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
-      - name: Install conan
-        run: pipx install conan
+      # - name: Install conan
+      #   run: pipx install conan
 
       - name: Build SDist
         run: |
@@ -273,7 +273,7 @@ jobs:
           pipx run twine check dist/*
 
       - name: Install SDist package
-        run: pip3 install dist/*
+        run: pip3 install dist/* --verbose
 
       - uses: actions/upload-artifact@v2
         with:
