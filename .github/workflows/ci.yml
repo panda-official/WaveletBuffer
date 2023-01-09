@@ -252,7 +252,7 @@ jobs:
   build_sdist:
     name: "Build and test SDist"
     # needs: [ pip ]
-    runs-on: ubuntu-22.04
+    runs-on: [ ubuntu-22.04, macos-12, windows-2019 ]
     # if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
     steps:
       - uses: actions/checkout@v2
