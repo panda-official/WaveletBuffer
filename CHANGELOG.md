@@ -10,6 +10,7 @@ archives you have to update to version 0.6.0.
 
 * DRIFT-605: Clang-format to pre-commit and CI, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
 * DRIFT-617: Conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
+* ISSUE-53: Force conan installation before sdist build, [PR-54](https://github.com/panda-official/WaveletBuffer/pull/54)
 
 ### Changed
 
