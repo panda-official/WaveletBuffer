@@ -39,6 +39,7 @@ else()
             blaze/3.8
             libjpeg-turbo/2.1.3
             cimg/3.0.2
+	    catch2/3.2.1
             OPTIONS
             cimg:enable_fftw=False
             cimg:enable_jpeg=False # To avoid conflict with libjpeg-turbo
@@ -60,6 +61,7 @@ endif()
 find_package(blaze REQUIRED)
 find_package(libjpeg-turbo REQUIRED)
 find_package(cimg REQUIRED)
+find_package(Catch2 REQUIRED)
 
 # Dependencies
 include(FetchContent)
@@ -72,6 +74,14 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(SFCompressor)
+
+# MatrixCompressor
+fetchcontent_declare(
+    matrix_compressor
+    GIT_REPOSITORY https://github.com/panda-official/MatrixCompressor
+)
+
+fetchcontent_makeavailable(matrix_compressor)
 
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
@@ -94,6 +104,7 @@ add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
 # Set fPIC
 set_target_properties(${WB_TARGET_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(sf_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(matrix_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Turn off parallelization in blaze
 target_compile_definitions(
@@ -121,24 +132,13 @@ target_include_directories(
 
 # Link dependencies
 target_link_libraries(${WB_TARGET_NAME} sf_compressor)
+target_link_libraries(${WB_TARGET_NAME} matrix_compressor::matrix_compressor)
 target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
 target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
 target_link_libraries(${WB_TARGET_NAME} cimg::cimg)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
-    fetchcontent_declare(
-        Catch2
-        URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.0.1.tar.gz
-        URL_HASH
-            SHA256=8c4173c68ae7da1b5b505194a0c2d6f1b2aef4ec1e3e7463bde451f26bbaf4e7
-    )
-
-    fetchcontent_makeavailable(Catch2)
-
-    list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
-
-    enable_testing()
     include(CTest)
     include(Catch)
 endif()
