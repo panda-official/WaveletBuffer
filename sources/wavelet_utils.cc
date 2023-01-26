@@ -125,7 +125,7 @@ int CalculateMaxDecompositionSteps(WaveletTypes wavelet_type,
   const int type = static_cast<int>(wavelet_type);
   const size_t min_side = shortest_dimension(signal_shape);
 
-  return std::floor(std::log2(min_side / (static_cast<double>(2 * type) - 1)));
+  return std::floor(std::log2(min_side / (2 * static_cast<double>(type) - 1)));
 }
 
 /**
