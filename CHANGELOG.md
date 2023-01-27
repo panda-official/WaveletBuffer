@@ -24,6 +24,7 @@ archives you have to update to version 0.6.0.
 ### Fixed
 
 * DRIFT-622: Incorrect WaveletBuffer decompositions serialization with sf_compression=0, [PR-50](https://github.com/panda-official/WaveletBuffer/pull/50)
+* BUG-56: CalculateMaxDecompositionSteps(), unit test for kNone, [PR-57](https://github.com/panda-official/WaveletBuffer/pull/57)
 
 ## 0.5.0 - 2022-11-18
 
