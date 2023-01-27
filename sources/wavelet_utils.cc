@@ -118,6 +118,10 @@ static WaveletMatrixCache matrix_cache;
  */
 int CalculateMaxDecompositionSteps(WaveletTypes wavelet_type,
                                    const std::vector<size_t> &signal_shape) {
+  if (wavelet_type == WaveletTypes::kNone) {
+    return 0;
+  }
+
   auto shortest_dimension = [](auto &signal_shape) {
     return *std::min_element(std::begin(signal_shape), std::end(signal_shape));
   };
