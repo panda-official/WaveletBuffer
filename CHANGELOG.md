@@ -3,7 +3,7 @@
 ## Unreleased
 
 **IMPORTANT**: We have changed serialization of subbands. The current version of the serialization is 3. We support
-de-serialization of version 2 and 3. However, the serialization of version 2 is not supported anymore and to parse 
+de-serialization of version 2 and 3. However, the serialization of version 2 is not supported anymore and to parse
 archives you have to update to version 0.6.0.
 
 ### Added
@@ -16,6 +16,7 @@ archives you have to update to version 0.6.0.
 
 * DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
 * DRIFT-638: Change g++ version in conan profile, [PR-52](https://github.com/panda-official/WaveletBuffer/pull/52)
+* BUG-56: Change conan version to 1.56, [PR-57](https://github.com/panda-official/WaveletBuffer/pull/57)
 
 ### Removed
 
@@ -24,6 +25,7 @@ archives you have to update to version 0.6.0.
 ### Fixed
 
 * DRIFT-622: Incorrect WaveletBuffer decompositions serialization with sf_compression=0, [PR-50](https://github.com/panda-official/WaveletBuffer/pull/50)
+* BUG-56: CalculateMaxDecompositionSteps(), unit test for kNone, [PR-57](https://github.com/panda-official/WaveletBuffer/pull/57)
 
 ## 0.5.0 - 2022-11-18
 

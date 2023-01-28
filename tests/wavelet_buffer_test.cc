@@ -364,12 +364,12 @@ TEST_CASE("Wavelet Buffer") {
   // TODO(victor1234): Fix test with kNone
   SECTION("should do nothing for type kNone") {
     WaveletParameters param =
-        GENERATE(MakeParams({2}, 100, WaveletTypes::kNone),
-                 MakeParams({2, 2}, 100, WaveletTypes::kNone),
-                 MakeParams({100}, 1000, WaveletTypes::kNone),
-                 MakeParams({100, 100}, 2, WaveletTypes::kNone),
-                 MakeParams({0}, 1000, WaveletTypes::kNone),
-                 MakeParams({0, 0}, 2, WaveletTypes::kNone));
+        GENERATE(MakeParams({2}, 0, WaveletTypes::kNone),
+                 MakeParams({2, 2}, 0, WaveletTypes::kNone),
+                 MakeParams({100}, 0, WaveletTypes::kNone),
+                 MakeParams({100, 100}, 0, WaveletTypes::kNone),
+                 MakeParams({0}, 0, WaveletTypes::kNone),
+                 MakeParams({0, 0}, 0, WaveletTypes::kNone));
 
     WaveletBuffer buffer(param);
     SignalN2D signal = SignalN2D{

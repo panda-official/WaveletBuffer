@@ -17,7 +17,7 @@ A universal  C++ compression library based on wavelet transformation
 
 * CMake >= 3.16
 * C++20 compiler
-* conan >= 1.53
+* conan >= 1.56
 
 ## Bindings
 
