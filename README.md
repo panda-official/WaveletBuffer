@@ -10,7 +10,7 @@ A universal  C++ compression library based on wavelet transformation
 - One-side wavelet decomposition for vectors and matrixes
 - 5 Daubechies Wavelets DB1-DB5
 - Different denoising algorithms
-- Fast and efficient compression with [SFCompressor](https://github.com/panda-official/SfCompressor)
+- Fast and efficient compression with [MatrixCompressor](https://github.com/panda-official/MatrixCompressor)
 - Cross-platform
 
 ## Requirements
