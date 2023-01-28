@@ -89,11 +89,9 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
 
           blaze::DynamicVector<uint8_t> columns, rows, values;
           archive >> columns >> rows >> values;
-          data.columns = std::vector<uint8_t>(columns.begin(),
-                                              columns.end());
+          data.columns = std::vector<uint8_t>(columns.begin(), columns.end());
           data.rows = std::vector<uint8_t>(rows.begin(), rows.end());
-          data.values = std::vector<uint8_t>(values.begin(),
-                                             values.end());
+          data.values = std::vector<uint8_t>(values.begin(), values.end());
 
           subband = matrix_compressor::BlazeCompressor().Decompress(data);
         }
