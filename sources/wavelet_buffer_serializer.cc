@@ -108,44 +108,50 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     const WaveletBuffer& buffer, std::string* blob, uint8_t sf_compression) {
   std::stringstream ss;
 
-  blaze::Archive arch(ss);
+  try {
+    blaze::Archive arch(ss);
 
-  sf_compression = std::min<uint8_t>(16, sf_compression);
-  if (buffer.IsEmpty()) {
-    sf_compression = 0;
-  }
+    sf_compression = std::min<uint8_t>(16, sf_compression);
+    if (buffer.IsEmpty()) {
+      sf_compression = 0;
+    }
 
-  /* Serialize header */
-  arch << kSerializationVersion << buffer.parameters() << sf_compression;
+    /* Serialize header */
+    arch << kSerializationVersion << buffer.parameters() << sf_compression;
 
-  /* Serialize subbands */
-  for (const auto& signal : buffer.decompositions()) {
-    for (const auto& subband : signal) {
-      if (sf_compression == 0) {
-        arch << subband;
-      } else {
-        auto data = matrix_compressor::BlazeCompressor().Compress(subband);
-        if (!data.is_valid) {
-          return false;
+    /* Serialize subbands */
+    for (const auto& signal : buffer.decompositions()) {
+      for (const auto& subband : signal) {
+        if (sf_compression == 0) {
+          arch << subband;
+        } else {
+          auto data = matrix_compressor::BlazeCompressor().Compress(subband);
+          if (!data.is_valid) {
+            return false;
+          }
+
+          /* Serialize compressed data */
+          arch << data.nonzero;
+          arch << data.rows_number;
+          arch << data.cols_number;
+          arch << blaze::DynamicVector<uint8_t>(data.columns.size(),
+                                                data.columns.data());
+          arch << blaze::DynamicVector<uint8_t>(data.rows.size(),
+                                                data.rows.data());
+          arch << blaze::DynamicVector<uint8_t>(data.values.size(),
+                                                data.values.data());
         }
-
-        /* Serialize compressed data */
-        arch << data.nonzero;
-        arch << data.rows_number;
-        arch << data.cols_number;
-        arch << blaze::DynamicVector<uint8_t>(data.columns.size(),
-                                              data.columns.data());
-        arch << blaze::DynamicVector<uint8_t>(data.rows.size(),
-                                              data.rows.data());
-        arch << blaze::DynamicVector<uint8_t>(data.values.size(),
-                                              data.values.data());
       }
     }
+
+    *blob = ss.str();
+
+    return true;
+
+  } catch (std::exception& e) {
+    std::cerr << "Failed serialize data: " << e.what() << std::endl;
+    return false;
   }
-
-  *blob = ss.str();
-
-  return true;
 }
 
 size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
