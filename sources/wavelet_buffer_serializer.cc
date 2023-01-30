@@ -83,7 +83,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
         if (sf_compression == 0) {
           archive >> subband;
         } else {
-          matrix_compressor::CompressedMatrix data;
+          matrix_compressor::ArchivedMatrix data;
           data.is_valid = true;
           archive >> data.nonzero >> data.rows_number >> data.cols_number;
 
