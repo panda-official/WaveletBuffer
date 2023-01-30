@@ -79,7 +79,6 @@ fetchcontent_makeavailable(SFCompressor)
 fetchcontent_declare(
     matrix_compressor
     GIT_REPOSITORY https://github.com/panda-official/MatrixCompressor
-    GIT_TAG drift-637
 )
 
 fetchcontent_makeavailable(matrix_compressor)
