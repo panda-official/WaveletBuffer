@@ -147,7 +147,6 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     *blob = ss.str();
 
     return true;
-
   } catch (std::exception& e) {
     std::cerr << "Failed serialize data: " << e.what() << std::endl;
     return false;
