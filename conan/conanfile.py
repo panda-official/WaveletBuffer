@@ -1,10 +1,11 @@
 import os
 
 from conans import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conans.tools import Git
 
-required_conan_version = ">=1.50"
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+
+required_conan_version = ">=1.56"
 
 
 class WaveletBufferConan(ConanFile):
@@ -81,4 +82,10 @@ class WaveletBufferConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["wavelet_buffer", "sf_compressor"]
+        self.cpp_info.libs = [
+            "wavelet_buffer",
+            "sf_compressor",
+            "matrix_compressor",
+            "fpzip",
+            "streamvbyte",
+        ]
