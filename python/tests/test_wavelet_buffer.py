@@ -168,7 +168,7 @@ def test__serialize_parse(buffer):
     assert distance(buffer, restored_buffer) == 0
 
 
-# TODO: rewrite compression test
+# TODO: rewrite compression test # pylint: disable=fixme
 # @mark_both_dimensions
 # def test__serialize_with_compression(params, input_signal):
 #     """should serialize with compression"""
