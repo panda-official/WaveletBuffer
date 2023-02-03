@@ -5,33 +5,34 @@ import re
 
 import numpy as np
 import pytest
+
+from wavelet_buffer import denoise  # pylint: disable=no-name-in-module
 from wavelet_buffer import (
-    WaveletBuffer,
+    WaveletBuffer,  # pylint: disable=no-name-in-module
     WaveletType,
     distance,
     energy_distribution,
-)  # pylint: disable=no-name-in-module
-from wavelet_buffer import denoise  # pylint: disable=no-name-in-module
+)
 
 
 def parameters_2d() -> dict:
     """Get wavelet parameters for multichannel 2D signal"""
-    return dict(
-        signal_shape=[40, 20],
-        signal_number=3,
-        decomposition_steps=2,
-        wavelet_type=WaveletType.DB2,
-    )
+    return {
+        "signal_shape": [40, 20],
+        "signal_number": 3,
+        "decomposition_steps": 2,
+        "wavelet_type": WaveletType.DB2,
+    }
 
 
 def parameters_1d() -> dict:
     """Get wavelet parameters for 1D signal"""
-    return dict(
-        signal_shape=[100],
-        signal_number=1,
-        decomposition_steps=2,
-        wavelet_type=WaveletType.DB2,
-    )
+    return {
+        "signal_shape": [100],
+        "signal_number": 1,
+        "decomposition_steps": 2,
+        "wavelet_type": WaveletType.DB2,
+    }
 
 
 mark_both_dimensions = pytest.mark.parametrize(
