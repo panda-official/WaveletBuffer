@@ -23,4 +23,4 @@ class HelloTestConan(ConanFile):
     def test(self):
         if not tools.cross_building(self):
             cmd = os.path.join(self.cpp.build.bindirs[0], "example")
-            # self.run(cmd, env="conanrun")
+            self.run(cmd, env="conanrun")
