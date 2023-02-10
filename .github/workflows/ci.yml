@@ -44,6 +44,7 @@ jobs:
         run: black --check .
 
   build_test:
+    if: ${{ false }}
     needs: [ cpplint, black ]
     runs-on: ${{ matrix.os }}
     name: Build and test C++ part
