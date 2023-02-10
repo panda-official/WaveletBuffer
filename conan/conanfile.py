@@ -10,7 +10,7 @@ required_conan_version = ">=1.56"
 
 class WaveletBufferConan(ConanFile):
     name = "wavelet_buffer"
-    version = "0.5.0"
+    version = "0.6.0"
     license = "MPL-2.0"
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
