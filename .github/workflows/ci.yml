@@ -186,6 +186,12 @@ jobs:
       - name: Install compiler toolkit
         run: ${{ matrix.dep_install_cmd }}
 
+      - name: Update Visual Studio C++ Redistributable
+        if:  matrix.os == 'windows-2019'
+        run: |
+          curl https://aka.ms/vs/17/release/vc_redist.x64.exe
+          vc_redist.x64.exe /install /passive /norestart /log out.txt
+
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
