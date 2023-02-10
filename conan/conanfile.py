@@ -85,7 +85,7 @@ class WaveletBufferConan(ConanFile):
         if self.settings.os == "Windows":
             self.cpp_info.libs = self.collect_libs()
         else:
-            self.cpp_info.static.libs = [
+            self.cpp_info.libs = [
                 "wavelet_buffer",
                 "sf_compressor",
                 "matrix_compressor",
