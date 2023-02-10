@@ -215,11 +215,6 @@ jobs:
           cd conan
           conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
 
-      - name: Run test_package
-        if: matrix.os == 'windows-2019'
-        run: |
-          cd conan/test_package/build/Release
-          ./example
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
         run: |
