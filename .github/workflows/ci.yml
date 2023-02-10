@@ -157,12 +157,13 @@ jobs:
 
 
   conan:
-    needs: [ build_test ]
+    #needs: [ build_test ]
     name: "Build Conan package and upload it"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-22.04, windows-2019, macos-12 ]
+        #os: [ ubuntu-22.04, windows-2019, macos-12 ]
+        os: [windows-2019]
         arch: [ x86_64, armv8 ]
         exclude:
           - os: windows-2019
