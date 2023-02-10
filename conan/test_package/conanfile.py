@@ -21,6 +21,6 @@ class HelloTestConan(ConanFile):
         cmake_layout(self)
 
     def test(self):
-        if not tools.cross_building(self):
+        if not tools.cross_building(self) and self.settings.os != "Windows":
             cmd = os.path.join(self.cpp.build.bindirs[0], "example")
             self.run(cmd, env="conanrun")

@@ -82,13 +82,10 @@ class WaveletBufferConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        if self.settings.os == "Windows":
-            self.cpp_info.libs = self.collect_libs()
-        else:
-            self.cpp_info.libs = [
-                "wavelet_buffer",
-                "sf_compressor",
-                "matrix_compressor",
-                "fpzip",
-                "streamvbyte",
-            ]
+        self.cpp_info.libs = [
+            "wavelet_buffer",
+            "sf_compressor",
+            "matrix_compressor",
+            "fpzip",
+            "streamvbyte",
+        ]
