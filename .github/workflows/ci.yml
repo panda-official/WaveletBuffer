@@ -189,7 +189,7 @@ jobs:
       - name: Update Visual Studio C++ Redistributable
         if:  matrix.os == 'windows-2019'
         run: |
-          curl https://aka.ms/vs/17/release/vc_redist.x64.exe
+          wget https://aka.ms/vs/17/release/vc_redist.x64.exe
           ./vc_redist.x64.exe /install /passive /norestart /log out.txt
 
       - name: Prefix version for development version
