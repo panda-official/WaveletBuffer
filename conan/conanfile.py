@@ -1,20 +1,21 @@
 import os
 
 from conans import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conans.tools import Git
 
-required_conan_version = ">=1.50"
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+
+required_conan_version = ">=1.56"
 
 
 class WaveletBufferConan(ConanFile):
     name = "wavelet_buffer"
-    version = "0.5.0"
+    version = "0.6.0"
     license = "MPL-2.0"
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
     url = "https://github.com/panda-official/WaveletBuffer"
-    requires = "blaze/3.8", "libjpeg-turbo/2.1.4", "cimg/3.0.2"
+    requires = "blaze/3.8", "libjpeg-turbo/2.1.4", "cimg/3.0.2", "catch2/3.2.1"
     default_options = {
         "cimg:enable_fftw": False,
         "cimg:enable_jpeg": False,
@@ -81,4 +82,10 @@ class WaveletBufferConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["wavelet_buffer", "sf_compressor"]
+        self.cpp_info.libs = [
+            "wavelet_buffer",
+            "sf_compressor",
+            "matrix_compressor",
+            "fpzip",
+            "streamvbyte",
+        ]

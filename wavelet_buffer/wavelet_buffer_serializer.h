@@ -11,6 +11,7 @@
 namespace drift {
 class IWaveletBufferSerializer {
  public:
+  virtual ~IWaveletBufferSerializer() = default;
   /**
    * Parses subbands from a blob of data and creates a new buffer
    * @param blob the blob of subbands

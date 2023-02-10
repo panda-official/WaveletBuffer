@@ -23,12 +23,12 @@ NO_IMAGE_PATH = str(
 @pytest.fixture(name="wavelet_params")
 def fixture_wavelet_params():
     """Wavelet Parameters Fixture"""
-    return dict(
-        signal_shape=(800, 500),
-        signal_number=3,
-        decomposition_steps=2,
-        wavelet_type=WaveletType.DB3,
-    )
+    return {
+        "signal_shape": (800, 500),
+        "signal_number": 3,
+        "decomposition_steps": 2,
+        "wavelet_type": WaveletType.DB3,
+    }
 
 
 @pytest.fixture(name="wavelet_image_with_data")

@@ -70,7 +70,7 @@ jobs:
       - name: Run tests
         run: |
           cd build
-          ctest --output-on-failure
+          ctest --output-on-failure -C ${{ matrix.build_type }}
 
       - name: Install wavelet_buffer
         if: matrix.os == 'ubuntu-22.04'
@@ -172,7 +172,7 @@ jobs:
         include:
           - arch: x86_64
             dep_install_cmd: ""
-            conan_tail: ""
+            conan_tail: " -pr:b default"
           - arch: armv8
             dep_install_cmd: "sudo apt-get install g++-aarch64-linux-gnu"
             conan_tail: " -pr:b default -pr:h ./linux_armv8 -tf=None"

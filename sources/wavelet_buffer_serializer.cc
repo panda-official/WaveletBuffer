@@ -2,6 +2,7 @@
 
 #include "wavelet_buffer/wavelet_buffer_serializer.h"
 
+#include <matrix_compressor/matrix_compressor.h>
 #include <sf_compressor/sf_compressor.h>
 
 #include <iostream>
@@ -76,14 +77,23 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
     archive >> serialization_version >> params >> sf_compression;
 
     auto buffer = std::make_unique<WaveletBuffer>(params);
-    if (sf_compression != 0) {
-      if (!ParseCompressedSubbands(&archive, buffer.get())) {
-        return nullptr;
-      }
-    } else {
-      for (auto& signal : buffer->decompositions()) {
-        for (auto& subband : signal) {
+    /* Load subbands */
+    for (auto& signal : buffer->decompositions()) {
+      for (auto& subband : signal) {
+        if (sf_compression == 0) {
           archive >> subband;
+        } else {
+          matrix_compressor::ArchivedMatrix data;
+          data.is_valid = true;
+          archive >> data.nonzero >> data.rows_number >> data.cols_number;
+
+          blaze::DynamicVector<uint8_t> columns, rows, values;
+          archive >> columns >> rows >> values;
+          data.columns = std::vector<uint8_t>(columns.begin(), columns.end());
+          data.rows = std::vector<uint8_t>(rows.begin(), rows.end());
+          data.values = std::vector<uint8_t>(values.begin(), values.end());
+
+          subband = matrix_compressor::BlazeCompressor().Decompress(data);
         }
       }
     }
@@ -97,7 +107,8 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
 [[nodiscard]] bool WaveletBufferSerializer::Serialize(
     const WaveletBuffer& buffer, std::string* blob, uint8_t sf_compression) {
   std::stringstream ss;
-  {
+
+  try {
     blaze::Archive arch(ss);
 
     sf_compression = std::min<uint8_t>(16, sf_compression);
@@ -105,69 +116,41 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
       sf_compression = 0;
     }
 
+    /* Serialize header */
     arch << kSerializationVersion << buffer.parameters() << sf_compression;
 
-    if (sf_compression == 0) {
-      for (const auto& signal : buffer.decompositions()) {
-        for (const auto& subband : signal) {
+    /* Serialize subbands */
+    for (const auto& signal : buffer.decompositions()) {
+      for (const auto& subband : signal) {
+        if (sf_compression == 0) {
           arch << subband;
-        }
-      }
-    } else {
-      uint8_t frag_len;
-      if (sf_compression == 1) {
-        frag_len = 23;
-      } else {
-        frag_len = 23 - sf_compression;
-      }
-
-      size_t expected_points =
-          GetMemorySizeForSfCompressor(buffer.parameters().signal_shape);
-      sf::SfCompressor compressor(expected_points);
-
-      /* Iterate through sabband */
-      for (int n = 0; n < buffer.parameters().signal_number; ++n) {
-        for (const auto& subband : buffer.decompositions()[n]) {
-          /* Prepare input data */
-          sf::SfCompressor::OriginalData in_data = {
-              .frag_length = frag_len,
-              .row_based = true,
-              .rows = subband.rows(),
-              .columns = subband.columns(),
-              .indexes{},
-              .values{},
-          };
-
-          in_data.indexes.reserve(subband.nonZeros());
-          in_data.values.reserve(subband.nonZeros());
-
-          blaze::CompressedMatrix<DataType> compressed_matrix = subband;
-
-          for (int i = 0; i < compressed_matrix.rows(); ++i) {
-            const auto base_index = i * subband.columns();
-            for (auto it = compressed_matrix.begin(i);
-                 it != compressed_matrix.end(i); ++it) {
-              in_data.values.push_back(it->value());
-              in_data.indexes.push_back(base_index + it->index());
-            }
-          }
-
-          /* Compress data */
-          std::vector<uint8_t> compressed_subband;
-          if (!compressor.Compress(in_data, &compressed_subband)) {
+        } else {
+          auto data = matrix_compressor::BlazeCompressor().Compress(subband);
+          if (!data.is_valid) {
             return false;
           }
 
-          /* Serialize data */
-          arch << blaze::DynamicVector<uint8_t>(compressed_subband.size(),
-                                                compressed_subband.data());
+          /* Serialize compressed data */
+          arch << data.nonzero;
+          arch << data.rows_number;
+          arch << data.cols_number;
+          arch << blaze::DynamicVector<uint8_t>(data.columns.size(),
+                                                data.columns.data());
+          arch << blaze::DynamicVector<uint8_t>(data.rows.size(),
+                                                data.rows.data());
+          arch << blaze::DynamicVector<uint8_t>(data.values.size(),
+                                                data.values.data());
         }
       }
     }
-  }
-  *blob = ss.str();
 
-  return true;
+    *blob = ss.str();
+
+    return true;
+  } catch (std::exception& e) {
+    std::cerr << "Failed serialize data: " << e.what() << std::endl;
+    return false;
+  }
 }
 
 size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
