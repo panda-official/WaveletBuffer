@@ -16,7 +16,7 @@ on:
       - README.md
       - CHANGELOG.md
 env:
-  CONAN_VERSION: 1.53.0
+  CONAN_VERSION: 1.58.0
 jobs:
   cpplint:
     runs-on: ubuntu-20.04

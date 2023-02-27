@@ -14,7 +14,7 @@ long_description = (this_directory / "README.md").read_text()
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 5
-PATCH_VERSION = 0
+PATCH_VERSION = 1
 
 PACKAGE_NAME = "wavelet-buffer"
 

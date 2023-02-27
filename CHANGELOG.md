@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.5.1 - 2023-02-27
+
+### Fixed
+
+* Fix bad package in conan and re-build package
+
 ## 0.5.0 - 2022-11-18
 
 ### Added

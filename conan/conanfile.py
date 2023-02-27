@@ -4,12 +4,12 @@ from conans import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conans.tools import Git
 
-required_conan_version = ">=1.50"
+required_conan_version = ">=1.58"
 
 
 class WaveletBufferConan(ConanFile):
     name = "wavelet_buffer"
-    version = "0.5.0"
+    version = "0.5.1"
     license = "MPL-2.0"
     author = "PANDA GmbH"
     description = "An universal C++ compression library based on wavelet transformation"
