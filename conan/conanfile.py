@@ -5,7 +5,7 @@ from conans.tools import Git
 
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 
-required_conan_version = ">=1.56"
+required_conan_version = ">=1.58"
 
 
 class WaveletBufferConan(ConanFile):
