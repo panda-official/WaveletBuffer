@@ -4,6 +4,8 @@
 #include <wavelet_buffer/img/jpeg_codecs.h>
 #include <wavelet_buffer/img/wavelet_image.h>
 
+#include <iostream>
+
 #undef NDEBUG
 #include <cassert>
 
