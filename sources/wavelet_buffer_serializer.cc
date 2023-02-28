@@ -124,7 +124,8 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
         if (sf_compression == 0) {
           arch << subband;
         } else {
-          auto data = matrix_compressor::BlazeCompressor().Compress(subband, 33 - sf_compression);
+          auto data = matrix_compressor::BlazeCompressor().Compress(
+              subband, 33 - sf_compression);
           if (!data.is_valid) {
             return false;
           }
