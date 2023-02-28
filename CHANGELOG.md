@@ -12,7 +12,7 @@ archives you have to update to version 0.6.0.
 * DRIFT-617: Conan build for Linux armv8, [PR-49](https://github.com/panda-official/WaveletBuffer/pull/49/)
 * ISSUE-53: Force conan installation before sdist build, [PR-54](https://github.com/panda-official/WaveletBuffer/pull/54)
 * DRIFT-637: Add matrix_compressor support, [PR-55](https://github.com/panda-official/WaveletBuffer/pull/55/files)
-
+* Pass through float precision as compression level, [PR-59](https://github.com/panda-official/WaveletBuffer/pull/59)
 ### Changed
 
 * DRIFT-605: Fix `.clang-format` include categories order, reformat cpp files, fix v15.0.4, [PR-48](https://github.com/panda-official/WaveletBuffer/pull/48)
