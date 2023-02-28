@@ -39,7 +39,7 @@ else()
             blaze/3.8
             libjpeg-turbo/2.1.3
             cimg/3.0.2
-	    catch2/3.2.1
+	        catch2/3.2.1
             OPTIONS
             cimg:enable_fftw=False
             cimg:enable_jpeg=False # To avoid conflict with libjpeg-turbo
@@ -79,7 +79,7 @@ fetchcontent_makeavailable(SFCompressor)
 fetchcontent_declare(
     matrix_compressor
     GIT_REPOSITORY https://github.com/panda-official/MatrixCompressor
-    GIT_TAG develop
+    GIT_TAG v0.1.0
 )
 
 fetchcontent_makeavailable(matrix_compressor)
