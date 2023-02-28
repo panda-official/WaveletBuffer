@@ -87,10 +87,9 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
           data.is_valid = true;
           archive >> data.nonzero >> data.rows_number >> data.cols_number;
 
-          blaze::DynamicVector<uint8_t> columns, rows, values;
-          archive >> columns >> rows >> values;
-          data.columns = std::vector<uint8_t>(columns.begin(), columns.end());
-          data.rows = std::vector<uint8_t>(rows.begin(), rows.end());
+          blaze::DynamicVector<uint8_t> indexes, values;
+          archive >> indexes >> values;
+          data.indexes = std::vector<uint8_t>(indexes.begin(), indexes.end());
           data.values = std::vector<uint8_t>(values.begin(), values.end());
 
           subband = matrix_compressor::BlazeCompressor().Decompress(data);
@@ -111,7 +110,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
   try {
     blaze::Archive arch(ss);
 
-    sf_compression = std::min<uint8_t>(16, sf_compression);
+    sf_compression = std::min<uint8_t>(31, sf_compression);
     if (buffer.IsEmpty()) {
       sf_compression = 0;
     }
@@ -125,7 +124,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
         if (sf_compression == 0) {
           arch << subband;
         } else {
-          auto data = matrix_compressor::BlazeCompressor().Compress(subband);
+          auto data = matrix_compressor::BlazeCompressor().Compress(subband, 33 - sf_compression);
           if (!data.is_valid) {
             return false;
           }
@@ -134,10 +133,8 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
           arch << data.nonzero;
           arch << data.rows_number;
           arch << data.cols_number;
-          arch << blaze::DynamicVector<uint8_t>(data.columns.size(),
-                                                data.columns.data());
-          arch << blaze::DynamicVector<uint8_t>(data.rows.size(),
-                                                data.rows.data());
+          arch << blaze::DynamicVector<uint8_t>(data.indexes.size(),
+                                                data.indexes.data());
           arch << blaze::DynamicVector<uint8_t>(data.values.size(),
                                                 data.values.data());
         }
