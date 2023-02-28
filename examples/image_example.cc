@@ -31,19 +31,17 @@ int main() {
   WaveletImage image(kWaveletParams);
 
   std::cout << "Importing image from " << kImagePath << " ...";
-  auto status = image.ImportFromFile(kImagePath,
-                                     ThresholdAbsDenoiseAlgorithm<float>(0, 0.07), codec);
+  auto status = image.ImportFromFile(
+      kImagePath, ThresholdAbsDenoiseAlgorithm<float>(0, 0.07), codec);
 
   assert(status == WaveletImage::Status::kOk);
   std::cout << "OK" << std::endl;
-
 
   std::string blob;
   auto ret = image.const_buffer().Serialize(&blob, 20);
   assert(ret);
 
   std::cout << "Archive size = " << blob.size() / 1024 << "kB" << std::endl;
-
 
   WaveletImage restored(*drift::WaveletBuffer::Parse(blob));
 
