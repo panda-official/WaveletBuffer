@@ -185,10 +185,6 @@ jobs:
       - name: Install compiler toolkit
         run: ${{ matrix.dep_install_cmd }}
 
-      - name: Prefix version for development version
-        if: ${{ (github.ref == 'refs/heads/develop') }}
-        run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
-
       - name: Create profile
         run: |
           cd conan
@@ -212,8 +208,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
-          echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
-          conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
+          VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID}) conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
