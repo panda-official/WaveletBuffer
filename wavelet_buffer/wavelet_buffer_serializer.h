@@ -23,7 +23,7 @@ class IWaveletBufferSerializer {
    * Serialize the buffer into the blob for saving in a file or sending via
    * network
    * @param blob the blob to serialize
-   * @param sf_compression - 0 - switch off, 16 - max compression(bfloat).
+   * @param sf_compression - 0 - switch off, 31 - max compression(2-bits).
    * @return return true if it has no error
    */
   [[nodiscard]] virtual bool Serialize(const WaveletBuffer& buffer,

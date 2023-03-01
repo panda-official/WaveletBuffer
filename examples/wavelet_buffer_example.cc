@@ -4,6 +4,7 @@
 #include <wavelet_buffer/wavelet_utils.h>
 
 #include <fstream>
+#include <iostream>
 
 using drift::Signal1D;
 using drift::WaveletBuffer;
@@ -50,11 +51,11 @@ int main() {
   Signal1D output_signal;
 
   buffer.Compose(&output_signal, 2);
-  // LOG_INFO() << "Approximation 2" << output_signal;
+  std::cout << "Approximation 2" << output_signal << std::endl;
 
   buffer.Compose(&output_signal, 1);
-  // LOG_INFO() << "Approximation 1" << output_signal;
+  std::cout << "Approximation 1" << output_signal << std::endl;
 
   buffer.Compose(&output_signal);
-  // LOG_INFO() << "Composed signal: " << output_signal;
+  std::cout << "Composed signal: " << output_signal << std::endl;
 }

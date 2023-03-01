@@ -117,7 +117,7 @@ class WaveletBuffer(impl.WaveletBuffer):
         """
         Serialize and compress buffer to binary string
         Args:
-            compression_level: 0- no compression, 16 max compression (bfloat for each value)
+            compression_level: 0- no compression, 31 max compression (2-bits for each value)
         Returns:
             serialized and compressed buffer
         """
