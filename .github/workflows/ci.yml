@@ -255,6 +255,7 @@ jobs:
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
+        shell: bash
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Install conan
