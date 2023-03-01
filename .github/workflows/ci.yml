@@ -206,9 +206,10 @@ jobs:
         if: github.ref_type == 'branch'
         env:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
+          VERSION_SUFFIX: ${{ github.run_id }}
         run: |
           cd conan
-          VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID}) conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
+          conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
 
       - name: Upload package
         if: ${{ (github.ref == 'refs/heads/develop') || (startsWith(github.event.ref, 'refs/tags/v')) }}
@@ -255,7 +256,6 @@ jobs:
 
       - name: Prefix version for development version
         if: ${{ (github.ref == 'refs/heads/develop') }}
-        shell: bash
         run: echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
 
       - name: Install conan
