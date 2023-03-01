@@ -212,6 +212,7 @@ jobs:
           CONAN_SOURCE_DIR: ${{ github.workspace }}
         run: |
           cd conan
+          echo "VERSION_SUFFIX=$(echo ${GITHUB_RUN_ID})" >> $GITHUB_ENV
           conan create . drift/develop --build=missing ${{ matrix.conan_tail }}
 
       - name: Upload package
