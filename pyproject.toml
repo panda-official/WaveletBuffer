@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 archs = ["auto64"]
-build = ["*38*", "*39*", "*310*"]
+build = ["*38*", "*39*", "*310*", "*311*"]
 skip = ["*musllinux*", "pp*"]
 test-command = "pip install -r {project}/python/requirements/test.txt && pytest {project}/python/tests"
 build-verbosity = '3'
