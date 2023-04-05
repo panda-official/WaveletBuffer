@@ -79,7 +79,7 @@ fetchcontent_makeavailable(SFCompressor)
 fetchcontent_declare(
     matrix_compressor
     GIT_REPOSITORY https://github.com/panda-official/MatrixCompressor
-    GIT_TAG dense-matrixes
+    GIT_TAG v0.2.0
 )
 
 fetchcontent_makeavailable(matrix_compressor)
