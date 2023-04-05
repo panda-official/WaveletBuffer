@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+### 0.6.0 - 2023-04-05
+
 **IMPORTANT**: We have changed serialization of subbands. The current version of the serialization is 3. We support
 de-serialization of version 2 and 3. However, the serialization of version 2 is not supported anymore and to parse
 archives you have to update to version 0.6.0.
