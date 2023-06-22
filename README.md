@@ -7,7 +7,7 @@ A universal  C++ compression library based on wavelet transformation
 ## Features
 
 - Written in Modern C++
-- One-side wavelet decomposition for vectors and matrixes
+- One-side wavelet decomposition for vectors and matrices
 - 5 Daubechies Wavelets DB1-DB5
 - Different denoising algorithms
 - Fast and efficient compression with [MatrixCompressor](https://github.com/panda-official/MatrixCompressor)
@@ -17,7 +17,7 @@ A universal  C++ compression library based on wavelet transformation
 
 * CMake >= 3.16
 * C++20 compiler
-* conan >= 1.56
+* conan >= 1.56, < 2.0
 
 ## Bindings
 
