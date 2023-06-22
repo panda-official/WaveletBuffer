@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-#include "wavelet_buffer/wavelet_buffer.h"
 #include "internal/sf_compressor.h"
+#include "wavelet_buffer/wavelet_buffer.h"
 
 namespace drift {
 /**
@@ -177,10 +177,9 @@ bool ParseCompressedSubbands(blaze::Archive<std::istringstream>* archive,
 
       size_t expected_points =
           GetMemorySizeForSfCompressor(buffer->parameters().signal_shape, s);
-      SfCompressor compressor(
-          expected_points);  // TODO(Alexey Timin): Should
-                             // reallocate memory because of a
-                             // bug in SfCompressor
+      SfCompressor compressor(expected_points);  // TODO(Alexey Timin): Should
+                                                 // reallocate memory because of
+                                                 // a bug in SfCompressor
 
       SfCompressor::OriginalData out_data;
       if (!compressor.Decompress(data, &out_data)) {
