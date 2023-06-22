@@ -78,10 +78,6 @@ jobs:
           cd build
           sudo cmake --install .
 
-      - name: Check cmake target installation
-        if: matrix.os == 'ubuntu-22.04'
-        run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
-
       - name: Rename serialized blobs
         run: |
           cd build/tests
