@@ -164,7 +164,6 @@ size_t GetMemorySizeForSfCompressor(const SignalShape& signal_shape,
 
 bool ParseCompressedSubbands(blaze::Archive<std::istringstream>* archive,
                              WaveletBuffer* buffer) {
-
   using drift::wavelet::internal::SfCompressor;
 
   /* Iterate through sabbands */

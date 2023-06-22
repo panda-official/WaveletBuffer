@@ -1,6 +1,6 @@
 // Copyright 2021-2023 PANDA GmbH
-#ifndef WAVELET_BUFFER_INTERNAL_SF_COMPRESSOR_H_
-#define WAVELET_BUFFER_INTERNAL_SF_COMPRESSOR_H_
+#ifndef SOURCES_INTERNAL_SF_COMPRESSOR_H_
+#define SOURCES_INTERNAL_SF_COMPRESSOR_H_
 
 #include <memory>
 #include <vector>
@@ -54,4 +54,4 @@ class SfCompressor {
 
 }  // namespace drift::wavelet::internal
 
-#endif  // WAVELET_BUFFER_INTERNAL_SF_COMPRESSOR_H_
+#endif  // SOURCES_INTERNAL_SF_COMPRESSOR_H_
