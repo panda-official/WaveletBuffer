@@ -2,10 +2,9 @@
 
 #include "wavelet_buffer/wavelet_buffer_serializer.h"
 
-#include <matrix_compressor/matrix_compressor.h>
-
 #include <iostream>
 
+#include "internal/matrix_compressor.h"
 #include "internal/sf_compressor.h"
 #include "wavelet_buffer/wavelet_buffer.h"
 
@@ -65,6 +64,9 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
 
 [[nodiscard]] std::unique_ptr<WaveletBuffer> WaveletBufferSerializer::Parse(
     const std::string& blob) {
+  using wavelet::internal::ArchivedMatrix;
+  using wavelet::internal::BlazeCompressor;
+
   try {
     /* Create archive */
     std::istringstream ss(blob);
@@ -83,7 +85,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
         if (sf_compression == 0) {
           archive >> subband;
         } else {
-          matrix_compressor::ArchivedMatrix data;
+          ArchivedMatrix data;
           data.is_valid = true;
           archive >> data.nonzero >> data.rows_number >> data.cols_number;
 
@@ -92,7 +94,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
           data.indexes = std::vector<uint8_t>(indexes.begin(), indexes.end());
           data.values = std::vector<uint8_t>(values.begin(), values.end());
 
-          subband = matrix_compressor::BlazeCompressor().Decompress(data);
+          subband = BlazeCompressor().Decompress(data);
         }
       }
     }
@@ -105,8 +107,9 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
 
 [[nodiscard]] bool WaveletBufferSerializer::Serialize(
     const WaveletBuffer& buffer, std::string* blob, uint8_t sf_compression) {
-  std::stringstream ss;
+  using wavelet::internal::BlazeCompressor;
 
+  std::stringstream ss;
   try {
     blaze::Archive arch(ss);
 
@@ -124,8 +127,7 @@ WaveletBufferSerializerLegacy::Parse(const std::string& blob) {
         if (sf_compression == 0) {
           arch << subband;
         } else {
-          auto data = matrix_compressor::BlazeCompressor().Compress(
-              subband, 33 - sf_compression);
+          auto data = BlazeCompressor().Compress(subband, 33 - sf_compression);
           if (!data.is_valid) {
             return false;
           }
