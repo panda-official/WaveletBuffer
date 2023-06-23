@@ -85,8 +85,8 @@ include(FetchContent)
 
 fetchcontent_declare(
     streamvbyte
-    GIT_REPOSITORY https://github.com/lemire/streamvbyte.git
-    GIT_TAG 7da04c7df63681a47f34a47ab457d6527825adbc
+    URL https://github.com/lemire/streamvbyte/archive/refs/tags/v1.0.0.zip
+    URL_HASH MD5=3d1a01cfb704947fa6498944082aeed1
 )
 
 fetchcontent_declare(
