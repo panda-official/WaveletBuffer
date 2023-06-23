@@ -84,7 +84,6 @@ class WaveletBufferConan(ConanFile):
     def package_info(self):
         self.cpp_info.libs = [
             "wavelet_buffer",
-            "sf_compressor",
             "matrix_compressor",
             "fpzip",
             "streamvbyte",
