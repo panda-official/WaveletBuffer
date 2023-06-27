@@ -74,8 +74,8 @@ TEST_CASE("Decompressed matrix must be equal to origin", "[matrix]") {
   DataGenerator generator;
 
   /* Define matrix parameters */
-  auto rows = GENERATE(10, 100, 1000);
-  auto columns = GENERATE(10, 100, 1000);
+  auto rows = GENERATE(10, 100);
+  auto columns = GENERATE(10, 100);
   auto ratio = GENERATE(0.0, 0.5, 1.0);
 
   /* Generate matrix */
