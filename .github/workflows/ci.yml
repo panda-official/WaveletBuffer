@@ -70,7 +70,7 @@ jobs:
       - name: Run tests
         run: |
           cd build/tests
-          ./unit_tests$${{ matrix.os == 'windows-2019' ? '.exe' : '' }}
+          ./unit_tests${{ matrix.os == 'windows-latest' && '.exe' || '' }}
 
       - name: Install wavelet_buffer
         if: matrix.os == 'ubuntu-22.04'
