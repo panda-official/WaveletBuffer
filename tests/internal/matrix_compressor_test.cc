@@ -38,7 +38,7 @@ class DataGenerator {
   }
 };
 
-#ifndef WIN64  // the tests hang on windows in debug mode
+#ifndef _WIN32  // the tests hang on windows in debug mode
 
 TEST_CASE("BlazeCompressor::Compress()", "[matrix]") {
   SECTION("Empty matrix") {
