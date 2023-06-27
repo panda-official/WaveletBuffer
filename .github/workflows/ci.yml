@@ -69,8 +69,8 @@ jobs:
 
       - name: Run tests
         run: |
-          cd build
-          ctest --output-on-failure -C ${{ matrix.build_type }}
+          cd build/tests
+          ./unit_tests
 
       - name: Install wavelet_buffer
         if: matrix.os == 'ubuntu-22.04'

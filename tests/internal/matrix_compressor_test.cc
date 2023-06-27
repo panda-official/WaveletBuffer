@@ -78,6 +78,9 @@ TEST_CASE("Decompressed matrix must be equal to origin", "[matrix]") {
   auto columns = GENERATE(10, 100);
   auto ratio = GENERATE(0.0, 0.5, 1.0);
 
+  std::cout << "rows: " << rows << " columns: " << columns
+            << " ratio: " << ratio << std::endl;
+
   /* Generate matrix */
   auto matrix = generator.GenerateSparseMatrix(rows, columns, ratio);
 
