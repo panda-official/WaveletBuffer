@@ -369,7 +369,7 @@ bool WaveletBuffer::operator==(const WaveletBuffer& rhs) const {
 }
 
 bool WaveletBuffer::operator!=(const WaveletBuffer& rhs) const {
-  return rhs != *this;
+  return !(rhs == *this);
 }
 
 WaveletBuffer& WaveletBuffer::operator=(const WaveletBuffer& buffer) {

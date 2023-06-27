@@ -96,7 +96,15 @@ fetchcontent_declare(
 )
 
 fetchcontent_makeavailable(streamvbyte)
-fetchcontent_makeavailable(fpzip)
+
+fetchcontent_getproperties(fpzip)
+
+if(NOT fpzip_POPULATED)
+    fetchcontent_populate(fpzip)
+    # Make subproject to use 'BUILD_SHARED_LIBS=ON' setting.
+    set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build SHARED libraries")
+    add_subdirectory(${fpzip_SOURCE_DIR} ${fpzip_BINARY_DIR})
+endif()
 
 # Add alias
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})

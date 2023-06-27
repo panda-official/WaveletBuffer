@@ -1,4 +1,4 @@
-// Copyright 2020-2023 PANDA GmbH
+// Copyright 2022-2023 PANDA GmbH
 
 #pragma once
 
@@ -8,15 +8,6 @@
 #include <vector>
 
 namespace drift::wavelet::internal {
-
-/* Compressed vector data */
-struct ArchivedVector {
-  bool is_valid{false};         /**< state */
-  size_t nonzero{0};            /**< number of non-zero elements */
-  size_t size{0};               /**< vector size */
-  std::vector<uint8_t> indexes; /**< encoded indexes */
-  std::vector<uint8_t> values;  /**< encoded values */
-};
 
 /* Compressed matrix data */
 struct ArchivedMatrix {
@@ -31,24 +22,6 @@ struct ArchivedMatrix {
 class BlazeCompressor {
  public:
   BlazeCompressor() = default;
-
-  /**
-   * Compress a blaze::DynamicVector<float>
-   * @param vector
-   * @param precision number of bits for each float 0 -max precision, 2 - 2
-   * bits,32 - 32 bits
-   * @return compressed data
-   */
-  ArchivedVector Compress(const blaze::DynamicVector<float>& vector,
-                          int precision);
-
-  /**
-   * Decompress a blaze::DynamicVector<float>
-   * @param compressed compressed data
-   * @return decompressed vector
-   */
-  blaze::DynamicVector<float> Decompress(
-      const ArchivedVector& compressed_vector);
 
   /**
    * Compress a blaze::DynamicMatrix<float>
