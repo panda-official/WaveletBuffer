@@ -40,15 +40,22 @@ class DataGenerator {
 
 TEST_CASE("BlazeCompressor::Compress()", "[matrix]") {
   SECTION("Empty matrix") {
+    std::cout << "Empty matrix" << std::endl;
     auto compressor = BlazeCompressor();
     REQUIRE_THROWS_AS(compressor.Compress(blaze::CompressedMatrix<float>{}, 0),
                       std::invalid_argument);
   }
 
   SECTION("Random matrix") {
+    std::cout << "Random matrix" << std::endl;
+
     DataGenerator generator;
     auto matrix = generator.GenerateSparseMatrix(100, 100, 0.1);
+    std::cout << "Random matrix generated" << std::endl;
+
     auto compressed = BlazeCompressor().Compress(matrix, 0);
+    std::cout << "Compressed" << std::endl;
+
     REQUIRE(compressed.is_valid);
   }
 }
