@@ -91,8 +91,8 @@ fetchcontent_declare(
 
 fetchcontent_declare(
     fpzip
-    GIT_REPOSITORY https://github.com/victor1234/fpzip.git
-    GIT_TAG drift-637
+    URL https://github.com/LLNL/fpzip/releases/download/1.3.0/fpzip-1.3.0.zip
+    URL_HASH MD5=933ed7628de406a24fe2de61c8c3356c
 )
 
 fetchcontent_makeavailable(streamvbyte)
