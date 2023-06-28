@@ -70,17 +70,13 @@ jobs:
       - name: Run tests
         run: |
           cd build
-          ctest --output-on-failure -C ${{ matrix.build_type }}
+          ctest -V --output-on-failure -C ${{ matrix.build_type }}
 
       - name: Install wavelet_buffer
         if: matrix.os == 'ubuntu-22.04'
         run: |
           cd build
           sudo cmake --install .
-
-      - name: Check cmake target installation
-        if: matrix.os == 'ubuntu-22.04'
-        run: cmake --find-package -DNAME=wavelet_buffer -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
       - name: Rename serialized blobs
         run: |

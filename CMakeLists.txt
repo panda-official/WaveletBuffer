@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.24")
     cmake_policy(SET CMP0135 NEW)
 endif()
 
-project(wavelet_buffer VERSION 0.6.0)
+project(wavelet_buffer VERSION 0.7.0)
 
 option(WB_BUILD_TESTS "Enable unit tests" OFF)
 option(WB_BUILD_EXAMPLES "Enable examples" OFF)
@@ -39,7 +39,7 @@ else()
             blaze/3.8
             libjpeg-turbo/2.1.3
             cimg/3.0.2
-	        catch2/3.2.1
+            catch2/3.2.1
             OPTIONS
             cimg:enable_fftw=False
             cimg:enable_jpeg=False # To avoid conflict with libjpeg-turbo
@@ -63,27 +63,6 @@ find_package(libjpeg-turbo REQUIRED)
 find_package(cimg REQUIRED)
 find_package(Catch2 REQUIRED)
 
-# Dependencies
-include(FetchContent)
-
-# SFCompressor
-fetchcontent_declare(
-    SFCompressor
-    GIT_REPOSITORY https://github.com/panda-official/SfCompressor.git
-    GIT_TAG drift-507
-)
-
-fetchcontent_makeavailable(SFCompressor)
-
-# MatrixCompressor
-fetchcontent_declare(
-    matrix_compressor
-    GIT_REPOSITORY https://github.com/panda-official/MatrixCompressor
-    GIT_TAG v0.2.0
-)
-
-fetchcontent_makeavailable(matrix_compressor)
-
 # Create wb target
 set(WB_TARGET_NAME ${PROJECT_NAME})
 add_library(
@@ -97,15 +76,43 @@ add_library(
     sources/img/wavelet_image.cc
     sources/img/color_space.cc
     sources/img/jpeg_codecs.cc
+    # Internal
+    sources/internal/sf_compressor.cc
+    sources/internal/matrix_compressor.cc
 )
+
+include(FetchContent)
+
+fetchcontent_declare(
+    streamvbyte
+    URL https://github.com/lemire/streamvbyte/archive/refs/tags/v1.0.0.zip
+    URL_HASH MD5=3d1a01cfb704947fa6498944082aeed1
+)
+
+fetchcontent_declare(
+    fpzip
+    URL https://github.com/LLNL/fpzip/releases/download/1.3.0/fpzip-1.3.0.zip
+    URL_HASH MD5=933ed7628de406a24fe2de61c8c3356c
+)
+
+fetchcontent_makeavailable(streamvbyte)
+
+fetchcontent_getproperties(fpzip)
+
+if(NOT fpzip_POPULATED)
+    fetchcontent_populate(fpzip)
+    # Make subproject to use 'BUILD_SHARED_LIBS=ON' setting.
+    set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Build SHARED libraries")
+    add_subdirectory(${fpzip_SOURCE_DIR} ${fpzip_BINARY_DIR})
+endif()
 
 # Add alias
 add_library(${WB_TARGET_NAME}::${WB_TARGET_NAME} ALIAS ${WB_TARGET_NAME})
 
 # Set fPIC
 set_target_properties(${WB_TARGET_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-set_target_properties(sf_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
-set_target_properties(matrix_compressor PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(streamvbyte PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(fpzip PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Turn off parallelization in blaze
 target_compile_definitions(
@@ -131,12 +138,18 @@ target_include_directories(
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+target_include_directories(
+    ${WB_TARGET_NAME}
+    PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/sources
+)
+
 # Link dependencies
-target_link_libraries(${WB_TARGET_NAME} sf_compressor)
-target_link_libraries(${WB_TARGET_NAME} matrix_compressor::matrix_compressor)
-target_link_libraries(${WB_TARGET_NAME} blaze::blaze)
-target_link_libraries(${WB_TARGET_NAME} libjpeg-turbo::libjpeg-turbo)
-target_link_libraries(${WB_TARGET_NAME} cimg::cimg)
+target_link_libraries(${WB_TARGET_NAME} PRIVATE streamvbyte)
+target_link_libraries(${WB_TARGET_NAME} PRIVATE fpzip)
+target_link_libraries(${WB_TARGET_NAME} PRIVATE libjpeg-turbo::libjpeg-turbo)
+target_link_libraries(${WB_TARGET_NAME} PRIVATE cimg::cimg)
+
+target_link_libraries(${WB_TARGET_NAME} PUBLIC blaze::blaze)
 
 # Catch2 installation
 if(WB_BUILD_TESTS OR WB_BUILD_BENCHMARKS)
@@ -166,7 +179,7 @@ endif()
 include(GNUInstallDirs)
 
 # Create package targets file
-install(TARGETS ${WB_TARGET_NAME} EXPORT ${WB_TARGET_NAME}-target)
+install(TARGETS ${WB_TARGET_NAME} streamvbyte EXPORT ${WB_TARGET_NAME}-target)
 install(
     EXPORT ${WB_TARGET_NAME}-target
     FILE ${WB_TARGET_NAME}-targets.cmake

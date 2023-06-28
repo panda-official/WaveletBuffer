@@ -9,10 +9,17 @@ add_executable(
     img/wavelet_image_test.cc
     img/color_space_test.cc
     img/jpeg_codec_test.cc
+    internal/matrix_compressor_test.cc
 )
+
 target_link_libraries(unit_tests PRIVATE ${WB_TARGET_NAME})
 target_link_libraries(unit_tests PRIVATE Catch2::Catch2WithMain)
 
+# to test internal classes
+target_include_directories(
+    unit_tests
+    PRIVATE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/sources
+)
 # Copy fixtures
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/pandas.jpg

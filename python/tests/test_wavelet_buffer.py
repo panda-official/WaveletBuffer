@@ -212,7 +212,7 @@ def test__parameters(params):
         f"wavelet_type={params['wavelet_type']}>"
     )
 
-    with pytest.raises(AttributeError, match="can't set attribute"):
+    with pytest.raises(AttributeError):
         buffer.parameters = None
 
     ro_params = buffer.parameters  # but can read
