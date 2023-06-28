@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.7.1 - 2023-06-28
+
+### Fixed:
+
+* Build Python 3.11 wheels
+
 ## 0.7.0 - 2023-06-28
 
 ### Changed
