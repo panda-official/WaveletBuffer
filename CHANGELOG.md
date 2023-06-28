@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+* DRIFT-683: Consolidated dependencies, [PR-60](https://github.com/panda-official/WaveletBuffer/pull/60)
+
 ### 0.6.0 - 2023-04-05
 
 **IMPORTANT**: We have changed serialization of subbands. The current version of the serialization is 3. We support
