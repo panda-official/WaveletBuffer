@@ -10,7 +10,7 @@ except ModuleNotFoundError:
 from pathlib import Path
 
 this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
+long_description = (this_directory / "python" / "README.md").read_text()
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 7
